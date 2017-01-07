@@ -13,18 +13,23 @@ body
     margin-left: 20%
   h2
     font-size: 2em
-    color: #333333
+    color: lighten(#000000, 30)
     margin-left: 30%
 
   .header
     display: inline-block
     height: 300px
     width: 100%
-    background-image: url(DSC_0029.JPG)
+    background-image: url(../Bilder/DSC_0029.JPG)
+
+    img
+      display: inline
+      position: absolute
+      opacity: 0.5
 
   .ueberDieApp
     position: relative
-    background: #ff2222
+    background: lighten(#000000, 60)
     width: 80%
     height: auto
     padding: 3%
@@ -34,39 +39,13 @@ body
 
   .neueKarte
     @extend .ueberDieApp
-    background: #448944
-
-    .btnNeueKarteHinzufuegen
-      position: relative
-      width: 40%
-      min-width: 200px
-      margin-top: 2%
-      margin-left: auto
-      margin-right: auto
-      background: $clrBlue
-      font-size: 2em
-      border: 2px solid darken($clrBlue, 10)
-      text-align: center
-      padding: 1%
-      line-height: 2em
-
-      &:hover
-        cursor: pointer
-        border-radius: 10%
-        background: darken($clrBlue, 12)
-
-      .material-icons.add
-        font-size: 2em
-        vertical-align: middle
-
-
-
+    background: lighten(#000000, 70)
 
   .footer
     background: #222222
     width: 100%
-    height: 20px
-    padding: 5%
+    height: 10px
+    padding: 2%
     color: lighten(#000000, 50)
 
 
@@ -79,3 +58,32 @@ body
 a
   text-decoration: none
   color: black
+
+
+.button
+  position: relative
+  width: 42%
+  min-width: 250px
+  margin-top: 2%
+  margin-left: auto
+  margin-right: auto
+  background: $clrBlue
+  font-size: 1.7em
+  border: 2px solid darken($clrBlue, 10)
+  text-align: center
+  padding: 1%
+  line-height: 1.7em
+
+  p
+    display: inline
+
+
+  &:hover
+    cursor: pointer
+    border-radius: 10%
+    background: darken($clrBlue, 12)
+
+
+  .material-icons
+    font-size: 3em
+    vertical-align: middle

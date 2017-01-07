@@ -1,0 +1,42 @@
+.slide1 {
+  text-align: center; }
+  .slide1 input {
+    font-size: 2em;
+    margin-top: 3%;
+    background: #404040;
+    border: 2px solid #4d4d4d;
+    padding: 2%; }
+    .slide1 input:hover {
+      background: #333333; }
+  .slide1 img {
+    margin-top: 2%;
+    border: 0.3em solid #444444;
+    border-radius: 0.1em; }
+  .slide1 #pHochgeladen {
+    font-size: 1.7em;
+    position: relative;
+    width: 15em;
+    padding: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+    border: 1px solid #222222;
+    background: #00ff00; }
+  .slide1 .animate {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-top: 5px solid #ff9105;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    animation: load 2s linear infinite; }
+@keyframes load {
+  0% {
+    transform: rotate(0deg) scale(0.8); }
+  50% {
+    transform: rotate(180deg) scale(1.2); }
+  100% {
+    transform: rotate(360deg) scale(0.8); } }
+
+/*# sourceMappingURL=karteEinfuegen.css.map */

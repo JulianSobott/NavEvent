@@ -7,5 +7,9 @@ body .content {
   padding-bottom: 3%;
   margin-left: auto;
   margin-right: auto; }
+  body .content ul {
+    line-height: 1.5em;
+    font-size: 1.5em;
+    margin-left: 15%; }
 
 /*# sourceMappingURL=guide.css.map */
