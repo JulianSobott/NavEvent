@@ -13,7 +13,7 @@ $( document ).ready(function() {
 
   for(var i=1;i<=anzSlides;i++)
   {
-  	$('.dot:nth-child(' + i + ')').addClass("dot"+i);
+  	$('.dot').addClass("dot"+i);
   }
 
   //--------erschaffen der Slides-----------
@@ -48,7 +48,6 @@ $( document ).ready(function() {
     if ($('.slide:last-child()').hasClass('is-active')||viable==false)
     {
   		rechts=false;
-  		alert("rechtsfalse");
     }
     else
     {
