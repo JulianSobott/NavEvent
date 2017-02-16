@@ -1,6 +1,6 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.MapSelectActivityUI;
+import com.unknown.navevent.interfaces.MapSelectActivityUI;
 
 import java.util.List;
 

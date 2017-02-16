@@ -1,7 +1,7 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.BeaconData;
-import com.unknown.naveventinterfacetest.interfaces.NavigationDrawerUI;
+import com.unknown.navevent.interfaces.BeaconData;
+import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
 import java.util.List;
 

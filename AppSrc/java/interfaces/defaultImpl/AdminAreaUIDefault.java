@@ -1,6 +1,6 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.*;
+import com.unknown.navevent.interfaces.*;
 
 public class AdminAreaUIDefault implements AdminAreaUI
 {

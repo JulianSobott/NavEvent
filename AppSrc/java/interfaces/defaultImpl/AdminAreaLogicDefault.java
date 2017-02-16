@@ -1,9 +1,9 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.AdminAreaLogic;
-import com.unknown.naveventinterfacetest.interfaces.AdminAreaUI;
+import com.unknown.navevent.interfaces.AdminAreaLogicInterface;
+import com.unknown.navevent.interfaces.AdminAreaUI;
 
-public class AdminAreaLogicDefault implements AdminAreaLogic
+public class AdminAreaLogicDefault implements AdminAreaLogicInterface
 {
 	private AdminAreaUI mResponder = null;
 	AdminAreaLogicDefault(AdminAreaUI responder) {

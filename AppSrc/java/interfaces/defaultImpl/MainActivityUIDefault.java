@@ -1,7 +1,7 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.MainActivityUI;
-import com.unknown.naveventinterfacetest.interfaces.MapData;
+import com.unknown.navevent.interfaces.MainActivityUI;
+import com.unknown.navevent.interfaces.MapData;
 
 import java.util.List;
 

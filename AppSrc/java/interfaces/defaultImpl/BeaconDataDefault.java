@@ -1,6 +1,6 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.BeaconData;
+import com.unknown.navevent.interfaces.BeaconData;
 
 public class BeaconDataDefault implements BeaconData
 {

@@ -1,9 +1,9 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
 import android.graphics.Bitmap;
 
-import com.unknown.naveventinterfacetest.interfaces.BeaconData;
-import com.unknown.naveventinterfacetest.interfaces.MapData;
+import com.unknown.navevent.interfaces.BeaconData;
+import com.unknown.navevent.interfaces.MapData;
 
 import java.util.ArrayList;
 import java.util.List;

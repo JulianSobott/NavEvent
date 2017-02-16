@@ -1,12 +1,12 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.MapSelectActivityLogic;
-import com.unknown.naveventinterfacetest.interfaces.MapSelectActivityUI;
+import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
+import com.unknown.navevent.interfaces.MapSelectActivityUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapSelectActivityLogicDefault implements MapSelectActivityLogic
+public class MapSelectActivityLogicDefault implements MapSelectActivityLogicInterface
 {
 	private MapSelectActivityUI mResponder = null;
 	MapSelectActivityLogicDefault(MapSelectActivityUI responder) {

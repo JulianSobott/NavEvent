@@ -1,14 +1,18 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.MainActivityLogic;
-import com.unknown.naveventinterfacetest.interfaces.MainActivityUI;
+import com.unknown.navevent.interfaces.MainActivityLogicInterface;
+import com.unknown.navevent.interfaces.MainActivityUI;
 
-public class MainActivityLogicDefault implements MainActivityLogic
+public class MainActivityLogicDefault implements MainActivityLogicInterface
 {
 	private MainActivityUI mResponder = null;
 	MainActivityLogicDefault(MainActivityUI responder) {
 		mResponder = responder;
 	}
+
+	public void onCreate() {}
+
+	public void onDestroy() {}
 
 	public void initBeaconManager() { mResponder.initCompleted(); }
 

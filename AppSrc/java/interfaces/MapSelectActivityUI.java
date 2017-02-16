@@ -1,11 +1,11 @@
-package com.unknown.naveventinterfacetest.interfaces;
+package com.unknown.navevent.interfaces;
 
 import java.util.List;
 
 //Interface for responses to the UI. Has to be implemented by MapSelectActivity-class.
 public interface MapSelectActivityUI
 {
-	//Respond to MapSelectActivityLogic.loadOnlineMaps()
+	//Respond to MapSelectActivityLogicInterface.loadOnlineMaps()
 	void onlineMapsRespond(List<String> maps);
 	//Map-download failed. \p errorcode contains a human-readable descrition of the problem.
 	void downloadFailed(String errorcode);

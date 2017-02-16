@@ -1,6 +1,6 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.QrCodeReaderUI;
+import com.unknown.navevent.interfaces.QrCodeReaderUI;
 
 public class QrCodeReaderUIDefault implements QrCodeReaderUI
 {

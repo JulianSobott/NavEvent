@@ -1,4 +1,4 @@
-package com.unknown.naveventinterfacetest.interfaces;
+package com.unknown.navevent.interfaces;
 
 import android.graphics.Bitmap;
 

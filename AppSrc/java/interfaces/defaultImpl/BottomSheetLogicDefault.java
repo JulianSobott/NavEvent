@@ -1,9 +1,9 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.BottomSheetLogic;
-import com.unknown.naveventinterfacetest.interfaces.BottomSheetUI;
+import com.unknown.navevent.interfaces.BottomSheetLogicInterface;
+import com.unknown.navevent.interfaces.BottomSheetUI;
 
-public class BottomSheetLogicDefault implements BottomSheetLogic
+public class BottomSheetLogicDefault implements BottomSheetLogicInterface
 {
 	private BottomSheetUI mResponder = null;
 	BottomSheetLogicDefault(BottomSheetUI responder) {

@@ -1,9 +1,9 @@
-package com.unknown.naveventinterfacetest.interfaces.defaultImpl;
+package com.unknown.navevent.interfaces.defaultImpl;
 
-import com.unknown.naveventinterfacetest.interfaces.QrCodeReaderLogic;
-import com.unknown.naveventinterfacetest.interfaces.QrCodeReaderUI;
+import com.unknown.navevent.interfaces.QrCodeReaderLogicInterface;
+import com.unknown.navevent.interfaces.QrCodeReaderUI;
 
-public class QrCodeReaderLogicDefault implements QrCodeReaderLogic
+public class QrCodeReaderLogicDefault implements QrCodeReaderLogicInterface
 {
 	private QrCodeReaderUI mResponder = null;
 	QrCodeReaderLogicDefault(QrCodeReaderUI responder) {

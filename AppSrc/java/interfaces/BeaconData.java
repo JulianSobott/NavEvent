@@ -1,4 +1,4 @@
-package com.unknown.naveventinterfacetest.interfaces;
+package com.unknown.navevent.interfaces;
 
 //General interface to get beacon-data.
 public interface BeaconData
