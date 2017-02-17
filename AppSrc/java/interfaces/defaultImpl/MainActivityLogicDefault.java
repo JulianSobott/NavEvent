@@ -1,5 +1,7 @@
 package com.unknown.navevent.interfaces.defaultImpl;
 
+import android.content.Context;
+
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
 
@@ -10,7 +12,7 @@ public class MainActivityLogicDefault implements MainActivityLogicInterface
 		mResponder = responder;
 	}
 
-	public void onCreate() {}
+	public void onCreate(Context context) {}
 
 	public void onDestroy() {}
 

@@ -1,9 +1,11 @@
 package com.unknown.navevent.interfaces;
 
+import android.content.Context;
+
 //Interface for the MainActivityLogicImpl-Logic
 public interface MainActivityLogicInterface
 {
-	void onCreate();
+	void onCreate(Context context);
 	void onDestroy();
 
 	//Sould be called on startup. Will controll internet-connection, permissions, bluetooth, etc. Will respond with MainActivityUI.initCompleted(), MainActivityUI.notSupported(), MainActivityUI.bluetoothDeactivated() or MainActivityUI.askForPermissions().
