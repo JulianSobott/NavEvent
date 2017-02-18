@@ -8,7 +8,9 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
 import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
@@ -72,6 +74,10 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
 			startBeaconManager();
 		}
+		else if( event.message == BeaconServiceEvent.EVENT_STOP_LISTENING) {
+			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
+			stopBeaconManager();
+		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_SELF) {
 			stopSelf();
 		}
@@ -100,6 +106,12 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	//Returns true if bluetooth is enabled
 	public void verifyBluetooth() {
 		try {
+			// Determine whether BLE is supported on the device. Then
+			// you can selectively disable BLE-related features. todo
+			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED));
+			}
+
 			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {
 				isBluetoothSupported = true;
 				isBluetoothActivated = true;
@@ -123,7 +135,6 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			//Android 6(M) permission check
 			if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //Permission denied
 				hasBeaconPermissions = false;
-
 				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_ASK_PERMISSION));
 			}
 			else hasBeaconPermissions = true;//Permission granted
@@ -161,7 +172,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			b.distance = beacon.getDistance();
 			this.beacons.add(b);
 		}
-		//todo: test
+
 		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
 	}
 

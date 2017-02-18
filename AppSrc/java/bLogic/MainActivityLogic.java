@@ -1,6 +1,11 @@
 package com.unknown.navevent.bLogic;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -24,7 +29,6 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 		mResponder = responder;
 	}
 
-	private Context mContext;
 
 
 	private static final int HANDLER_NO_BEACON_DELAY = 1;
@@ -32,13 +36,13 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 	@Override
 	public void onCreate(Context context) {
 		EventBus.getDefault().register(this);
-		mContext = context;
 
 		onStart(context);
 	}
 	@Override
 	public void onDestroy() {
 		onStop();
+
 
 		EventBus.getDefault().unregister(this);
 	}
@@ -67,6 +71,11 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 		}
 		else if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
 			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
+
+			mResponder.notSupported("");
+		}
+		else if( event.message == MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED) {
+			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
@@ -102,7 +111,7 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 		}
 	}
 
-	//Handles if no beacons-signals were recieved after delay
+	//Handles if no beacons-signals were received after delay
 	private Handler mNoBeaconHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -112,4 +121,5 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 			}
 		}
 	};
+
 }
