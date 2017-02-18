@@ -41,7 +41,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private boolean hasBeaconPermissions = false;
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
-	public static List<BeaconIR> beacons = new ArrayList<BeaconIR>();
+	public List<BeaconIR> beacons = new ArrayList<BeaconIR>();
 
 
 	@Override
@@ -51,14 +51,6 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		EventBus.getDefault().register(this);
 
 		EventBus.getDefault().post(new LogicIfcBaseEvent(LogicIfcBaseEvent.EVENT_SERVICE_STARTED));
-
-		/*mStartThread = performOnBackgroundThread(new Runnable() {
-			@Override
-			public void run() {
-				Log.d("BeaconService", "Thread running");
-				startBeaconManager();
-			}
-		});*/
 	}
 
 	@Override
@@ -84,23 +76,6 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			stopSelf();
 		}
 	}
-
-	/*public static Thread performOnBackgroundThread(final Runnable runnable) {
-		Log.d("BeaconService", "Start thread");
-		final Thread t = new Thread() {
-			@Override
-			public void run() {
-				try {
-					runnable.run();
-				} finally {
-
-				}
-			}
-		};
-		t.start();
-		return t;
-	}*/
-
 
 	private void startBeaconManager() {
 		verifyBluetooth();
@@ -156,15 +131,10 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		else hasBeaconPermissions = true;//Permissions should be granted if android version < 6
 	}
 
-	public void retryStartListening()
-	{
-		//todo
-	}
-
 	public void startListening()  {
 		internBeaconMgr = BeaconManager.getInstanceForApplication(this);
 		internBeaconMgr.getBeaconParsers().add(new BeaconParser().
-				setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));//Specific layout for iBeaoons
+				setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));//Specific layout for iBeacons
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
 	}
@@ -183,19 +153,16 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 	@Override
 	public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-		if (beacons.size() != this.beacons.size()) {
-			this.beacons.clear();
-			for (Beacon beacon : beacons) {
-				BeaconIR b = new BeaconIR();
-				b.majorID = beacon.getId2().toInt();
-				b.minorID = beacon.getId3().toInt();
-				b.distance = beacon.getDistance();
-				this.beacons.add(b);
-			}
-			//todo: test
-			EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
+		this.beacons.clear();
+		for (Beacon beacon : beacons) {
+			BeaconIR b = new BeaconIR();
+			b.majorID = beacon.getId2().toInt();
+			b.minorID = beacon.getId3().toInt();
+			b.distance = beacon.getDistance();
+			this.beacons.add(b);
 		}
-		else EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, null));
+		//todo: test
+		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
 	}
 
 }

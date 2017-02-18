@@ -13,17 +13,18 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class LogicIfcBase {
 
-	public BeaconService beaconService;
+	public static int beaconServiceBindCount = 0;//Handles service-access of multiple components(e. g. Activities)
 
 	void onStart(Context context) {
-		//EventBus.getDefault().register(this);//todo del
 
-		context.startService(new Intent(context, BeaconService.class));
+		beaconServiceBindCount++;
+		if( beaconServiceBindCount == 1) context.startService(new Intent(context, BeaconService.class));
 	}
 	void onStop() {
-		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
 
-		//EventBus.getDefault().unregister(this);//todo del
+		beaconServiceBindCount--;
+		if( beaconServiceBindCount == 0 ) EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
+
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)

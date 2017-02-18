@@ -1,7 +1,10 @@
 package com.unknown.navevent.bLogic;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
@@ -21,9 +24,15 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 		mResponder = responder;
 	}
 
+	private Context mContext;
+
+
+	private static final int HANDLER_NO_BEACON_DELAY = 1;
+
 	@Override
 	public void onCreate(Context context) {
 		EventBus.getDefault().register(this);
+		mContext = context;
 
 		onStart(context);
 	}
@@ -82,9 +91,25 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 					}
 				}
 
-				mResponder.updateBeaconPosition(nearestIndex);//todo: match to id-impl
+				mResponder.updateBeaconPosition(event.beacons.get(nearestIndex).minorID);//todo: match to id-impl
+				mNoBeaconHandler.removeMessages(HANDLER_NO_BEACON_DELAY);
 			}
-			else mResponder.updateBeaconPosition(0);
+			else {
+				mNoBeaconHandler.sendEmptyMessageDelayed(HANDLER_NO_BEACON_DELAY, 5000);
+				//Toast.makeText(mContext, "Beacon0 set", Toast.LENGTH_SHORT).show();
+				//mResponder.updateBeaconPosition(0);
+			}
 		}
 	}
+
+	//Handles if no beacons-signals were recieved after delay
+	private Handler mNoBeaconHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if ( msg.what == HANDLER_NO_BEACON_DELAY ) {
+				//Toast.makeText(mContext, "Beacon0 set", Toast.LENGTH_SHORT).show();
+				mResponder.updateBeaconPosition(0);
+			}
+		}
+	};
 }

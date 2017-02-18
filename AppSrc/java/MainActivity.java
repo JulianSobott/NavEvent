@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 	@Override
 	protected  void onDestroy() {
 		mIfc.onDestroy();
+
+		super.onDestroy();
 	}
 
 	@Override
