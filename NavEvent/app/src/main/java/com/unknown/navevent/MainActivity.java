@@ -65,6 +65,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 	@Override
 	public void bluetoothDeactivated() {
 
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.bluetoothNotEnabled);
+		builder.setPositiveButton(android.R.string.ok, null);
+		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				mIfc.retryBeaconConnection();
+			}
+		});
+		builder.show();
 	}
 	@Override
 	public void askForPermissions() {
