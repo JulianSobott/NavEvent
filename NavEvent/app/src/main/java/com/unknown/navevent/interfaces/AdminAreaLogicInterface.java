@@ -1,8 +1,15 @@
 package com.unknown.navevent.interfaces;
 
+import android.content.Context;
+
 //Interface for the AdminArea-Logic
 public interface AdminAreaLogicInterface
 {
+	//Should be called on creation.
+	void onCreate(Context context);
+	//Should be called on destruction.
+	void onDestroy();
+
 	//Will download the map specified by \p mapID. Will resppond with AdminAreaUI.upateMap(), AdminAreaUI.invalidMapID(), AdminAreaUI.downloadFailed() or AdminAreaUI.isOffline().
 	void loadMap(int mapID);
 

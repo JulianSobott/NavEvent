@@ -17,6 +17,8 @@ public class MainActivityUIDefault implements MainActivityUI
 	public void bluetoothDeactivated() {}
 	public void askForPermissions() { mIfc.retryBeaconConnection(); }
 
+	public void switchToMapSelectActivity() {}
+
 	public void updateMap(MapData map) {}
 
 	public void updateBeaconPosition(int beaconID) {}

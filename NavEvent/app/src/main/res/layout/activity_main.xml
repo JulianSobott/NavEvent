@@ -8,7 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context="com.unknown.navevent.MainActivity"
+              tools:context="com.unknown.navevent.ui.MainActivity"
               android:orientation="vertical">
 
 
@@ -16,8 +16,7 @@
         android:id="@+id/output"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Listening..."
-        android:inputType="textMultiLine"
+        android:text=""
         />
 
 </LinearLayout>

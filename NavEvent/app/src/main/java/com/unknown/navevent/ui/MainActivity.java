@@ -1,4 +1,4 @@
-package com.unknown.navevent;
+package com.unknown.navevent.ui;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.MainActivityLogic;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		//Creating background-logic for this activity
 		mIfc = new MainActivityLogic(this);
 		mIfc.onCreate(this);
 
@@ -49,31 +51,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 
 	@Override
 	protected  void onDestroy() {
-		mIfc.onDestroy();
+		mIfc.onDestroy();//Destroying background-logic
 
 		super.onDestroy();
 	}
 
 	@Override
-	public void initCompleted() {
+	public void initCompleted() { //todo: del
 
 	}
 	@Override
 	public void notSupported(String errorcode) {
-
-	}
-	@Override
-	public void bluetoothDeactivated() {
-
+		//Notify user and shutdown the app
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.bluetoothNotEnabled);
+		builder.setMessage(R.string.bluetoothNotAvailable);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
 			public void onDismiss(DialogInterface dialog) {
-				mIfc.retryBeaconConnection();
+				finish();
 			}
 		});
+		builder.show();
+	}
+	@Override
+	public void bluetoothDeactivated() {
+		//Notify user to enable bluetooth
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.bluetoothNotEnabled);
+		builder.setPositiveButton(android.R.string.ok, null);
 		builder.show();
 	}
 	@Override
@@ -96,23 +102,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 				});
 				builder.show();
 			}
-			else mIfc.retryBeaconConnection();
 		}
 	}
+
+	@Override
+	public void switchToMapSelectActivity() {
+
+	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode,
 	                                       String permissions[], int[] grantResults) {
-		switch (requestCode) {
-			case PERMISSION_REQUEST_COARSE_LOCATION: {
-				if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					Toast.makeText(this, "coarse location permission granted", Toast.LENGTH_SHORT);//debug
-					mIfc.retryBeaconConnection();
-				} else {
-					Toast.makeText(this, R.string.locationAccessDeniedWarning, Toast.LENGTH_LONG);
-					finish();
-					System.exit(1);
-				}
-				return;
+		if( requestCode == PERMISSION_REQUEST_COARSE_LOCATION ) {
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				Toast.makeText(this, "coarse location permission granted", Toast.LENGTH_SHORT).show();//debug
+				mIfc.retryBeaconConnection();
+			} else {
+				Toast.makeText(this, R.string.locationAccessDeniedWarning, Toast.LENGTH_LONG).show();
 			}
 		}
 	}

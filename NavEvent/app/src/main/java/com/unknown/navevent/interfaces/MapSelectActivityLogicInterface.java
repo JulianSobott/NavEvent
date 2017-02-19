@@ -1,10 +1,17 @@
 package com.unknown.navevent.interfaces;
 
+import android.content.Context;
+
 import java.util.List;
 
 //Interface for the MapSelectActivity-Logic
 public interface MapSelectActivityLogicInterface
 {
+	//Should be called on creation.
+	void onCreate(Context context);
+	//Should be called on destruction.
+	void onDestroy();
+
 	//Returns a list of the offline saved maps
 	List<String> loadAvailableMaps();
 

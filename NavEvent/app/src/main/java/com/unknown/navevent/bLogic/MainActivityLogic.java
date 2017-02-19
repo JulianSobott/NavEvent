@@ -1,19 +1,12 @@
 package com.unknown.navevent.bLogic;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
 import com.unknown.navevent.bLogic.events.MainActivityLogicEvent;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
@@ -22,34 +15,34 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MainActivityLogic extends LogicIfcBase implements MainActivityLogicInterface {
+//Background-logic of the MainActivity
+public class MainActivityLogic  implements MainActivityLogicInterface {
 
 	private MainActivityUI mResponder = null;
+
+	private ServiceInterface serviceInterface = new ServiceInterface();
+
+	private static final int HANDLER_NO_BEACON_DELAY = 1;//Timed handling after loosing beacons
+
+
+
 	public MainActivityLogic(MainActivityUI responder) {
 		mResponder = responder;
 	}
 
 
-
-	private static final int HANDLER_NO_BEACON_DELAY = 1;
-
 	@Override
 	public void onCreate(Context context) {
 		EventBus.getDefault().register(this);
 
-		onStart(context);
+		serviceInterface.onCreate(context);
 	}
 	@Override
 	public void onDestroy() {
-		onStop();
+		serviceInterface.onDestroy();
 
 
 		EventBus.getDefault().unregister(this);
-	}
-
-	@Override
-	public void initBeaconManager() {//todo: del
-
 	}
 
 	@Override
@@ -65,22 +58,22 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(MainActivityLogicEvent event) {
 		if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_DEACTIVATED) {
-			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
 
 			mResponder.bluetoothDeactivated();
 		}
 		else if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
-			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
 		else if( event.message == MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED) {
-			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
 		else if( event.message == MainActivityLogicEvent.EVENT_ASK_PERMISSION) {
-			Log.d("LogicIfcBase", "onMessageEvent: EVENT_ASK_PERMISSION");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_ASK_PERMISSION");
 
 			mResponder.askForPermissions();
 		}
@@ -88,7 +81,7 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(BeaconUpdateEvent event) {
 		if( event.message == BeaconUpdateEvent.EVENT_BEACON_UPDATE) {
-			Log.d("LogicIfcBase", "onMessageEvent: EVENT_BEACON_UPDATE");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BEACON_UPDATE");
 
 			if( event.beacons != null && event.beacons.size() > 0) {
 				int nearestIndex = 0;
@@ -105,8 +98,6 @@ public class MainActivityLogic extends LogicIfcBase implements MainActivityLogic
 			}
 			else {
 				mNoBeaconHandler.sendEmptyMessageDelayed(HANDLER_NO_BEACON_DELAY, 5000);
-				//Toast.makeText(mContext, "Beacon0 set", Toast.LENGTH_SHORT).show();
-				//mResponder.updateBeaconPosition(0);
 			}
 		}
 	}

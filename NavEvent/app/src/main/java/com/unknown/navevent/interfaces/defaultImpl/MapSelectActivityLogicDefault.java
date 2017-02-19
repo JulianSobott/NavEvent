@@ -1,5 +1,7 @@
 package com.unknown.navevent.interfaces.defaultImpl;
 
+import android.content.Context;
+
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
 
@@ -12,6 +14,10 @@ public class MapSelectActivityLogicDefault implements MapSelectActivityLogicInte
 	MapSelectActivityLogicDefault(MapSelectActivityUI responder) {
 		mResponder = responder;
 	}
+
+	public void onCreate(Context context) {}
+
+	public void onDestroy() {}
 
 	public List<String> loadAvailableMaps() {
 		List<String> m = new ArrayList<String>();

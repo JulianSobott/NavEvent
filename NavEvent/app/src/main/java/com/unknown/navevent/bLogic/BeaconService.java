@@ -30,10 +30,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
+//Intern(beacon-logic) representation of a beacon
+class BeaconIR {
+	public int majorID;
+	public int minorID;
+	public double distance;
 
-	private Thread mStartThread = null;
+}
 
+class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
+	private static final String TAG = "BeaconService";
 
 	//BeaconManagement
 	private BeaconManager internBeaconMgr;
@@ -43,7 +49,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private boolean hasBeaconPermissions = false;
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
-	public List<BeaconIR> beacons = new ArrayList<BeaconIR>();
+	public List<BeaconIR> beacons = new ArrayList<>();
 
 
 	@Override
@@ -104,10 +110,8 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 
 	//Returns true if bluetooth is enabled
-	public void verifyBluetooth() {
+	private void verifyBluetooth() {
 		try {
-			// Determine whether BLE is supported on the device. Then
-			// you can selectively disable BLE-related features. todo
 			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
 				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED));
 			}
@@ -130,38 +134,44 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		}
 
 	}
-	public void handleBeaconPermissions() {
+	//Check if location access is granted
+	private void handleBeaconPermissions() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			//Android 6(M) permission check
+			//Android M+ permission check
 			if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //Permission denied
 				hasBeaconPermissions = false;
 				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_ASK_PERMISSION));
 			}
 			else hasBeaconPermissions = true;//Permission granted
 		}
-		else hasBeaconPermissions = true;//Permissions should be granted if android version < 6
+		else hasBeaconPermissions = true;//Permission should be granted if android version < 6
 	}
 
-	public void startListening()  {
+	private void startListening()  {
 		internBeaconMgr = BeaconManager.getInstanceForApplication(this);
 		internBeaconMgr.getBeaconParsers().add(new BeaconParser().
 				setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));//Specific layout for iBeacons
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
 	}
-	public void stopListening() {
+	private void stopListening() {
 		if( internBeaconMgr != null )
 			internBeaconMgr.unbind(this);
 		isBeaconListening = false;
 	}
+
+	//Callback function for BeaconManager on start
 	public void onBeaconServiceConnect() {
 		internBeaconMgr.addRangeNotifier(this);
 
 		try {
-			internBeaconMgr.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
-		} catch (RemoteException e) {   }
+			internBeaconMgr.startRangingBeaconsInRegion(new Region(getString(R.string.beaconRegionUID), null, null, null));
+		} catch (RemoteException e) {
+			Log.e(TAG, "onBeaconServiceConnect: startRangingBeaconsInRegion failed");
+		}
 	}
 
+	//Callback function for BeaconManager to update beacons
 	@Override
 	public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
 		this.beacons.clear();
