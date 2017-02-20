@@ -49,7 +49,6 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private boolean hasBeaconPermissions = false;
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
-	public List<BeaconIR> beacons = new ArrayList<>();
 
 
 	@Override
@@ -174,16 +173,17 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	//Callback function for BeaconManager to update beacons
 	@Override
 	public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-		this.beacons.clear();
+
+		List<BeaconIR> updatedBeacons = new ArrayList<>();//Copy whole list to avoid concurrency problems
 		for (Beacon beacon : beacons) {
 			BeaconIR b = new BeaconIR();
 			b.majorID = beacon.getId2().toInt();
 			b.minorID = beacon.getId3().toInt();
 			b.distance = beacon.getDistance();
-			this.beacons.add(b);
+			updatedBeacons.add(b);
 		}
 
-		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
+		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, updatedBeacons));
 	}
 
 }

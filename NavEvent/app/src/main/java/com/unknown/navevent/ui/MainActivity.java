@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 	}
 
 	@Override
-	public void initCompleted() { //todo: del
+	public void initCompleted() {
 
 	}
 	@Override
