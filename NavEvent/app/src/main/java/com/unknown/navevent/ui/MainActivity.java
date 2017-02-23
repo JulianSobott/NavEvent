@@ -3,6 +3,7 @@ package com.unknown.navevent.ui;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
@@ -107,7 +108,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 
 	@Override
 	public void switchToMapSelectActivity() {
-
+		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
+		startActivity(intent);
+		finish();
 	}
 
 	@Override

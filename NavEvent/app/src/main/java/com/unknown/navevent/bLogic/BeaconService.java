@@ -8,13 +8,12 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
-import com.unknown.navevent.bLogic.events.MainActivityLogicEvent;
+import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
+import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -30,15 +29,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//Intern(beacon-logic) representation of a beacon
-class BeaconIR {
-	public int majorID;
-	public int minorID;
-	public double distance;
-
-}
-
-class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
+//Handles receiving of beacon signals and bluetooth
+public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private static final String TAG = "BeaconService";
 
 	//BeaconManagement
@@ -57,7 +49,7 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 
 		EventBus.getDefault().register(this);
 
-		EventBus.getDefault().post(new LogicIfcBaseEvent(LogicIfcBaseEvent.EVENT_SERVICE_STARTED));
+		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED));
 	}
 
 	@Override
@@ -76,11 +68,11 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	@Subscribe(threadMode = ThreadMode.BACKGROUND)
 	public void onMessageEvent(BeaconServiceEvent event) {
 		if( event.message == BeaconServiceEvent.EVENT_START_LISTENING) {
-			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
+			Log.d(TAG, "onMessageEvent: EVENT_START_LISTENING");
 			startBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_LISTENING) {
-			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
+			Log.d(TAG, "onMessageEvent: EVENT_STOP_LISTENING");
 			stopBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_SELF) {
@@ -96,6 +88,7 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 				if( hasBeaconPermissions ) startListening();
 			}
 			else {
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_LISTENER_STARTED));
 				startListening();
 			}
 		}
@@ -112,7 +105,7 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private void verifyBluetooth() {
 		try {
 			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED));
 			}
 
 			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {
@@ -123,13 +116,13 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 			{
 				isBluetoothSupported = true;
 				isBluetoothActivated = false;
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLUETOOTH_DEACTIVATED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED));
 			}
 		}
 		catch (RuntimeException e) {
 			isBluetoothSupported = false;
 			isBluetoothActivated = false;
-			EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED));
 		}
 
 	}
@@ -139,7 +132,7 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 			//Android M+ permission check
 			if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //Permission denied
 				hasBeaconPermissions = false;
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_ASK_PERMISSION));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_ASK_PERMISSION));
 			}
 			else hasBeaconPermissions = true;//Permission granted
 		}
