@@ -7,12 +7,6 @@
     android:gravity="top|right">
 
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/buttonClose"
-        android:layout_alignParentStart="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,5 +15,21 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonMapFlur"
+        android:layout_below="@+id/buttonClose"
+        android:layout_alignParentStart="true"
+        android:text="Flurkarte" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonMapKreuz"
+        android:layout_below="@+id/buttonMapFlur"
+        android:layout_alignParentStart="true"
+        android:text="Kreuzkarte" />
 
 </RelativeLayout>
