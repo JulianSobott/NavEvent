@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic;
+package com.unknown.navevent.bLogic.services;
 
 //Intern(beacon-logic) representation of a beacon
 public class BeaconIR {

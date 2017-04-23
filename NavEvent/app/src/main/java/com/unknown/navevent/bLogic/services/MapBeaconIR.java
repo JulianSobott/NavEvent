@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic;
+package com.unknown.navevent.bLogic.services;
 
 //Intern(beacon-logic) representation of a beacon on a map
 public class MapBeaconIR {
@@ -12,12 +12,15 @@ public class MapBeaconIR {
 
 	public String description;//Text to give additional information about this beacon. Appears in BottomSheet
 
-	MapBeaconIR( String name, int id, int minorID, double positionX, double positionY, String description ) {
+	public MapBeaconIR( String name, int id, int minorID, double positionX, double positionY, String description ) {
 		this.name = name;
 		this.id = id;
 		this.minorID = minorID;
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.description = description;
+	}
+	public MapBeaconIR() {
+
 	}
 }

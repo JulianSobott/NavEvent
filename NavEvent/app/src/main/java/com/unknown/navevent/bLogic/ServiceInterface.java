@@ -5,46 +5,40 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
+import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
-import com.unknown.navevent.bLogic.events.MapsEvent;
-import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
-import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
+import com.unknown.navevent.bLogic.services.BeaconService;
+import com.unknown.navevent.bLogic.services.MapBeaconIR;
+import com.unknown.navevent.bLogic.services.MapIR;
+import com.unknown.navevent.bLogic.services.MapService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Enables interaction with the BeaconService & MapService (including startup, etc.)
-class ServiceInterface {
-	private static final String TAG = "ServiceInterface";
+public class ServiceInterface {
 
-	private static int beaconServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
-	private static int mapServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
+	private static int beaconServiceBindCount = 0;//Handles service-access of multiple components(e. g. Activities)
+	private static int mapServiceBindCount = 0;//Handles service-access of multiple components(e. g. Activities)
 
-	private Context mContext;
-
-
-	//Beacon data
-	public enum BeaconAvailabilityState {
-		starting,//Start searching for beacons
-		found,//One or more beacons found
-		nothingFound//No beacons found
-	}
-	public BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;
-
-	//Map data
-	public MapIR currentMap;//Current loaded map
-	public List<MapIR> availableLocalMaps;//Already downloaded maps
+	protected Context mContext;
 
 
-	void onCreate(Context context) {
+	MapIR currentMap = null;//Current loaded map
+
+
+	public void onCreate(Context context) {
 		mContext = context;
 		EventBus.getDefault().register(this);
 		beaconServiceBindCount++;
@@ -56,11 +50,49 @@ class ServiceInterface {
 		//Register for broadcast on bluetooth-events
 		mContext.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
+
+		{//Debug-map
+			currentMap = new MapIR();
+
+			currentMap.name = "debug map 1";
+			currentMap.id = 1;
+			currentMap.description = "This is the first testing map for debugging purposes.";
+			currentMap.imagePath = "debugmap1.png";
+			{//Bitmap
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+				currentMap.image = BitmapFactory.decodeFile(currentMap.imagePath, options);
+			}
+			currentMap.majorID = 1;
+			currentMap.beacons.put(1, new MapBeaconIR( "Entrance/Exit", 1, 1, 532, 446, "Were you can go in and out." ));
+			currentMap.beacons.put(2, new MapBeaconIR( "Auditorium 1", 2, 2, 395, 305, "A very important lecture." ));
+			currentMap.beacons.put(3, new MapBeaconIR( "Auditorium 2", 3, 3, 400, 130, "Also very important." ));
+			currentMap.beacons.put(4, new MapBeaconIR( "WC", 4, 4, 395, 500, "Your loo." ));
+
+			currentMap.beaconMap.put(1,1);
+			currentMap.beaconMap.put(2,2);
+			currentMap.beaconMap.put(3,3);
+			currentMap.beaconMap.put(4,4);
+
+			{//Ordinary places
+				List<Integer> ordinaryPlaceExits = new ArrayList<>();
+				ordinaryPlaceExits.add(1);
+				List<Integer> ordinaryPlaceToilets = new ArrayList<>();
+				ordinaryPlaceToilets.add(4);
+				currentMap.ordinaryPlaces.put("Exit", ordinaryPlaceExits);
+				currentMap.ordinaryPlaces.put("WC", ordinaryPlaceToilets);
+			}
+			{//Special places
+				List<Integer> specialPlaceAuditoriums = new ArrayList<>();
+				specialPlaceAuditoriums.add(2);
+				specialPlaceAuditoriums.add(3);
+				currentMap.specialPlaces.put("Auditorium", specialPlaceAuditoriums);
+			}
+		}
 	}
-	void onDestroy() {
+	public void onDestroy() {
 		beaconServiceBindCount--;
 		if( beaconServiceBindCount == 0 ) EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
-		mapServiceBindCount--;
 		if( mapServiceBindCount == 0 ) EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
 
 		EventBus.getDefault().unregister(this);
@@ -68,38 +100,24 @@ class ServiceInterface {
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ServiceInterfaceEvent event) {
-		if (event.message == ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED) {
-			Log.d(TAG, "onMessageEvent(ServiceInterface): EVENT_BEACON_SERVICE_STARTED");
+	public void onMessageEvent(LogicIfcBaseEvent event) {
+		if (event.message == LogicIfcBaseEvent.EVENT_BEACON_SERVICE_STARTED) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BEACON_SERVICE_STARTED");
 
 			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_START_LISTENING));
 		}
-		else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
-			Log.d(TAG, "onMessageEvent(ServiceInterface): EVENT_MAP_SERVICE_STARTED");
+		else if (event.message == LogicIfcBaseEvent.EVENT_MAP_SERVICE_STARTED) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_RELOAD_LOCAL_MAPS));
-		}
-	}
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, currentMap));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));
 
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(MapsEvent event) {
-		if (event.message == MapsEvent.EVENT_LOCAL_RELOADED) {
-			Log.d(TAG, "onMessageEvent(Maps): EVENT_LOCAL_RELOADED");
-
-			availableLocalMaps = event.maps;
-
-			if( beaconAvailabilityState != BeaconAvailabilityState.starting &&
-					!availableLocalMaps.contains(currentMap) ) {//Current map removed and not in staring mode
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_CURRENT_MAP_UNLOADED));
-			}
-			if( event.maps.isEmpty() ) {
-				//EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_LOCAL_MAPS_AVAILABLE));
-			}
 		}
 	}
 
 
-	//Receiver checks if bluetooth was de-/activated
+	//Receiver checks if bluetooth was (de-)activated
 	private final BroadcastReceiver btReceive = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
