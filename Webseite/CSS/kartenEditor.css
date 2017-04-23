@@ -1,0 +1,423 @@
+.mitte {
+  display: inline-block;
+  margin-left: 20%;
+  margin-right: 20%;
+  width: 60%; }
+  .mitte .kartenContainer {
+    border: 4px dotted red;
+    z-index: 10;
+    height: auto;
+    position: relative;
+    width: 100%; }
+    .mitte .kartenContainer #bildContainer {
+      border: 4px dotted green;
+      height: 500px;
+      position: relative;
+      width: 100%; }
+
+.pError {
+  margin-top: 10%;
+  padding: 2%;
+  text-align: center;
+  font-size: 3em;
+  color: #CEF900;
+  border: 3px solid #7D0707;
+  border-radius: 10px;
+  background: rgba(159, 6, 6, 0.79);
+  animation: error 2000ms ease-in-out infinite; }
+@keyframes error {
+  0% {
+    transform: scale(1); }
+  50% {
+    transform: scale(1.1); }
+  100% {
+    transform: scale(1); } }
+input {
+  font-size: 2em;
+  margin-top: 3%;
+  background: #404040;
+  border: 2px solid #4d4d4d;
+  padding: 2%; }
+  input:hover {
+    background: #333333; }
+
+#pHochgeladen {
+  font-size: 1.7em;
+  position: relative;
+  width: 15em;
+  padding: 1%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+  border: 1px solid #222222;
+  background: #00ff00; }
+
+.animate {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border-top: 5px solid #ff9105;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  animation: load 2s linear infinite; }
+
+@keyframes load {
+  0% {
+    transform: rotate(0deg) scale(0.8); }
+  50% {
+    transform: rotate(180deg) scale(1.2); }
+  100% {
+    transform: rotate(360deg) scale(0.8); } }
+img {
+  position: relative;
+  border: 0.3em solid #444444;
+  border-radius: 0.1em;
+  width: 100%;
+  height: auto; }
+
+.beaconContainer {
+  position: absolute;
+  font-size: 10px !important; }
+
+.beacon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #f44;
+  border: 2px solid black;
+  z-index: 5; }
+  .beacon:hover {
+    width: 12px;
+    height: 12px;
+    border: 3px solid #22f; }
+
+.actualBeacon {
+  background: #2f2; }
+
+label {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  margin-left: 1%;
+  color: #555; }
+
+.seite-rechts {
+  border: 2px groove rgba(65, 121, 68, 0.9);
+  overflow: auto; }
+  .seite-rechts .beaconBearbeiten .header {
+    padding: 0 !important;
+    height: 50px;
+    background: #e1e1e1; }
+    .seite-rechts .beaconBearbeiten .header .delete {
+      height: inherit;
+      float: right;
+      background: #992222;
+      border-radius: 5px; }
+      .seite-rechts .beaconBearbeiten .header .delete:hover {
+        cursor: pointer;
+        background: #c32b2b; }
+      .seite-rechts .beaconBearbeiten .header .delete .miDelete {
+        font-size: 3em; }
+    .seite-rechts .beaconBearbeiten .header .h3left {
+      height: inherit;
+      line-height: 3em;
+      font-size: 3em; }
+  .seite-rechts .beaconBearbeiten .feld, .seite-rechts .beaconBearbeiten .name, .seite-rechts .beaconBearbeiten .besonders {
+    padding: 2%;
+    padding-bottom: 10%;
+    border-bottom: 2px solid #555;
+    z-index: inherit; }
+  .seite-rechts .beaconBearbeiten .name {
+    background: white; }
+    .seite-rechts .beaconBearbeiten .name label {
+      font-size: 1.2em;
+      line-height: 1.2em;
+      margin-left: 1%;
+      color: #555; }
+    .seite-rechts .beaconBearbeiten .name input {
+      font-size: 1em;
+      text-align: left;
+      border-radius: 5px;
+      background: #fff;
+      background: #fafafa; }
+  .seite-rechts .beaconBearbeiten .besonders {
+    background: white; }
+    .seite-rechts .beaconBearbeiten .besonders .specialPlace {
+      border-bottom: 1px solid #bbb; }
+      .seite-rechts .beaconBearbeiten .besonders .specialPlace fieldset {
+        font-size: 1em;
+        width: 50%;
+        border: none;
+        display: inline; }
+      .seite-rechts .beaconBearbeiten .besonders .specialPlace label {
+        font-size: 1.2em;
+        line-height: 1.2em;
+        margin-left: 1%;
+        color: #555; }
+      .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown {
+        font-size: 2em;
+        float: right;
+        margin-top: 3%; }
+        .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown:hover {
+          cursor: pointer; }
+        .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown.rotateArrow {
+          transform: rotateX(180deg); }
+    .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces {
+      margin-left: 0; }
+      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open {
+        display: block; }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset {
+          display: block;
+          animation: fieldsetFadeIn 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
+@keyframes fieldsetFadeIn {
+  0% {
+    height: 0; }
+  80% {
+    height: 170px; }
+  100% {
+    height: auto; } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList {
+            padding-left: 0; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li {
+              display: block;
+              opacity: 0; }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: -150ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: 0ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: 150ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: 300ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: 450ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
+                animation-name: menu-in;
+                animation-duration: 300ms;
+                animation-delay: 600ms;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: forwards; }
+@keyframes menu-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotateX(0deg); } }
+      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset {
+        display: block;
+        animation: fieldsetFadeOut 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
+@keyframes fieldsetFadeOut {
+  0% {
+    height: auto; }
+  20% {
+    height: 170px; }
+  100% {
+    height: 0; } }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li {
+          display: block;
+          opacity: 1; }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
+            animation-name: menu-out;
+            animation-duration: 400ms;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards; }
+@keyframes menu-out {
+  0% {
+    opacity: 1;
+    transform: translateX(-30px) rotateX(180deg); }
+  100% {
+    opacity: 0;
+    transform: translateX(0) rotateX(0deg); } }
+      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset {
+        border: none;
+        display: none; }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList {
+          list-style: none;
+          padding-left: 0; }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li {
+            line-height: 1.5em;
+            position: relative;
+            padding: 1%;
+            padding-left: 0;
+            font-size: 1em;
+            color: grey;
+            cursor: pointer;
+            display: none; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li:hover {
+              padding-left: 1%;
+              font-style: italic;
+              font-weight: bold; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li .tfSonstiges {
+              letter-spacing: 0.1em;
+              float: right;
+              width: 80%; }
+  .seite-rechts .beaconBearbeiten .submit {
+    width: 100%;
+    height: 2em;
+    background: #2f2;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 50px 4px rgba(0, 0, 0, 0.75);
+    font-size: 1.5em;
+    float: left; }
+    .seite-rechts .beaconBearbeiten .submit:hover {
+      cursor: pointer;
+      background: #0f0;
+      -webkit-box-shadow: 0px 0px 5px 4px #222;
+      -moz-box-shadow: 0px 0px 5px 4px #222;
+      box-shadow: 0px 0px 50px 4px #222; }
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background: rgba(134, 140, 145, 0.69); }
+  html .navbar, body .navbar {
+    margin-bottom: 0; }
+  html .content, body .content {
+    height: auto; }
+    html .content .seite, body .content .seite {
+      position: absolute;
+      bottom: 0;
+      top: 50px;
+      display: inline-block;
+      height: inherit;
+      width: 20%;
+      background: #FFFFFF; }
+    html .content .seite-links, body .content .seite-links {
+      transform: translate(-100%); }
+      html .content .seite-links.animate-in, body .content .seite-links.animate-in {
+        animation: seite-linksIn 200ms ease-in-out forwards; }
+@keyframes seite-linksIn {
+  0% {
+    transform: translate(-100%); }
+  100% {
+    transform: translate(0%); } }
+    html .content .seite-rechts, body .content .seite-rechts {
+      transform: translate(100%); }
+      html .content .seite-rechts.animate-in, body .content .seite-rechts.animate-in {
+        animation: seite-rechtsIn 200ms ease-in-out forwards; }
+@keyframes seite-rechtsIn {
+  0% {
+    transform: translate(100%); }
+  100% {
+    transform: translate(-100%); } }
+
+/*# sourceMappingURL=kartenEditor.css.map */

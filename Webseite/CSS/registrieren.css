@@ -1,0 +1,63 @@
+.registerContainer {
+  width: 25em;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background: #2E3236;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 2%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 5px #777; }
+  .registerContainer .hRegister {
+    font-size: 3em;
+    color: #C2BDBD;
+    margin: 0;
+    padding-bottom: 2%; }
+  .registerContainer .register {
+    padding: 10% 0 10% 1%;
+    border-top: 2px groove #222;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #BBBBBB;
+    text-align: center;
+    box-sizing: border-box; }
+    .registerContainer .register label {
+      display: block;
+      padding: 1em;
+      padding-bottom: 0.7em;
+      font-size: 1.3em;
+      color: #545554; }
+      .registerContainer .register label input {
+        margin-top: 1%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 70%;
+        font-size: 1.2rem;
+        border: 2px solid #545554;
+        border-radius: 4px; }
+      .registerContainer .register label .errorClass {
+        border: 2px solid #f44; }
+      .registerContainer .register label .error {
+        font-size: 0.7em;
+        color: #f44; }
+    .registerContainer .register .btnRegister {
+      font-size: 2rem;
+      padding: 1%;
+      background: rgba(89, 90, 94, 0.85); }
+      .registerContainer .register .btnRegister:hover {
+        background: rgba(89, 90, 94, 0.6);
+        cursor: pointer; }
+
+@media only screen and (max-width: 480px) {
+  .registerContainer {
+    width: 100%;
+    margin: 5% 0 5% 0; } }
+
+/*# sourceMappingURL=registrieren.css.map */

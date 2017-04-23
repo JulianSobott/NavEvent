@@ -1,45 +1,252 @@
+.body {
+  height: 100%;
+  position: relative; }
+  .body .toggleSidebar {
+    font-size: 3em;
+    position: absolute;
+    left: 1%;
+    margin-top: 0;
+    z-index: 2; }
+  .body .seitenmenue {
+    position: absolute;
+    width: 30%;
+    background: #B19A8E;
+    padding: 5%;
+    padding-left: 1%;
+    z-index: 0;
+    height: 90%; }
+    .body .seitenmenue ul {
+      list-style: none; }
+      .body .seitenmenue ul li {
+        color: rgba(17, 17, 17, 0.8);
+        font-size: 1.5em;
+        padding: 1rem; }
+        .body .seitenmenue ul li:hover {
+          color: black;
+          cursor: pointer; }
+  .body .content {
+    position: relative;
+    padding-left: 4rem;
+    margin-right: auto;
+    background: #7E807F;
+    height: 100%;
+    z-index: 1; }
+    .body .content .neueKarte {
+      height: 200px;
+      width: 200px;
+      background: #222; }
+
+#toggleSidebar {
+  display: none; }
+  #toggleSidebar:checked + .body .toggleSidebar {
+    left: 25%; }
+  #toggleSidebar:checked + .body .content {
+    animation: openMenu 200ms ease-in-out forwards; }
+@keyframes openMenu {
+  0% {
+    margin-left: 0; }
+  100% {
+    margin-left: 30%; } }
+.footer {
+  margin-top: 0 !important; }
+
+html, body {
+  padding: 0;
+  margin: 0; }
+
+html {
+  height: 100%; }
+
 body {
-  background: #4477ff;
-  font-size: 1em;
-  font-family: fantasy; }
+  background: linear-gradient(80deg, #aab3ee, white, #d4d9f7);
+  font-size: 16px;
+  font-family: fantasy;
+  overflow-x: hidden;
+  height: 100%; }
   body p {
-    text-align: center;
-    font-size: 1.5em; }
+    text-align: left;
+    font-size: 1.5rem; }
   body h1 {
-    font-size: 7em;
+    font-size: 7rem;
     margin-left: 20%; }
   body h2 {
-    font-size: 2em;
+    font-size: 2rem;
     color: #4d4d4d;
-    margin-left: 30%; }
+    margin-left: 1%;
+    width: 15em;
+    border-left: 6px groove #999;
+    background: linear-gradient(90deg, #aaa, #fff, #fff); }
   body .header {
-    display: inline-block;
-    height: 300px;
+    display: block;
+    overflow: hidden;
     width: 100%;
-    background-image: url(../Bilder/DSC_0029.JPG); }
-    body .header img {
-      display: inline;
-      position: absolute;
-      opacity: 0.5; }
+    background: linear-gradient(90deg, #fff, #dddbd3, #fff); }
+    body .header h1 {
+      float: left;
+      font-size: 5rem;
+      position: relative;
+      margin: 0.5% 0 0.5% 10%; }
+    body .header .mehr .drop-menu {
+      position: relative; }
+      body .header .mehr .drop-menu li {
+        display: none;
+        width: 7rem;
+        position: absolute;
+        right: 0;
+        top: -20px;
+        list-style: none; }
+    body .header .mehr:hover .drop-menu {
+      display: block; }
+      body .header .mehr:hover .drop-menu li {
+        display: inline-block; }
+        body .header .mehr:hover .drop-menu li:hover {
+          box-shadow: 0px 0px 2px 2px #7199c4; }
+    body .header .anmelden {
+      margin-left: 2%; }
+    body .header .anmelden, body .header .registrieren, body .header .mehr, body .header .logout {
+      float: right;
+      font-size: 1.3em;
+      margin-right: 5%;
+      margin-top: 34px; }
+      body .header .anmelden:hover, body .header .registrieren:hover, body .header .mehr:hover, body .header .logout:hover {
+        cursor: pointer;
+        margin-top: 32px; }
+  body .startInfo {
+    position: relative;
+    overflow: hidden;
+    background: rgba(171, 122, 57, 0.85);
+    clear: both;
+    height: 80%; }
+    body .startInfo .logo {
+      display: block;
+      float: left;
+      margin: 1% 0 1% 0;
+      width: 20%; }
+    body .startInfo .bildershow {
+      display: block;
+      position: relative;
+      overflow: visible;
+      float: left;
+      margin: 1% 0 1% 5%;
+      width: 70%;
+      height: 60%;
+      background-size: cover;
+      perspective: 1000px; }
+      body .startInfo .bildershow .karte {
+        width: 100%;
+        max-height: 100%;
+        position: absolute;
+        transform-origin: top center; }
+        body .startInfo .bildershow .karte.animate-in {
+          display: block !important;
+          animation: animate-in 2000ms cubic-bezier(0.17, 0.53, 0.29, 0.9) forwards; }
+@keyframes animate-in {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@keyframes animate-in3 {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0; }
+  50% {
+    transform: rotateX(-10deg); }
+  100% {
+    transform: rotateX(0deg);
+    opacity: 1; } }
+@keyframes animate-in2 {
+  0% {
+    transform: translateX(100%);
+    opacity: 0; }
+  100% {
+    transform: translateX(0);
+    opacity: 1; } }
+@keyframes animate-in1 {
+  0% {
+    transform: scale(1); }
+  100% {
+    transform: scale(0); } }
+        body .startInfo .bildershow .karte.animate-out {
+          display: block !important;
+          animation: animate-out 2000ms cubic-bezier(0.17, 0.53, 0.9, 0.9) forwards; }
+@keyframes animate-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+@keyframes animate-out2 {
+  0% {
+    transform: rotateX(0deg);
+    opacity: 1; }
+  100% {
+    transform: rotateX(-90deg);
+    opacity: 0; } }
+@keyframes animate-out1 {
+  0% {
+    transform: scale(1);
+    opacity: 1; }
+  50% {
+    transform: scale(0); }
+  100% {
+    transform: scale(0);
+    opacity: 0; } }
+    body .startInfo .leitsatz {
+      display: block;
+      float: left;
+      font-size: 5em;
+      font-family: serif;
+      font-style: oblique;
+      margin-left: 5%;
+      margin-bottom: 2%; }
+  body:before, body:after {
+    content: "";
+    display: table; }
+  body:after {
+    clear: both; }
   body .ueberDieApp, body .neueKarte {
     position: relative;
-    background: #999999;
     width: 80%;
     height: auto;
     padding: 3%;
     padding-bottom: 3%;
     margin-left: auto;
-    margin-right: auto; }
-  body .neueKarte {
-    background: #b3b3b3; }
+    margin-right: auto;
+    border-bottom: 1px groove #666; }
+    body .ueberDieApp .text, body .neueKarte .text {
+      float: left;
+      width: 60%; }
+    body .ueberDieApp .aboutPicture, body .neueKarte .aboutPicture {
+      display: inline-block;
+      float: right;
+      width: 30%;
+      margin-left: 5%;
+      border: 4px groove #666; }
+      body .ueberDieApp .aboutPicture img, body .neueKarte .aboutPicture img {
+        width: 100%; }
+  body .neueKarte .clearfix .newCardPicture {
+    display: inline-block;
+    float: left;
+    width: 30%;
+    border: 4px groove #666; }
+    body .neueKarte .clearfix .newCardPicture img {
+      width: 100%; }
+  body .neueKarte .clearfix .text {
+    float: right;
+    width: 60%; }
+  body .neueKarte .btnNeueKarteHinzufuegen {
+    display: table; }
   body .footer {
     background: #222222;
+    position: relative;
     width: 100%;
-    height: 10px;
+    height: 2em;
     padding: 2%;
-    color: gray; }
+    color: gray;
+    margin-top: 100%;
+    z-index: 50; }
     body .footer span {
-      margin-left: 10%; }
+      margin-left: 10%;
+      margin-bottom: 10px; }
       body .footer span:hover {
         cursor: pointer; }
 
@@ -61,13 +268,58 @@ a {
   padding: 1%;
   line-height: 1.7em; }
   .button p {
-    display: inline; }
+    display: inline;
+    font-family: fantasy; }
   .button:hover {
     cursor: pointer;
-    border-radius: 10%;
-    background: #182477; }
+    font-family: cursive;
+    background: #2537b7; }
   .button .material-icons {
     font-size: 3em;
     vertical-align: middle; }
+
+.clearfix:before {
+  content: " ";
+  display: table; }
+
+.clearfix:after {
+  content: " ";
+  display: table;
+  clear: both; }
+
+@media only screen and (max-width: 480px) {
+  .logo {
+    width: 20%; }
+
+  .bildershow {
+    margin: 1% 0 1% 0.5% !important;
+    width: 99% !important; }
+
+  .aboutPicture, .newCardPicture {
+    width: 90% !important; }
+
+  .text {
+    width: 100% !important; }
+
+  #headerH1 {
+    margin-left: 0; }
+
+  body {
+    background: green; }
+
+  .ueberDieApp, body .neueKarte, .neueKarte {
+    width: 100%; }
+
+  h2 {
+    margin-left: 0em !important; }
+
+  .btnNeueKarteHinzufuegen {
+    width: 100% !important; } }
+@media only screen and (max-width: 1000px) {
+  #headerH1 {
+    width: 100%; }
+
+  .anmelden, .registrieren, .mehr, .logout {
+    margin-bottom: 2%; } }
 
 /*# sourceMappingURL=main.css.map */

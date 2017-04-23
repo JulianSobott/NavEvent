@@ -1,0 +1,279 @@
+.loginContainer {
+  width: 25em;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background: #2E3236;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 2%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 5px #777; }
+  .loginContainer .hLogin {
+    font-size: 3em;
+    color: #C2BDBD;
+    margin: 0;
+    padding-bottom: 2%; }
+  .loginContainer .login {
+    padding: 10% 0 10% 1%;
+    border-top: 2px groove #222;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #BBBBBB;
+    text-align: center;
+    box-sizing: border-box; }
+    .loginContainer .login label {
+      display: block;
+      padding: 1em;
+      padding-bottom: 0.7em;
+      color: #545554; }
+      .loginContainer .login label input {
+        margin-top: 1%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 70%;
+        height: 1.5rem;
+        font-size: 1rem;
+        color: #111;
+        line-height: 1rem;
+        border: 2px solid #545554;
+        border-radius: 4px; }
+      .loginContainer .login label .errorClass {
+        border: 2px solid #f44; }
+      .loginContainer .login label .error {
+        font-size: 0.7em;
+        color: #f44; }
+    .loginContainer .login .btnAnmelden {
+      font-size: 2rem;
+      padding: 1%;
+      background: rgba(89, 90, 94, 0.85); }
+      .loginContainer .login .btnAnmelden:hover {
+        background: rgba(89, 90, 94, 0.6);
+        cursor: pointer; }
+
+@media only screen and (max-width: 480px) {
+  .loginContainer {
+    width: 100%;
+    margin: 5% 0 5% 0; } }
+.registerContainer {
+  width: 25em;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background: #2E3236;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-top: 2%;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px 5px #777; }
+  .registerContainer .hRegister {
+    font-size: 3em;
+    color: #C2BDBD;
+    margin: 0;
+    padding-bottom: 2%; }
+  .registerContainer .register {
+    padding: 10% 0 10% 1%;
+    border-top: 2px groove #222;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: #BBBBBB;
+    text-align: center;
+    box-sizing: border-box; }
+    .registerContainer .register label {
+      display: block;
+      padding: 1em;
+      padding-bottom: 0.7em;
+      font-size: 1.3em;
+      color: #545554; }
+      .registerContainer .register label input {
+        margin-top: 1%;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        width: 70%;
+        font-size: 1.2rem;
+        border: 2px solid #545554;
+        border-radius: 4px; }
+      .registerContainer .register label .errorClass {
+        border: 2px solid #f44; }
+      .registerContainer .register label .error {
+        font-size: 0.7em;
+        color: #f44; }
+    .registerContainer .register .btnRegister {
+      font-size: 2rem;
+      padding: 1%;
+      background: rgba(89, 90, 94, 0.85); }
+      .registerContainer .register .btnRegister:hover {
+        background: rgba(89, 90, 94, 0.6);
+        cursor: pointer; }
+
+@media only screen and (max-width: 480px) {
+  .registerContainer {
+    width: 100%;
+    margin: 5% 0 5% 0; } }
+html, body {
+  height: 100%; }
+  html .guideContent, body .guideContent {
+    padding-bottom: 10%; }
+
+.body {
+  height: 100%;
+  position: relative; }
+  .body .toggleSidebar {
+    font-size: 3em;
+    position: absolute;
+    left: 1%;
+    margin-top: 0;
+    z-index: 2; }
+  .body .seitenmenue {
+    position: absolute;
+    width: 30%;
+    background: #B19A8E;
+    padding: 5%;
+    padding-left: 1%;
+    z-index: 0;
+    height: 90%; }
+    .body .seitenmenue ul {
+      list-style: none; }
+      .body .seitenmenue ul li {
+        color: rgba(17, 17, 17, 0.8);
+        font-size: 1.5em;
+        padding: 1rem; }
+        .body .seitenmenue ul li:hover {
+          color: black;
+          cursor: pointer; }
+  .body .content {
+    position: relative;
+    padding-left: 4rem;
+    margin-right: auto;
+    background: #7E807F;
+    height: 100%;
+    z-index: 1; }
+    .body .content .neueKarte {
+      height: 200px;
+      width: 200px;
+      background: #222; }
+
+#toggleSidebar {
+  display: none; }
+  #toggleSidebar:checked + .body .toggleSidebar {
+    left: 25%; }
+  #toggleSidebar:checked + .body .content {
+    animation: openMenu 200ms ease-in-out forwards; }
+@keyframes openMenu {
+  0% {
+    margin-left: 0; }
+  100% {
+    margin-left: 30%; } }
+.footer {
+  margin-top: 0 !important; }
+
+html, body {
+  height: 100%; }
+  html .navbar, body .navbar {
+    margin-bottom: 0 !important; }
+  html .startInfo, body .startInfo {
+    padding-top: 2rem;
+    background: rgba(128, 128, 128, 0.75);
+    height: 50%;
+    min-height: 450px; }
+    html .startInfo .row, body .startInfo .row {
+      height: 100%; }
+      html .startInfo .row .col-md-4, body .startInfo .row .col-md-4 {
+        height: 100%; }
+      html .startInfo .row .col-md-8, body .startInfo .row .col-md-8 {
+        height: 100%; }
+        html .startInfo .row .col-md-8 .bildershow, body .startInfo .row .col-md-8 .bildershow {
+          display: block;
+          overflow: visible;
+          float: left;
+          margin: 1% 0 1% 5%;
+          width: 90%;
+          height: 100%;
+          background-size: cover;
+          perspective: 1000px; }
+          html .startInfo .row .col-md-8 .bildershow .karte, body .startInfo .row .col-md-8 .bildershow .karte {
+            width: 100%;
+            height: auto;
+            max-height: 100%;
+            position: absolute;
+            transform-origin: top center; }
+            html .startInfo .row .col-md-8 .bildershow .karte.animate-in, body .startInfo .row .col-md-8 .bildershow .karte.animate-in {
+              display: block !important;
+              animation: animate-in 2000ms cubic-bezier(0.17, 0.53, 0.29, 0.9) forwards; }
+@keyframes animate-in {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+            html .startInfo .row .col-md-8 .bildershow .karte.animate-out, body .startInfo .row .col-md-8 .bildershow .karte.animate-out {
+              display: block !important;
+              animation: animate-out 2000ms cubic-bezier(0.17, 0.53, 0.9, 0.9) forwards; }
+@keyframes animate-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+  html .content, body .content {
+    padding-bottom: 10%; }
+    html .content .row, body .content .row {
+      margin-top: 5rem;
+      padding-bottom: 1rem; }
+      html .content .row:first-child, body .content .row:first-child {
+        border-bottom: 2px groove rgba(13, 0, 185, 0.79); }
+
+.btn {
+  margin-left: 6rem;
+  margin-top: 2rem;
+  font-size: 3em;
+  margin-bottom: 1rem; }
+
+@media only screen and (max-width: 992px) {
+  .btn {
+    font-size: 1.5em; }
+
+  .startInfo {
+    height: 90%; }
+    .startInfo .row {
+      max-height: 40%; }
+      .startInfo .row .col-md-4 {
+        height: 100% !important; }
+        .startInfo .row .col-md-4 img {
+          position: absolute;
+          margin-top: 5%;
+          right: 10%;
+          height: 60%; }
+      .startInfo .row .col-md-8 {
+        height: 100%; }
+        .startInfo .row .col-md-8 .bildershow {
+          display: block;
+          overflow: visible;
+          float: left;
+          margin: 1% 0 1% 5%;
+          width: 90%;
+          height: 100%;
+          background-size: cover;
+          perspective: 1000px; }
+          .startInfo .row .col-md-8 .bildershow .karte {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            position: absolute; } }
+@media only screen and (max-width: 480px) {
+  .btn {
+    width: 100% !important;
+    margin-left: 0;
+    font-size: 2em; } }
+
+/*# sourceMappingURL=template.css.map */

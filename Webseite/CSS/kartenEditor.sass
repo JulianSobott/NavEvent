@@ -1,0 +1,42 @@
+@import "EditorSeitenmenue"
+@import "EditorKartenContainer"
+@import "EditorFormFeld"
+html, body
+  height: 100%
+  width: 100%
+  background: rgba(#868C91, 0.69)
+
+  .navbar
+    margin-bottom: 0
+
+  .content
+    height: auto
+    .seite
+      position: absolute
+      bottom: 0
+      top: 50px
+      display: inline-block
+      height: inherit
+      width: 20%
+      background: #FFFFFF
+
+
+    .seite-links
+      transform: translate(-100%)
+      &.animate-in
+        animation: seite-linksIn 200ms ease-in-out forwards
+        @keyframes seite-linksIn
+          0%
+            transform: translate(-100%)
+          100%
+            transform: translate(0%)
+
+    .seite-rechts
+      transform: translate(100%)
+      &.animate-in
+        animation: seite-rechtsIn 200ms ease-in-out forwards
+        @keyframes seite-rechtsIn
+          0%
+            transform: translate(100%)
+          100%
+            transform: translate(-100%)

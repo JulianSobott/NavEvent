@@ -1,3 +1,112 @@
+.content {
+  position: relative; }
+  .content .flow_menu .toggleSidebar {
+    font-size: 3em;
+    position: absolute;
+    left: 1%;
+    margin-top: 0;
+    z-index: 2;
+    box-shadow: 0px 0px 2px 2px #444;
+    animation: helpAnimation 7s ease-in-out infinite; }
+@keyframes helpAnimation {
+  0% {
+    transform: rotate(0deg); }
+  1% {
+    transform: rotate(20deg); }
+  2% {
+    transform: rotate(-20deg); }
+  3% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(0deg); } }
+    .content .flow_menu .toggleSidebar:hover {
+      box-shadow: 0px 0px 4px 4px #666; }
+  .content .flow_menu .hilfe {
+    position: absolute;
+    width: 20%;
+    background: #B19A8E;
+    padding: 5%;
+    padding-left: 1%;
+    z-index: 0;
+    height: 90%;
+    box-sizing: content-box; }
+  .content .flow_menu #slides {
+    height: 100%;
+    box-sizing: content-box; }
+  .content .flow_menu .slides {
+    position: relative;
+    padding-left: 4rem;
+    margin-right: auto;
+    background: #7E807F;
+    height: 100%;
+    z-index: 1; }
+  .content #toggleHilfe {
+    display: none; }
+    .content #toggleHilfe:checked + .flow_menu .toggleHilfe {
+      left: 25%; }
+    .content #toggleHilfe:checked + .flow_menu #slides {
+      background: green;
+      animation: openHilfe 200ms ease-in-out forwards; }
+@keyframes openHilfe {
+  0% {
+    margin-left: 0;
+    transform: scale(1); }
+  100% {
+    margin-left: 25%;
+    transform: scale(1); } }
+.hilfe01 {
+  opacity: 0; }
+
+.hilfe02 {
+  opacity: 0; }
+
+.hilfe03 {
+  opacity: 0; }
+
+.hilfeAnimate-out {
+  animation: hilfeAnimate-out 1s ease-in-out forwards; }
+
+@keyframes hilfeAnimate-out {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+.hilfeAnimate-in {
+  animation: hilfeAnimate-in 1s ease-in-out forwards; }
+
+@keyframes hilfeAnimate-in {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+.slide0 .kartenKonfiguration {
+  width: 70%;
+  border: 1px solid #3e8a15;
+  border-radius: 5px;
+  background: #52B61C;
+  box-shadow: 10px 10px 10px #443F33;
+  padding: 5%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5%; }
+  .slide0 .kartenKonfiguration .fKartenKonfiguration label {
+    font-size: 2em; }
+  .slide0 .kartenKonfiguration .fKartenKonfiguration input[type="text"] {
+    border: 2px solid #545554;
+    border-radius: 4px;
+    font-size: 2em;
+    width: 50%;
+    min-width: 40%; }
+  .slide0 .kartenKonfiguration .fKartenKonfiguration input[type="Submit"] {
+    font-size: 2em;
+    margin-left: 5%;
+    transition: all 100ms;
+    text-decoration: none;
+    background: #A19F8A;
+    border-radius: 5px; }
+    .slide0 .kartenKonfiguration .fKartenKonfiguration input[type="Submit"]:hover {
+      box-shadow: 0px 0px 0px 2px #A6AB86, 0px 0px 0px 4px #A19F8A; }
+
 .slide1 {
   text-align: center; }
   .slide1 input {
