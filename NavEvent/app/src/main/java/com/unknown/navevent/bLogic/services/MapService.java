@@ -313,7 +313,7 @@ public class MapService extends Service {
 				list.add(new MapDataImpl(getNextString(bufReader), Integer.parseInt(getNextString(bufReader))));
 				bufReader.close();
 			}
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));//todo handle event
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

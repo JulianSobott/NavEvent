@@ -109,9 +109,7 @@ public class ServiceInterface {
 		else if (event.message == LogicIfcBaseEvent.EVENT_MAP_SERVICE_STARTED) {
 			Log.d("ServiceInterface", "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, currentMap));
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
 
 		}
 	}
