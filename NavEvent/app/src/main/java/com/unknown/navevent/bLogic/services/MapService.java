@@ -8,8 +8,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.unknown.navevent.bLogic.MapDataImpl;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
+import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.MapUpdateEvent;
 
@@ -109,7 +108,7 @@ public class MapService extends Service {
 		});
 		mBackgroundThread.start();
 
-		EventBus.getDefault().post(new LogicIfcBaseEvent(LogicIfcBaseEvent.EVENT_MAP_SERVICE_STARTED));
+		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED));
 	}
 
 	@Override
@@ -219,6 +218,8 @@ public class MapService extends Service {
 			}
 
 			bufReader.close();
+
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED));//todo handle event
 		} catch (Exception e) {
 			e.printStackTrace();
 			Toast.makeText(this, "Failed to load map '" + map.name + "'", Toast.LENGTH_LONG).show();
@@ -307,10 +308,10 @@ public class MapService extends Service {
 	private void getAllLocalMaps() {
 		try {
 			File []files = getFile("maps/").listFiles();
-			List<MapDataImpl> list = new ArrayList<>();
+			List<MapIR> list = new ArrayList<>();
 			for (File file : files) {
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-				list.add(new MapDataImpl(getNextString(bufReader), Integer.parseInt(getNextString(bufReader))));
+				list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader))));
 				bufReader.close();
 			}
 			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));//todo handle event

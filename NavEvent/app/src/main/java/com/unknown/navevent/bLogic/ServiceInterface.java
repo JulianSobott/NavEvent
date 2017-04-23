@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
+import com.unknown.navevent.bLogic.events.MapUpdateEvent;
+import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
+import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconService;
 import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
@@ -28,14 +30,24 @@ import java.util.List;
 
 //Enables interaction with the BeaconService & MapService (including startup, etc.)
 public class ServiceInterface {
+	private static final String TAG = "ServiceInterface";
 
-	private static int beaconServiceBindCount = 0;//Handles service-access of multiple components(e. g. Activities)
-	private static int mapServiceBindCount = 0;//Handles service-access of multiple components(e. g. Activities)
+	private static int beaconServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
+	private static int mapServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
 
-	protected Context mContext;
+	private Context mContext;
 
+	//Beacon data
+	enum BeaconAvailabilityState {
+		starting,//Start searching for beacons
+		found,//One or more beacons found
+		nothingFound//No beacons found
+	}
+	BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;
 
-	MapIR currentMap = null;//Current loaded map
+	//Map data
+	MapIR currentMap;//Current loaded map
+	List<MapIR> availableLocalMaps;//Already downloaded maps
 
 
 	public void onCreate(Context context) {
@@ -93,6 +105,7 @@ public class ServiceInterface {
 	public void onDestroy() {
 		beaconServiceBindCount--;
 		if( beaconServiceBindCount == 0 ) EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
+		mapServiceBindCount--;
 		if( mapServiceBindCount == 0 ) EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
 
 		EventBus.getDefault().unregister(this);
@@ -100,17 +113,37 @@ public class ServiceInterface {
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(LogicIfcBaseEvent event) {
-		if (event.message == LogicIfcBaseEvent.EVENT_BEACON_SERVICE_STARTED) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_BEACON_SERVICE_STARTED");
+	public void onMessageEvent(ServiceInterfaceEvent event) {
+		if (event.message == ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED) {
+			Log.d(TAG, "onMessageEvent: EVENT_BEACON_SERVICE_STARTED");
 
 			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_START_LISTENING));
 		}
-		else if (event.message == LogicIfcBaseEvent.EVENT_MAP_SERVICE_STARTED) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
+		else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
+			Log.d(TAG, "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
 			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
 
+		}
+	}
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMessageEvent(MapUpdateEvent event) {
+		if (event.message == MapUpdateEvent.EVENT_MAP_LOADED) {
+			Log.d(TAG, "onMessageEvent: EVENT_MAP_LOADED");
+
+			availableLocalMaps = event.maps;
+
+			if( beaconAvailabilityState != BeaconAvailabilityState.starting &&
+					!availableLocalMaps.contains(currentMap) ) {//Current map removed and not in staring mode
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_CURRENT_MAP_UNLOADED));
+			}
+			if( event.maps.isEmpty() ) {
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_LOCAL_MAPS_AVAILABLE));
+			}
+		}
+		else if (event.message == MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
+			Log.d(TAG, "onMessageEvent: EVENT_AVAIL_OFFLINE_MAPS_LOADED");
+			//todo
 		}
 	}
 

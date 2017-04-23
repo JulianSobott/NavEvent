@@ -12,8 +12,8 @@ import android.util.Log;
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
-import com.unknown.navevent.bLogic.events.MainActivityLogicEvent;
+import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
+import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -48,7 +48,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 		EventBus.getDefault().register(this);
 
-		EventBus.getDefault().post(new LogicIfcBaseEvent(LogicIfcBaseEvent.EVENT_BEACON_SERVICE_STARTED));
+		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED));
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private void verifyBluetooth() {
 		try {
 			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED));
 			}
 
 			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {
@@ -114,13 +114,13 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			{
 				isBluetoothSupported = true;
 				isBluetoothActivated = false;
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLUETOOTH_DEACTIVATED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED));
 			}
 		}
 		catch (RuntimeException e) {
 			isBluetoothSupported = false;
 			isBluetoothActivated = false;
-			EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED));
 		}
 
 	}
@@ -130,7 +130,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			//Android M+ permission check
 			if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //Permission denied
 				hasBeaconPermissions = false;
-				EventBus.getDefault().post(new MainActivityLogicEvent(MainActivityLogicEvent.EVENT_ASK_PERMISSION));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_ASK_PERMISSION));
 			}
 			else hasBeaconPermissions = true;//Permission granted
 		}
