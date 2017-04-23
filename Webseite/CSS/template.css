@@ -160,6 +160,24 @@ html, body {
     background: #7E807F;
     height: 100%;
     z-index: 1; }
+    .body .content .btnNeueKarteHinzufuegen {
+      width: 10rem;
+      height: 10rem;
+      background: rgba(13, 66, 103, 0.2);
+      border: 2px solid #288;
+      border-radius: 5px 10px;
+      text-align: center;
+      padding: 1%;
+      filter: contrast(80%) grayscale(70%); }
+      .body .content .btnNeueKarteHinzufuegen:hover {
+        cursor: default;
+        filter: contrast(100%); }
+      .body .content .btnNeueKarteHinzufuegen .add {
+        display: inline-block;
+        font-size: 3em; }
+      .body .content .btnNeueKarteHinzufuegen p {
+        display: inline-block;
+        font-size: 1.3em; }
     .body .content .neueKarte {
       height: 200px;
       width: 200px;

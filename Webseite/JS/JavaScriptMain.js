@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $('.btnNeueKarteHinzufuegen').click(function() {
-    window.location='template.php?action=guide';
+    window.location='index.php?action=guide';
   });
 
   var slideIndex = 0;
