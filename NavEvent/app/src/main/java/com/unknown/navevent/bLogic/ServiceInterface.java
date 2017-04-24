@@ -43,7 +43,7 @@ public class ServiceInterface {
 		found,//One or more beacons found
 		nothingFound//No beacons found
 	}
-	BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;
+	BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
 
 	//Map data
 	MapIR currentMap;//Current loaded map
@@ -122,7 +122,8 @@ public class ServiceInterface {
 		else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
 			Log.d(TAG, "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
+			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
 
 		}
 	}
@@ -131,19 +132,24 @@ public class ServiceInterface {
 		if (event.message == MapUpdateEvent.EVENT_MAP_LOADED) {
 			Log.d(TAG, "onMessageEvent: EVENT_MAP_LOADED");
 
-			availableLocalMaps = event.maps;
+			if( !event.maps.isEmpty() )
+				currentMap = event.maps.get(0);
+			else currentMap = null;
 
 			if( beaconAvailabilityState != BeaconAvailabilityState.starting &&
-					!availableLocalMaps.contains(currentMap) ) {//Current map removed and not in staring mode
+					!availableLocalMaps.contains(currentMap) ) {//Current map removed and not in starting mode
 				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_CURRENT_MAP_UNLOADED));
 			}
 			if( event.maps.isEmpty() ) {
 				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_LOCAL_MAPS_AVAILABLE));
 			}
+			else {
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NEW_MAP_LOADED));
+			}
 		}
 		else if (event.message == MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
 			Log.d(TAG, "onMessageEvent: EVENT_AVAIL_OFFLINE_MAPS_LOADED");
-			//todo
+			availableLocalMaps = event.maps;
 		}
 	}
 

@@ -165,6 +165,7 @@ public class MapService extends Service {
 
 			map.name = getNextString(bufReader);
 			map.id = Integer.parseInt(getNextString(bufReader));
+			map.majorID = Integer.parseInt(getNextString(bufReader));
 			map.description = getNextString(bufReader);
 			map.imagePath = getNextString(bufReader);
 			{//Load image
@@ -172,7 +173,6 @@ public class MapService extends Service {
 				options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 				map.image = BitmapFactory.decodeFile(getFile("mapImgs/" + map.imagePath).getPath(), options);
 			}
-			map.majorID = Integer.parseInt(getNextString(bufReader));
 
 			//Beacons
 			int tmpSize = Integer.parseInt(getNextString(bufReader));
@@ -251,9 +251,9 @@ public class MapService extends Service {
 
 			writer.write(formatOutString(map.name) + SEP_CHAR);
 			writer.write(map.id + SEP_CHAR);
+			writer.write(map.majorID + SEP_CHAR);
 			writer.write(formatOutString(map.description) + SEP_CHAR);
 			writer.write(formatOutString(map.imagePath) + SEP_CHAR);
-			writer.write(map.majorID + SEP_CHAR);
 
 			//Beacons
 			writer.write(map.beacons.size() + SEP_CHAR);
@@ -311,7 +311,7 @@ public class MapService extends Service {
 			List<MapIR> list = new ArrayList<>();
 			for (File file : files) {
 				BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-				list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader))));
+				list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader)), Integer.parseInt(getNextString(bufReader))));
 				bufReader.close();
 			}
 			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));//todo handle event

@@ -31,9 +31,10 @@ public class MapIR implements MapData {
 	public MapIR() {
 
 	}
-	public MapIR( String name, int id ) {
+	public MapIR( String name, int id, int majorID ) {
 		this.name = name;
 		this.id = id;
+		this.majorID = majorID;
 	}
 
 	@Override

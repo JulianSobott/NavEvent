@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 
 	@Override
 	public void switchToMapSelectActivity() {
+		Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
 		startActivity(intent);
 		finish();
@@ -128,12 +129,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 
 	@Override
 	public void updateMap(MapData map) {
-
+		Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void updateBeaconPosition(int beaconID) {
-		outputView.setText("Beacon id: " + beaconID);
+		if( beaconID == 0 )
+			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
+		else outputView.setText("Beacon id: " + beaconID);
 	}
 
 	@Override
