@@ -5,9 +5,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
-import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
-import com.unknown.navevent.bLogic.events.MainActivityLogicEvent;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
 

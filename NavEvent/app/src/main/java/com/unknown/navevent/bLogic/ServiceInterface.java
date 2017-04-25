@@ -9,8 +9,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
-import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

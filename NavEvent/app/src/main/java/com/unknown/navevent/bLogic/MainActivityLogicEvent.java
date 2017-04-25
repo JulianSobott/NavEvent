@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic.events;
+package com.unknown.navevent.bLogic;
 
 public class MainActivityLogicEvent {
 	public static final int EVENT_BLUETOOTH_DEACTIVATED = 1;

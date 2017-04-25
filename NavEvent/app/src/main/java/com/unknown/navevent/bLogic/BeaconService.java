@@ -8,13 +8,8 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.unknown.navevent.R;
-import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
-import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
-import com.unknown.navevent.bLogic.events.LogicIfcBaseEvent;
-import com.unknown.navevent.bLogic.events.MainActivityLogicEvent;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;

@@ -1,4 +1,11 @@
 <resources>
+    <string name="title_activity_sidebar">Sidebar</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
     <string name="app_name">NavEvent</string>
     <string name="beaconRegionUID">com.unknown.navevent.beaconRegion</string>
 
@@ -8,4 +15,6 @@
     <string name="bluetoothNotEnabled">Bluetooth not enabled! Please enable bluetooth in settings.</string>
     <string name="bluetoothNotAvailable">Sorry, this device does not support required Bluetooth LE.</string>
     <string name="bluetoothTurnedOffWarning">Bluetooth turned off. Functionality limited!</string>
+
+
 </resources>

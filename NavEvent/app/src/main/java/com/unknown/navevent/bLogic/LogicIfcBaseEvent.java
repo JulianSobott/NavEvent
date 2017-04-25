@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic.events;
+package com.unknown.navevent.bLogic;
 
 public class LogicIfcBaseEvent {
 	public static final int EVENT_SERVICE_STARTED = 1;

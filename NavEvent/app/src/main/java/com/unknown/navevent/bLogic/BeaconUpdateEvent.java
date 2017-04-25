@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic.events;
+package com.unknown.navevent.bLogic;
 
 import com.unknown.navevent.bLogic.BeaconIR;
 
