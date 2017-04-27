@@ -25,12 +25,12 @@
         </activity>
 
         <service
-            android:name=".bLogic.BeaconService"
+            android:name=".bLogic.services.BeaconService"
             android:enabled="true"
             android:exported="false">
         </service>
         <service
-            android:name=".bLogic.MapService"
+            android:name=".bLogic.services.MapService"
             android:enabled="true"
             android:exported="true">
         </service>
