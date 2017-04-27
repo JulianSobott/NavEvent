@@ -15,12 +15,12 @@ import java.util.Map;
 public class MapIR implements MapData {
 	public String name;//Map name
 	public int id;//Map id
+	public int majorID;//Major beaconID corresponding to this map
 	public String description;//Text to describe the map
 
 	public String imagePath;//Path to the image-file
 	public Bitmap image;//Image of this map
 
-	public int majorID;//Major beaconID corresponding to this map
 	public SparseArray<MapBeaconIR> beacons = new SparseArray<>();//Set of Beacons on this map, mapped to their ids.
 	public SparseIntArray beaconMap = new SparseIntArray();//Mapping of minorIDs to beaconIDs in this map.
 

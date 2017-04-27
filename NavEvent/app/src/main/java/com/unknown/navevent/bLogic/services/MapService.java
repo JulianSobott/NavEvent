@@ -17,13 +17,20 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -303,6 +310,95 @@ public class MapService extends Service {
 
 	private void downloadMap( String mapName ) {
 		//todo
+
+		try {
+			MapIR newMap = new MapIR();
+
+			//Connect
+			URL url = new URL("http://10.0.0.2/downloadMap.php");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			OutputStream outputStream = connection.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+			String postData = URLEncoder.encode("mapName", "UTF-8") + "=" +
+					URLEncoder.encode(mapName, "UTF-8");
+
+			writer.write(postData);
+			writer.flush();
+			writer.close();
+			outputStream.close();
+
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+			//Write data to map
+			newMap.name = reader.readLine();
+			newMap.id = Integer.parseInt(reader.readLine());
+			newMap.majorID = Integer.parseInt(reader.readLine());
+			newMap.description = reader.readLine();
+			newMap.imagePath = reader.readLine();
+			//todo: download map
+
+			//Beacons
+			int tmpSize = Integer.parseInt(reader.readLine());
+			for( int i = 0 ; i < tmpSize ; i++ ) {
+				MapBeaconIR beacon = new MapBeaconIR();
+				beacon.name = reader.readLine();
+				beacon.id = Integer.parseInt(reader.readLine());
+				beacon.minorID = Integer.parseInt(reader.readLine());
+				beacon.positionX = Double.parseDouble(reader.readLine());
+				beacon.positionY = Double.parseDouble(reader.readLine());
+				beacon.description = reader.readLine();
+				newMap.beacons.put(beacon.id, beacon);
+
+				newMap.beaconMap.put(beacon.minorID, beacon.id);
+			}
+
+			//Ordinary places
+			tmpSize = Integer.parseInt(reader.readLine());
+			for( int i = 0 ; i < tmpSize ; i++ ) {
+				String placeName = reader.readLine();
+				List<Integer> tmpList = new ArrayList<>();
+
+				int tmpSize2 = Integer.parseInt(reader.readLine());
+				for( int j = 0 ; j < tmpSize2 ; j++ ) {
+					tmpList.add(Integer.parseInt(reader.readLine()));
+				}
+
+				newMap.ordinaryPlaces.put(placeName, tmpList);
+			}
+
+			//Special places
+			tmpSize = Integer.parseInt(reader.readLine());
+			for( int i = 0 ; i < tmpSize ; i++ ) {
+				String placeName = reader.readLine();
+				List<Integer> tmpList = new ArrayList<>();
+
+				int tmpSize2 = Integer.parseInt(reader.readLine());
+				for( int j = 0 ; j < tmpSize2 ; j++ ) {
+					tmpList.add(Integer.parseInt(reader.readLine()));
+				}
+
+				newMap.specialPlaces.put(placeName, tmpList);
+			}
+
+			saveLocalMap(newMap);
+
+			//Save downloaded map
+			saveLocalMap(newMap);
+
+
+			reader.close();
+			inputStream.close();
+			connection.disconnect();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void getAllLocalMaps() {
