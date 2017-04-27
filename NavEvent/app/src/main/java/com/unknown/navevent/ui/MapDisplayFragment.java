@@ -30,27 +30,18 @@ public class MapDisplayFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        theMap = new DrawTheMap(getActivity(),4);
         v=inflater.inflate(R.layout.fragment_map_display, container, false);
-
+        theMap = new DrawTheMap(getActivity(),MainActivity.getMap());
         return theMap;
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        layout= new RelativeLayout(getActivity());
-        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        layout.setLayoutParams(params);
-        LoadBeacons();
-        ViewGroup group = (ViewGroup) v;
-        ((ViewGroup) v).addView(layout);
+    public void LoadBeacons() {
+        theMap.loadMap(MainActivity.getMap());
+
     }
-
-    private void LoadBeacons() {
-        Button b = new Button(getActivity());
-        layout.addView(b);
-
+    static public int getBeaconToDisplay(MapForTests map){
+        int beaconToDisplay;
+        beaconToDisplay=map.getSelectedBeacon();
+        return beaconToDisplay;
     }
 }

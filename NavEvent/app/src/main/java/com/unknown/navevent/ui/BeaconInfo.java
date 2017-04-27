@@ -17,15 +17,15 @@ import android.widget.EditText;
 import com.unknown.navevent.R;
 
 public class BeaconInfo extends Fragment {
-    private static TextView test;
+    private static TextView infoText;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
-        test=(TextView) v.findViewById(R.id.textView);
+        infoText=(TextView) v.findViewById(R.id.textView);
         return v;
     }
     public void changeText(String text){
-        test.setText(text);
+        infoText.setText(text);
     }
 }
