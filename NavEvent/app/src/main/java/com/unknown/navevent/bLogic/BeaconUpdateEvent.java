@@ -1,6 +1,6 @@
 package com.unknown.navevent.bLogic;
 
-import com.unknown.navevent.bLogic.BeaconIR;
+import com.unknown.navevent.bLogic.services.BeaconIR;
 
 import java.util.List;
 

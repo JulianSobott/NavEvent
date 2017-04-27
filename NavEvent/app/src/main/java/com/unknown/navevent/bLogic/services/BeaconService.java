@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic;
+package com.unknown.navevent.bLogic.services;
 
 import android.Manifest;
 import android.app.Service;
@@ -25,15 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//Intern(beacon-logic) representation of a beacon
-class BeaconIR {
-	public int majorID;
-	public int minorID;
-	public double distance;
-
-}
-
-class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
+public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private static final String TAG = "BeaconService";
 
 	//BeaconManagement
@@ -45,7 +37,7 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
 	public List<BeaconIR> beacons = new ArrayList<>();
-
+	
 
 	@Override
 	public void onCreate() {
@@ -63,20 +55,20 @@ class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		EventBus.getDefault().unregister(this);
 		stopBeaconManager();
-		super.onDestroy();
 	}
 
 
-	@Subscribe(threadMode = ThreadMode.BACKGROUND)
+	@Subscribe(threadMode = ThreadMode.ASYNC)
 	public void onMessageEvent(BeaconServiceEvent event) {
 		if( event.message == BeaconServiceEvent.EVENT_START_LISTENING) {
-			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
+			Log.d(TAG, "onMessageEvent: START_LISTENING");
 			startBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_LISTENING) {
-			Log.d("BeaconService", "onMessageEvent: START_LISTENING");
+			Log.d(TAG, "onMessageEvent: START_LISTENING");
 			stopBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_SELF) {
