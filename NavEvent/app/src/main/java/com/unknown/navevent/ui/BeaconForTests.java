@@ -1,6 +1,6 @@
 package com.unknown.navevent.ui;
 
-//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that
+//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\well its not
 public class BeaconForTests {
     private int xCord;
     private int yCord;

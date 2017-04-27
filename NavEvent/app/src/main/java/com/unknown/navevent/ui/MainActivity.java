@@ -132,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     @Override
     public void updateMap(MapData map) {
 
+
+        
     }
 
     @Override
@@ -143,4 +145,5 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void markBeacons(List<Integer> beaconIDs) {
 
     }
+
 }

@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import java.util.List;
 
 
-//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that
+//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\ well it isnt so this name is wrong but im too lazy to change ^^
 public class MapForTests {
     private int beaconNumber;
     int theMagicNumberThatNeverShouldBeUsed=975667323;
