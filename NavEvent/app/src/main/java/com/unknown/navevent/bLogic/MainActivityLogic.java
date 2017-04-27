@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 //Background-logic of the MainActivity
 public class MainActivityLogic  implements MainActivityLogicInterface {
+	private static final String TAG = "MainActivityLogic";
 
 	private MainActivityUI mResponder = null;
 
@@ -62,24 +63,24 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(MainActivityLogicEvent event) {
-		if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_DEACTIVATED) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
+	public void onMessageEvent(ServiceToActivityEvent event) {
+		if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
+			Log.d(TAG, "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
 
 			mResponder.bluetoothDeactivated();
 		}
-		else if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
+		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
+			Log.d(TAG, "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
-		else if( event.message == MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
+		else if( event.message == ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED) {
+			Log.d(TAG, "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
-		else if( event.message == MainActivityLogicEvent.EVENT_ASK_PERMISSION) {
-			Log.d("ServiceInterface", "onMessageEvent: EVENT_ASK_PERMISSION");
+		else if( event.message == ServiceToActivityEvent.EVENT_ASK_PERMISSION) {
+			Log.d(TAG, "onMessageEvent: EVENT_ASK_PERMISSION");
 
 			mResponder.askForPermissions();
 		}

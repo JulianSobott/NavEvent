@@ -19,7 +19,6 @@ import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconService;
 import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
-import com.unknown.navevent.bLogic.services.MapService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,7 +41,7 @@ public class ServiceInterface {
 		found,//One or more beacons found
 		nothingFound//No beacons found
 	}
-	BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
+	public BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
 
 	//Map data
 	MapIR currentMap;//Current loaded map

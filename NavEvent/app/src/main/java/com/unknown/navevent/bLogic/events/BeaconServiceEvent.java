@@ -1,4 +1,4 @@
-package com.unknown.navevent.bLogic;
+package com.unknown.navevent.bLogic.events;
 
 
 //Events to BeaconService
