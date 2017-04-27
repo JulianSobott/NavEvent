@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class MainActivity extends AppCompatActivity implements SideBar.SideBarInterface, MainActivityUI {
 	//Background-logic interface
 	private MainActivityLogicInterface mIfc = null;
@@ -140,8 +141,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void notSupported(String errorcode) {
+	    //todo debug: uncomment this block to enable the app only for supported devices
 		//Notify user and shutdown the app
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		/*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotAvailable);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -150,7 +152,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 				finish();
 			}
 		});
-		builder.show();
+		builder.show();*/
+	    Toast.makeText(MainActivity.this, "Device does not support required Bluetooth LE", Toast.LENGTH_LONG).show();
     }
 
     @Override
