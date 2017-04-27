@@ -1,55 +1,60 @@
 package com.unknown.navevent.ui;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.unknown.navevent.R;
-import com.unknown.navevent.bLogic.MainActivityLogic;
-import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
 import com.unknown.navevent.interfaces.MapData;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityUI {
 
+public class MainActivity extends AppCompatActivity implements SideBar.SideBarInterface, MainActivityUI {
 	//Background-logic interface
 	private MainActivityLogicInterface mIfc = null;
-
-
-	//GUI
-	TextView outputView;
-
-
+	
 	//Request-callback ids
 	private static final int PERMISSION_REQUEST_COARSE_LOCATION = 0;
-
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
+	
+	
+    private BeaconInfo text;
+    private SideBar bar;
+    private Button sideOpen;
+    private MapDisplayFragment mapDisplayFragment;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+		
 		//Creating background-logic for this activity
 		mIfc = new MainActivityLogic(this);
 		mIfc.onCreate(this);
+		
 
-		//Debug-GUI stuff
-		outputView = (TextView)findViewById(R.id.output);
-	}
+        bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
+        text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
+        sideOpen=(Button)findViewById(R.id.SideBarBtn);
+        mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
+        bar.getView().setBackgroundColor(Color.BLUE);
 
+        hideFragment(bar);
+
+
+        sideOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(bar);
+            }
+        });
+    }
+	
 	@Override
 	protected  void onDestroy() {
 		mIfc.onDestroy();//Destroying background-logic
@@ -57,12 +62,29 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 		super.onDestroy();
 	}
 
-	@Override
-	public void initCompleted() {
+    private void showFragment(Fragment f){
+    FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
+        Tr.show(f);
+        Tr.commit();
+    }
 
-	}
-	@Override
-	public void notSupported(String errorcode) {
+    public void hideFragment(Fragment f){
+        FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
+        Tr.hide(f);
+        Tr.commit();
+    }
+
+    public void hideSideBar(){
+        hideFragment(bar);
+    }
+
+    @Override
+    public void initCompleted() {
+
+    }
+
+    @Override
+    public void notSupported(String errorcode) {
 		//Notify user and shutdown the app
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotAvailable);
@@ -74,17 +96,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 			}
 		});
 		builder.show();
-	}
-	@Override
-	public void bluetoothDeactivated() {
+    }
+
+    @Override
+    public void bluetoothDeactivated() {
 		//Notify user to enable bluetooth
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotEnabled);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.show();
-	}
-	@Override
-	public void askForPermissions() {
+    }
+
+    @Override
+    public void askForPermissions() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			//Android M+ Permission check
 			if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -104,16 +128,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 				builder.show();
 			}
 		}
-	}
-
-	@Override
-	public void switchToMapSelectActivity() {
-		Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
-		startActivity(intent);
-		finish();
-	}
-
+    }
 	@Override
 	public void onRequestPermissionsResult(int requestCode,
 	                                       String permissions[], int[] grantResults) {
@@ -127,22 +142,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityUI {
 		}
 	}
 
-	@Override
-	public void updateMap(MapData map) {
+    @Override
+    public void switchToMapSelectActivity() {
+		//todo: first create MapSelect activity and then use this code
+		/*Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
+		startActivity(intent);
+		finish();*/
+    }
+
+    @Override
+    public void updateMap(MapData map) {
 		Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
-	}
+    }
 
-	@Override
-	public void updateBeaconPosition(int beaconID) {
-		if( beaconID == 0 )
+    @Override
+    public void updateBeaconPosition(int beaconID) {
+		//example implementation
+		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
-		else outputView.setText("Beacon id: " + beaconID);
-	}
+		else outputView.setText("Beacon id: " + beaconID);*/
+    }
 
-	@Override
-	public void markBeacons(List<Integer> beaconIDs) {
+    @Override
+    public void markBeacons(List<Integer> beaconIDs) {
 
-	}
-
-
+    }
 }

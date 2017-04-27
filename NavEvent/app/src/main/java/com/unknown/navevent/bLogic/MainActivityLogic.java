@@ -19,7 +19,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 //Background-logic of the MainActivity
 public class MainActivityLogic  implements MainActivityLogicInterface {
-	private static final String TAG = "MainActivityLogic";
 
 	private MainActivityUI mResponder = null;
 
@@ -31,7 +30,6 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	private boolean searchingForCurrentMap = true;//Wait until current beacons where found (on start)
 	private static final int HANDLER_NO_CORRESPONDING_BEACON_DELAY = 1;//Timed handling after haven't found beacon corresponding to any local map
 	private static final int NO_CORRESPONDING_BEACON_HANDLER_DELAY = 5000;//milliseconds
-
 
 
 	public MainActivityLogic(MainActivityUI responder) {
@@ -64,29 +62,24 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ServiceToActivityEvent event) {
-		if( event.message == ServiceToActivityEvent.EVENT_LISTENER_STARTED) {
-			Log.d(TAG, "onMessageEvent: EVENT_LISTENER_STARTED");
-
-			//todo
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
-			Log.d(TAG, "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
+	public void onMessageEvent(MainActivityLogicEvent event) {
+		if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_DEACTIVATED) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
 
 			mResponder.bluetoothDeactivated();
 		}
-		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
-			Log.d(TAG, "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
+		else if( event.message == MainActivityLogicEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
-		else if( event.message == ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED) {
-			Log.d(TAG, "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
+		else if( event.message == MainActivityLogicEvent.EVENT_BLE_NOT_SUPPORTED) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
 		}
-		else if( event.message == ServiceToActivityEvent.EVENT_ASK_PERMISSION) {
-			Log.d(TAG, "onMessageEvent: EVENT_ASK_PERMISSION");
+		else if( event.message == MainActivityLogicEvent.EVENT_ASK_PERMISSION) {
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_ASK_PERMISSION");
 
 			mResponder.askForPermissions();
 		}
@@ -108,7 +101,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(BeaconUpdateEvent event) {
 		if( event.message == BeaconUpdateEvent.EVENT_BEACON_UPDATE) {
-			Log.d(TAG, "onMessageEvent: EVENT_BEACON_UPDATE");
+			Log.d("ServiceInterface", "onMessageEvent: EVENT_BEACON_UPDATE");
 
 			if( searchingForCurrentMap )//If searching for current map => set timed delay
 				mNoCorrespondingBeaconHandler.sendEmptyMessageDelayed(HANDLER_NO_CORRESPONDING_BEACON_DELAY, NO_CORRESPONDING_BEACON_HANDLER_DELAY);
@@ -142,7 +135,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 				//Update ui
 				mResponder.updateBeaconPosition(event.beacons.get(nearestIndex).minorID);//todo: match to id-impl
-				mNoBeaconHandler.removeMessages(HANDLER_NO_BEACON_DELAY);//Stop delay for "no beacon found"
+				mNoBeaconHandler.removeMessages(HANDLER_NO_BEACON_DELAY);
 			}
 			else {
 				//Set beacon availability state

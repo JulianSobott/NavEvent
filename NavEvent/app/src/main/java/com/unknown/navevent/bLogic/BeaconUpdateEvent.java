@@ -1,10 +1,9 @@
-package com.unknown.navevent.bLogic.events;
+package com.unknown.navevent.bLogic;
 
 import com.unknown.navevent.bLogic.services.BeaconIR;
 
 import java.util.List;
 
-//Event from BeaconService to MainActivity. Delivers new beacon information.
 public class BeaconUpdateEvent {
 	public static final int EVENT_BEACON_UPDATE = 1;
 

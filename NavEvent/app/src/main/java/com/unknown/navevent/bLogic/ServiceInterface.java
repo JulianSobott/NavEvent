@@ -35,8 +35,7 @@ public class ServiceInterface {
 	private static int beaconServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
 	private static int mapServiceBindCount = 0;//Handles service-access from multiple components(e. g. Activities)
 
-	private Context mContext;
-
+	
 	//Beacon data
 	enum BeaconAvailabilityState {
 		starting,//Start searching for beacons
@@ -48,6 +47,7 @@ public class ServiceInterface {
 	//Map data
 	MapIR currentMap;//Current loaded map
 	List<MapIR> availableLocalMaps;//Already downloaded maps
+	protected Context mContext;
 
 
 	public void onCreate(Context context) {
@@ -55,8 +55,6 @@ public class ServiceInterface {
 		EventBus.getDefault().register(this);
 		beaconServiceBindCount++;
 		if( beaconServiceBindCount == 1) mContext.startService(new Intent(mContext, BeaconService.class));
-		mapServiceBindCount++;
-		if( mapServiceBindCount == 1) mContext.startService(new Intent(mContext, MapService.class));
 
 
 		//Register for broadcast on bluetooth-events
@@ -105,8 +103,6 @@ public class ServiceInterface {
 	public void onDestroy() {
 		beaconServiceBindCount--;
 		if( beaconServiceBindCount == 0 ) EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
-		mapServiceBindCount--;
-		if( mapServiceBindCount == 0 ) EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
 
 		EventBus.getDefault().unregister(this);
 		mContext.unregisterReceiver(btReceive);

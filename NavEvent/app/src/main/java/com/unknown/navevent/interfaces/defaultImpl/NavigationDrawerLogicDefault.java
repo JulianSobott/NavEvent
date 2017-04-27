@@ -15,7 +15,7 @@ public class NavigationDrawerLogicDefault implements NavigationDrawerLogicInterf
 	}
 
 	public List<String> getSpecialBeacons() {
-		List<String> b = new ArrayList<>();
+		List<String> b = new ArrayList<String>();
 		b.add("Exit");
 		return b;
 	}
