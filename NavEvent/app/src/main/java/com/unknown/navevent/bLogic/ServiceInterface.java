@@ -19,6 +19,7 @@ import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconService;
 import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
+import com.unknown.navevent.bLogic.services.MapService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +55,8 @@ public class ServiceInterface {
 		EventBus.getDefault().register(this);
 		beaconServiceBindCount++;
 		if( beaconServiceBindCount == 1) mContext.startService(new Intent(mContext, BeaconService.class));
+		mapServiceBindCount++;
+		if( mapServiceBindCount == 1) mContext.startService(new Intent(mContext, MapService.class));
 
 
 		//Register for broadcast on bluetooth-events
@@ -102,6 +105,8 @@ public class ServiceInterface {
 	public void onDestroy() {
 		beaconServiceBindCount--;
 		if( beaconServiceBindCount == 0 ) EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
+		mapServiceBindCount--;
+		if( mapServiceBindCount == 0 ) EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
 
 		EventBus.getDefault().unregister(this);
 		mContext.unregisterReceiver(btReceive);
@@ -117,8 +122,9 @@ public class ServiceInterface {
 		else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
 			Log.d(TAG, "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
+			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
 			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, "debug map 1"));
 
 		}
 	}

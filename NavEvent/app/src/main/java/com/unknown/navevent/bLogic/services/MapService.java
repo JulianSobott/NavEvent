@@ -154,6 +154,7 @@ public class MapService extends Service {
 	/////////////////////////////////////////////////////////
 
 	private final static String SEP_CHAR = ";";//Separates items in a file
+	private final static String URL_TO_SERVER = "192.168.2.103";
 
 	//Returns the file for the specified path
 	private File getFile(String filename ) {
@@ -309,14 +310,14 @@ public class MapService extends Service {
 		return string;
 	}
 
-	private void downloadMap( String mapName ) {
+	private void downloadMap( String mapName ) {//todo: select map by id instead of name
 		//todo
 
 		try {
 			MapIR newMap = new MapIR();
 
 			//Connect
-			URL url = new URL("http://10.0.0.2/downloadMap.php");//todo change URL
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_map.php");//todo change URL
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
@@ -336,11 +337,17 @@ public class MapService extends Service {
 			InputStream inputStream = connection.getInputStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
+			/*String result = "";//todo del
+			String line;
+			while( (line = reader.readLine()) != null) {
+				result += line;
+			}*/
+
 			//Write data to map
 			newMap.name = reader.readLine();
 			newMap.id = Integer.parseInt(reader.readLine());
 			newMap.majorID = Integer.parseInt(reader.readLine());
-			newMap.description = reader.readLine();
+			newMap.description = reader.readLine();//todo: test unicode characters
 			newMap.imagePath = reader.readLine();
 			//todo: download map
 
