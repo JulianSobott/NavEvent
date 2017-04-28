@@ -9,6 +9,7 @@ public class ServiceToActivityEvent {
 	public static final int EVENT_NEW_MAP_LOADED = 6;
 	public static final int EVENT_CURRENT_MAP_UNLOADED = 7;
 	public static final int EVENT_NO_LOCAL_MAPS_AVAILABLE = 8;
+	public static final int EVENT_MAP_DOWNLOADED = 9;
 
 	public final int message;
 

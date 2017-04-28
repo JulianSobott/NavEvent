@@ -144,6 +144,8 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 				setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));//Specific layout for iBeacons
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
+
+		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_LISTENER_STARTED));
 	}
 	private void stopListening() {
 		if( internBeaconMgr != null )

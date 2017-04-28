@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.MapUpdateEvent;
+import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -315,7 +316,7 @@ public class MapService extends Service {
 			MapIR newMap = new MapIR();
 
 			//Connect
-			URL url = new URL("http://10.0.0.2/downloadMap.php");
+			URL url = new URL("http://10.0.0.2/downloadMap.php");//todo change URL
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
@@ -386,11 +387,10 @@ public class MapService extends Service {
 				newMap.specialPlaces.put(placeName, tmpList);
 			}
 
-			saveLocalMap(newMap);
-
 			//Save downloaded map
 			saveLocalMap(newMap);
 
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
 
 			reader.close();
 			inputStream.close();
