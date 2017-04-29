@@ -42,9 +42,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     private SideBar bar;
     private Button sideOpen;
     private MapDisplayFragment mapDisplayFragment;
-    private static MapForTests activeMap;
     MapForTests mapFlur;
     MapForTests mapFlurKreuzung;
+    private static MapForTests activeMap;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         mapFlur = new MapForTests(list1, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflur), 2);
 
         mapFlurKreuzung = new MapForTests(list2, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflurkreuzung),3);
-
-        activeMap = mapFlur;
+        if (activeMap==null) {
+            activeMap=mapFlur;
+        }
 
         setContentView(R.layout.activity_main);
 		
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void showMapKreuz() {
         activeMap=mapFlurKreuzung;
         mapDisplayFragment.LoadBeacons();
+
     }
 
 
@@ -227,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void markBeacons(List<Integer> beaconIDs) {
+        //int [] IDArray= beaconIDs.toArray(new int[beaconIDs.size()]);
 
     }
     private MapForTests MapdataAdapter(MapData in){
@@ -238,6 +241,11 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         }
         MapForTests out=new MapForTests(newBeaconList,in.getImage(),in.getBeacons().size());
         return out;
+    }
+    public static boolean mapIsSelected(){
+        if (activeMap==null)
+            return false;
+        else return true;
     }
 
 }

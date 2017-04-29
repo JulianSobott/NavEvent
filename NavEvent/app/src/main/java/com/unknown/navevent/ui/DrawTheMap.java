@@ -31,19 +31,20 @@ public class DrawTheMap extends View implements View.OnTouchListener {
     MapForTests testMap;
     public DrawTheMap(Context context , MapForTests MapInput) {
         super(context);
-        testMap=MapInput;
-        BeaconNumber = testMap.getBeaconNumber();
-        x=new float[BeaconNumber];
-        y=new float[BeaconNumber];
-        beacon_isSelected=new boolean[BeaconNumber];
-        beaconTexture=new Bitmap[BeaconNumber];
+            testMap = MapInput;
+            BeaconNumber = testMap.getBeaconNumber();
+            x = new float[BeaconNumber];
+            y = new float[BeaconNumber];
+            beacon_isSelected = new boolean[BeaconNumber];
+            beaconTexture = new Bitmap[BeaconNumber];
 
-        for(int i=0; i<BeaconNumber;i++){
-            beaconTexture[i]=BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-            x[i]=(float)this.testMap.Beacons[i].getxCord();
-            y[i]=(float)this.testMap.Beacons[i].getyCord();
-        }
-        setOnTouchListener(this);
+            for (int i = 0; i < BeaconNumber; i++) {
+                beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
+                x[i] = (float) this.testMap.Beacons[i].getxCord();
+                y[i] = (float) this.testMap.Beacons[i].getyCord();
+            }
+            setOnTouchListener(this);
+
     }
 
     @Override
