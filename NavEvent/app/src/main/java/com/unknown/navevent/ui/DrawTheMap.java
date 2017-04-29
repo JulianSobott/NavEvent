@@ -40,8 +40,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
         for(int i=0; i<BeaconNumber;i++){
             beaconTexture[i]=BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-            x[i]=this.testMap.Beacons[i].getxCord();
-            y[i]=this.testMap.Beacons[i].getyCord();
+            x[i]=(float)this.testMap.Beacons[i].getxCord();
+            y[i]=(float)this.testMap.Beacons[i].getyCord();
         }
         setOnTouchListener(this);
     }
@@ -101,8 +101,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
         for(int i=0; i<BeaconNumber;i++){
             beaconTexture[i]=BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-            x[i]=this.testMap.Beacons[i].getxCord();
-            y[i]=this.testMap.Beacons[i].getyCord();
+            x[i]=(float)this.testMap.Beacons[i].getxCord();
+            y[i]=(float)this.testMap.Beacons[i].getyCord();
         }
     }
 

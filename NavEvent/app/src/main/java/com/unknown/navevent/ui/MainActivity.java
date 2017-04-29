@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.MainActivityLogic;
+import com.unknown.navevent.interfaces.BeaconData;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
 import com.unknown.navevent.interfaces.MapData;
@@ -211,7 +212,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void updateMap(MapData map) {
-		Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
+        activeMap=MapdataAdapter(map);
+        mapDisplayFragment.LoadBeacons();
+        Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -225,6 +228,16 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     @Override
     public void markBeacons(List<Integer> beaconIDs) {
 
+    }
+    private MapForTests MapdataAdapter(MapData in){
+        List <BeaconForTests> newBeaconList=new ArrayList<BeaconForTests>();
+        BeaconData[] oldBeacons;
+        oldBeacons= in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
+        for(int i=0;i<in.getBeacons().size();i++){
+            newBeaconList.add(new BeaconForTests(oldBeacons[i].getMapPositionX(),oldBeacons[i].getMapPositionY()));
+        }
+        MapForTests out=new MapForTests(newBeaconList,in.getImage(),in.getBeacons().size());
+        return out;
     }
 
 }
