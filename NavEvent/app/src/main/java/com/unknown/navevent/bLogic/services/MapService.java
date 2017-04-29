@@ -311,13 +311,11 @@ public class MapService extends Service {
 	}
 
 	private void downloadMap( String mapName ) {//todo: select map by id instead of name
-		//todo
-
 		try {
 			MapIR newMap = new MapIR();
 
 			//Connect
-			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_map.php");//todo change URL
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_get_map.php");//todo change URL
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
@@ -361,8 +359,8 @@ public class MapService extends Service {
 				beacon.positionX = Double.parseDouble(reader.readLine());
 				beacon.positionY = Double.parseDouble(reader.readLine());
 				beacon.description = reader.readLine();
-				newMap.beacons.put(beacon.id, beacon);
 
+				newMap.beacons.put(beacon.id, beacon);
 				newMap.beaconMap.put(beacon.minorID, beacon.id);
 			}
 
@@ -424,6 +422,55 @@ public class MapService extends Service {
 	}
 
 	private void findOnlineMap( String query ) {
-		//todo
+		List<MapIR> foundMaps = new ArrayList<>();
+
+		try {
+			//Connect
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_find_map.php");//todo change URL
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			OutputStream outputStream = connection.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+			String postData = URLEncoder.encode("query", "UTF-8") + "=" +
+					URLEncoder.encode(query, "UTF-8");
+
+			writer.write(postData);
+			writer.flush();
+			writer.close();
+			outputStream.close();
+
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+			/*String result = "";//todo del
+			String line;
+			while( (line = reader.readLine()) != null) {
+				result += line;
+			}*/
+
+			int tmpSize = Integer.parseInt(reader.readLine());
+			for( int i = 0 ; i < tmpSize ; i++ ) {
+				MapIR map = new MapIR();
+				map.name = reader.readLine();
+				map.id = Integer.parseInt(reader.readLine());
+				map.majorID = Integer.parseInt(reader.readLine());
+				map.description = reader.readLine();
+
+				foundMaps.add(map);
+			}
+
+			reader.close();
+			inputStream.close();
+			connection.disconnect();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//Return map if found any
+		EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS, foundMaps));
 	}
 }

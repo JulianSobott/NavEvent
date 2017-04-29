@@ -47,6 +47,7 @@ public class ServiceInterface {
 	//Map data
 	MapIR currentMap;//Current loaded map
 	List<MapIR> availableLocalMaps;//Already downloaded maps
+	List<MapIR> foundOnlineMaps;//Maps which were found after online search.
 	protected Context mContext;
 
 
@@ -122,9 +123,9 @@ public class ServiceInterface {
 		else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
 			Log.d(TAG, "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
 			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, "debug map 1"));
+			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_FIND_ONLINE_MAP, "apm"));
 
 		}
 	}
@@ -151,6 +152,11 @@ public class ServiceInterface {
 		else if (event.message == MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
 			Log.d(TAG, "onMessageEvent: EVENT_AVAIL_OFFLINE_MAPS_LOADED");
 			availableLocalMaps = event.maps;
+		}
+		else if (event.message == MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS) {
+			Log.d(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
+			foundOnlineMaps = event.maps;
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS));
 		}
 	}
 

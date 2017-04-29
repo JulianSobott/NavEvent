@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
+import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
@@ -59,7 +60,20 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 	@Override
 	public void getMap(String name) {
+		boolean contains = false;
+		for( MapIR map : serviceInterface.availableLocalMaps ) {
+			if( map.name.equals(name) ){
+				contains = true;
+				break;
+			}
+		}
 
+		if(contains) {//load offline
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, name));
+		}
+		else {//download map
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, name));
+		}
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
@@ -97,6 +111,14 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 			Log.d(TAG, "onMessageEvent: EVENT_NO_LOCAL_MAPS_AVAILABLE");
 
 			mResponder.switchToMapSelectActivity();
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
+			Log.d(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
+			//todo move to mapSelectAvtivity
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
+			Log.d(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
+			//todo
 		}
 	}
 	@Subscribe(threadMode = ThreadMode.MAIN)

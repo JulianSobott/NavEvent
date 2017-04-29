@@ -8,6 +8,7 @@ import java.util.List;
 public class MapUpdateEvent {
 	public static final int EVENT_MAP_LOADED = 1;
 	public static final int EVENT_AVAIL_OFFLINE_MAPS_LOADED = 2;
+	public static final int EVENT_FOUND_ONLINE_MAPS = 3;
 
 	public final int message;
 	public List<MapIR> maps;
