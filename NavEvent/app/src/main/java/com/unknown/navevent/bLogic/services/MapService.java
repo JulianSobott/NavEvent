@@ -35,6 +35,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -92,7 +93,7 @@ public class MapService extends Service {
 							}
 							else if( task.task == MapServiceEvent.EVENT_DOWNLOAD_MAP) {
 								Log.d(TAG, "mapThread: EVENT_DOWNLOAD_MAP");
-								downloadMap(task.mapName);
+								downloadMap(task.mapID);
 							}
 							else if( task.task == MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS) {
 								Log.d(TAG, "mapThread: EVENT_GET_ALL_LOCAL_MAPS");
@@ -100,7 +101,7 @@ public class MapService extends Service {
 							}
 							else if( task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP) {
 								Log.d(TAG, "mapThread: EVENT_FIND_ONLINE_MAP");
-								findOnlineMap(task.mapName);
+								findOnlineMap(task.query);
 							}
 							else if( task.task == MapServiceEvent.EVENT_STOP_SELF) {
 								Log.d(TAG, "mapThread: EVENT_STOP_SELF");
@@ -154,10 +155,10 @@ public class MapService extends Service {
 	/////////////////////////////////////////////////////////
 
 	private final static String SEP_CHAR = ";";//Separates items in a file
-	private final static String URL_TO_SERVER = "192.168.2.103";
+	private final static String URL_TO_SERVER = "192.168.2.103";//todo change URL
 
 	//Returns the file for the specified path
-	private File getFile(String filename ) {
+	private File getFile( String filename ) {
 		File file =  new File(this.getExternalFilesDir(null).getAbsolutePath() + "/" + filename);//Public/debug
 		//File file = new File(mContext.getFilesDir() + filename);//Private
 		file.getParentFile().mkdirs();//Create directories if the parent dir doesn't exit.
@@ -228,7 +229,7 @@ public class MapService extends Service {
 
 			bufReader.close();
 
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED));//todo handle event
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Toast.makeText(this, "Failed to load map '" + map.name + "'", Toast.LENGTH_LONG).show();
@@ -310,12 +311,12 @@ public class MapService extends Service {
 		return string;
 	}
 
-	private void downloadMap( String mapName ) {//todo: select map by id instead of name
+	private void downloadMap( int mapID ) {
 		try {
 			MapIR newMap = new MapIR();
 
 			//Connect
-			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_get_map.php");//todo change URL
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_get_map.php");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
@@ -324,8 +325,8 @@ public class MapService extends Service {
 			OutputStream outputStream = connection.getOutputStream();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-			String postData = URLEncoder.encode("mapName", "UTF-8") + "=" +
-					URLEncoder.encode(mapName, "UTF-8");
+			String postData = URLEncoder.encode("mapID", "UTF-8") + "=" +
+					URLEncoder.encode(""+mapID, "UTF-8");
 
 			writer.write(postData);
 			writer.flush();
@@ -341,63 +342,99 @@ public class MapService extends Service {
 				result += line;
 			}*/
 
-			//Write data to map
-			newMap.name = reader.readLine();
-			newMap.id = Integer.parseInt(reader.readLine());
-			newMap.majorID = Integer.parseInt(reader.readLine());
-			newMap.description = reader.readLine();//todo: test unicode characters
-			newMap.imagePath = reader.readLine();
-			//todo: download map
+			String queryRespond = reader.readLine();
 
-			//Beacons
-			int tmpSize = Integer.parseInt(reader.readLine());
-			for( int i = 0 ; i < tmpSize ; i++ ) {
-				MapBeaconIR beacon = new MapBeaconIR();
-				beacon.name = reader.readLine();
-				beacon.id = Integer.parseInt(reader.readLine());
-				beacon.minorID = Integer.parseInt(reader.readLine());
-				beacon.positionX = Double.parseDouble(reader.readLine());
-				beacon.positionY = Double.parseDouble(reader.readLine());
-				beacon.description = reader.readLine();
+			if(queryRespond.equals("found map"))//Found map id on server.
+			{
+				//Write data to map
+				newMap.name = reader.readLine();
+				newMap.id = Integer.parseInt(reader.readLine());
+				newMap.majorID = Integer.parseInt(reader.readLine());
+				newMap.description = reader.readLine();
+				newMap.imagePath = reader.readLine();
 
-				newMap.beacons.put(beacon.id, beacon);
-				newMap.beaconMap.put(beacon.minorID, beacon.id);
-			}
+				//Beacons
+				int tmpSize = Integer.parseInt(reader.readLine());
+				for (int i = 0; i < tmpSize; i++) {
+					MapBeaconIR beacon = new MapBeaconIR();
+					beacon.name = reader.readLine();
+					beacon.id = Integer.parseInt(reader.readLine());
+					beacon.minorID = Integer.parseInt(reader.readLine());
+					beacon.positionX = Double.parseDouble(reader.readLine());
+					beacon.positionY = Double.parseDouble(reader.readLine());
+					beacon.description = reader.readLine();
 
-			//Ordinary places
-			tmpSize = Integer.parseInt(reader.readLine());
-			for( int i = 0 ; i < tmpSize ; i++ ) {
-				String placeName = reader.readLine();
-				List<Integer> tmpList = new ArrayList<>();
-
-				int tmpSize2 = Integer.parseInt(reader.readLine());
-				for( int j = 0 ; j < tmpSize2 ; j++ ) {
-					tmpList.add(Integer.parseInt(reader.readLine()));
+					newMap.beacons.put(beacon.id, beacon);
+					newMap.beaconMap.put(beacon.minorID, beacon.id);
 				}
 
-				newMap.ordinaryPlaces.put(placeName, tmpList);
-			}
+				//Ordinary places
+				tmpSize = Integer.parseInt(reader.readLine());
+				for (int i = 0; i < tmpSize; i++) {
+					String placeName = reader.readLine();
+					List<Integer> tmpList = new ArrayList<>();
 
-			//Special places
-			tmpSize = Integer.parseInt(reader.readLine());
-			for( int i = 0 ; i < tmpSize ; i++ ) {
-				String placeName = reader.readLine();
-				List<Integer> tmpList = new ArrayList<>();
+					int tmpSize2 = Integer.parseInt(reader.readLine());
+					for (int j = 0; j < tmpSize2; j++) {
+						tmpList.add(Integer.parseInt(reader.readLine()));
+					}
 
-				int tmpSize2 = Integer.parseInt(reader.readLine());
-				for( int j = 0 ; j < tmpSize2 ; j++ ) {
-					tmpList.add(Integer.parseInt(reader.readLine()));
+					newMap.ordinaryPlaces.put(placeName, tmpList);
 				}
 
-				newMap.specialPlaces.put(placeName, tmpList);
+				//Special places
+				tmpSize = Integer.parseInt(reader.readLine());
+				for (int i = 0; i < tmpSize; i++) {
+					String placeName = reader.readLine();
+					List<Integer> tmpList = new ArrayList<>();
+
+					int tmpSize2 = Integer.parseInt(reader.readLine());
+					for (int j = 0; j < tmpSize2; j++) {
+						tmpList.add(Integer.parseInt(reader.readLine()));
+					}
+
+					newMap.specialPlaces.put(placeName, tmpList);
+				}
+
+				//Download image
+				downloadImage( newMap.imagePath );
+
+				//Save downloaded map
+				saveLocalMap(newMap);
+
+				//Update available local maps
+				getAllLocalMaps();
+
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
+
+			}
+				reader.close();
+				inputStream.close();
+				connection.disconnect();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void downloadImage( String path ) {
+		try {
+			//Connect
+			URL url = new URL("http://"+URL_TO_SERVER+"/uploads/"+path);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true);
+
+			InputStream inputStream = connection.getInputStream();
+
+			FileOutputStream outputStream = new FileOutputStream(getFile("mapImgs/"+path));
+
+			int bytesRead;
+			byte[] buffer = new byte[4096];
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, bytesRead);
 			}
 
-			//Save downloaded map
-			saveLocalMap(newMap);
-
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
-
-			reader.close();
+			outputStream.close();
 			inputStream.close();
 			connection.disconnect();
 
@@ -415,7 +452,7 @@ public class MapService extends Service {
 				list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader)), Integer.parseInt(getNextString(bufReader))));
 				bufReader.close();
 			}
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));//todo handle event
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -426,7 +463,7 @@ public class MapService extends Service {
 
 		try {
 			//Connect
-			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_find_map.php");//todo change URL
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_find_map.php");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);

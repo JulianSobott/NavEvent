@@ -64,8 +64,8 @@ public class ServiceInterface {
 		mContext.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 
 
-		{//Debug-map
-			currentMap = new MapIR();
+		{//Debug-map todo del
+			/*currentMap = new MapIR();
 
 			currentMap.name = "debug map 1";
 			currentMap.id = 1;
@@ -100,7 +100,7 @@ public class ServiceInterface {
 				specialPlaceAuditoriums.add(2);
 				specialPlaceAuditoriums.add(3);
 				currentMap.specialPlaces.put("Auditorium", specialPlaceAuditoriums);
-			}
+			}*/
 		}
 	}
 	public void onDestroy() {
@@ -125,7 +125,8 @@ public class ServiceInterface {
 
 			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
 			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_SAVE_MAP_LOCAL, currentMap));//todo del
-			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_FIND_ONLINE_MAP, "apm"));
+			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, 1));
+			//EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_FIND_ONLINE_MAP, "map"));
 
 		}
 	}
@@ -152,6 +153,7 @@ public class ServiceInterface {
 		else if (event.message == MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
 			Log.d(TAG, "onMessageEvent: EVENT_AVAIL_OFFLINE_MAPS_LOADED");
 			availableLocalMaps = event.maps;
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED));
 		}
 		else if (event.message == MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS) {
 			Log.d(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");

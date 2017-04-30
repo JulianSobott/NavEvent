@@ -13,7 +13,8 @@ public class MapServiceEvent {
 
 	public final int task;
 	public MapIR map;
-	public String mapName;//Or search query
+	public String query;//Search query
+	public int mapID;
 
 	public MapServiceEvent(int task) {
 		this.task = task;
@@ -22,8 +23,12 @@ public class MapServiceEvent {
 		this.task = task;
 		this.map = map;
 	}
-	public MapServiceEvent(int task, String mapName) {
+	public MapServiceEvent(int task, String query) {
 		this.task = task;
-		this.mapName = mapName;
+		this.query = query;
+	}
+	public MapServiceEvent(int task, int mapID) {
+		this.task = task;
+		this.mapID = mapID;
 	}
 }

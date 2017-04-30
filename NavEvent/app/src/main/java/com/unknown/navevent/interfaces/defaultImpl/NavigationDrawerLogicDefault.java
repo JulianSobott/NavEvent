@@ -20,8 +20,8 @@ public class NavigationDrawerLogicDefault implements NavigationDrawerLogicInterf
 		return b;
 	}
 
-	public void findSpecialBeacon(String name) {} // todo: add respond to MainActivityUI
-	public void findAllSpecialBeacon(String name) {} // todo: add respond to MainActivityUI
+	public void findSpecialBeacon(String name) {}
+	public void findAllSpecialBeacon(String name) {}
 
 	public void searchFor(String name) {
 		List<BeaconData> b = new ArrayList<BeaconData>();

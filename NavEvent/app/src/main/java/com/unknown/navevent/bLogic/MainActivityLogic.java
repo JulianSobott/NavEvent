@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
@@ -59,26 +60,30 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	}
 
 	@Override
-	public void getMap(String name) {
+	public void getMap(int id) {
 		boolean contains = false;
 		for( MapIR map : serviceInterface.availableLocalMaps ) {
-			if( map.name.equals(name) ){
+			if( map.getID() == id ){
 				contains = true;
 				break;
 			}
 		}
 
 		if(contains) {//load offline
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, name));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, id));
 		}
 		else {//download map
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, name));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, id));
 		}
 	}
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
+		if( event.message == ServiceToActivityEvent.EVENT_LISTENER_STARTED) {
+			Log.d(TAG, "onMessageEvent: EVENT_LISTENER_STARTED");
+			//todo?
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
 			Log.d(TAG, "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
 
 			mResponder.bluetoothDeactivated();
@@ -112,13 +117,22 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 			mResponder.switchToMapSelectActivity();
 		}
-		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
-			Log.d(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
-			//todo move to mapSelectAvtivity
+		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
+			Log.d(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
+
+			//todo move to mapSelectActivity
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.d(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			//todo
+			//todo move to mapSelectActivity
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
+			Log.d(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
+			//todo move to mapSelectActivity
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
+			Log.d(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");
+			//todo move to mapSelectActivity
 		}
 	}
 	@Subscribe(threadMode = ThreadMode.MAIN)
@@ -143,7 +157,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 				if( searchingForCurrentMap && !serviceInterface.availableLocalMaps.isEmpty()) {
 					for (BeaconIR beacon : event.beacons) {
 						for (MapIR map : serviceInterface.availableLocalMaps) {
-							if (beacon.majorID == map.majorID) {//Found a beacon corresponding to a local map
+							if (beacon.majorID == map.getMajorID()) {//Found a beacon corresponding to a local map
 								searchingForCurrentMap = false;
 								mNoCorrespondingBeaconHandler.removeMessages(HANDLER_NO_CORRESPONDING_BEACON_DELAY);//Stop delay for "no beacon found"
 								mResponder.updateMap(map);//Post found map to ui
