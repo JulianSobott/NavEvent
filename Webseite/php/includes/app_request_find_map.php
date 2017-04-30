@@ -16,18 +16,16 @@ if(isset($_POST['query']))
 	$sql = "SELECT name, id, major_id, description FROM maps WHERE name LIKE '%" . $query . "%' ORDER BY name LIMIT " . $limit;
 	$res = mysqli_query($con, $sql);
 	
-	echo mysqli_num_rows($res) . "
-";
+	echo mysqli_num_rows($res) . chr(0x0A);
 	while( $result = mysqli_fetch_assoc($res) )
 	{
-		echo $result['name'] . "
-"			. $result['id'] . "
-"			. $result['major_id'] . "
-"			. $result['description'] . "
-";
+		echo $result['name'] . chr(0x0A)
+			. $result['id'] . chr(0x0A)
+			. $result['major_id'] . chr(0x0A)
+			. $result['description'] . chr(0x0A);
 	}
 	
 }
-else echo "Wrong argument";
+else echo "Wrong argument" . chr(0x0A);
 
 ?>

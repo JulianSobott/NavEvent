@@ -5,45 +5,43 @@ error_reporting(E_ALL);
 //include 'DatenbankConnect.inc.php';
 
 //Read from database
-if(isset($_POST['mapName']))
+if(isset($_POST['mapID']))
 {
 	$con = mysqli_connect("localhost", "root", "password", "navevent01");
 	
 	//Select map data
-	$mapName = $_POST['mapName'];
-	$sql = "SELECT * FROM maps WHERE name='" . $mapName . "'";
+	$mapID = $_POST['mapID'];
+	$sql = "SELECT * FROM maps WHERE id='" . $mapID . "'";
 	$res = mysqli_query($con, $sql);
 	
 	if( $result = mysqli_fetch_assoc($res) )//Select only first result, if more than one
 	{
+		echo "found map" . chr(0x0A);
 		
-		echo $result['name'] . "
-"			. $result['id'] . "
-"			. $result['major_id'] . "
-"			. $result['description'] . "
-"			. $result['img_file'] . "
-";
+		echo $result['name'] . chr(0x0A)
+			. $result['id'] . chr(0x0A)
+			. $result['major_id'] . chr(0x0A)
+			. $result['description'] . chr(0x0A)
+			. $result['img_file'] . chr(0x0A);
 
 		//Select beacon data
-		$mapID = $result['id'];
 		$o_places = array();
 		$s_places = array();
 		
 		$sql = "SELECT * FROM beacons WHERE fk_map_id='" . $mapID . "'";
 		$res = mysqli_query($con, $sql);
 		
-		echo mysqli_num_rows($res) . "
-";
+		echo mysqli_num_rows($res) . chr(0x0A);
 		while( $result = mysqli_fetch_assoc($res) )//Select all beacons
 		{
 			$beacon_id = $result['id'];
-			echo $result['name'] . "
-"				. $beacon_id . "
-"				. $result['minor_id'] . "
-"				. $result['pos_x'] . "
-"				. $result['pos_y'] . "
-"				. $result['description'] . "
-";
+			echo $result['name'] . chr(0x0A)
+				. $beacon_id . chr(0x0A)
+				. $result['minor_id'] . chr(0x0A)
+				. $result['pos_x'] . chr(0x0A)
+				. $result['pos_y'] . chr(0x0A)
+				. $result['description'] . chr(0x0A);
+				
 			if( isset($result['fk_ordinary']) )
 			{
 				$place_id = $result['fk_ordinary'];
@@ -59,46 +57,40 @@ if(isset($_POST['mapName']))
 		}
 		
 		//Select ordinary places
-		echo count($o_places) . "
-";
+		echo count($o_places) . chr(0x0A);
 		foreach( $o_places as $place_id=>$arrayList )
 		{
 			$res = mysqli_query($con, "SELECT * FROM ordinary_places WHERE id='".$place_id."'");
 			if( $result = mysqli_fetch_assoc($res) )
 			{
-				echo $result['name'] . "
-"					. count($arrayList) . "
-";
+				echo $result['name'] . chr(0x0A)
+					. count($arrayList) . chr(0x0A);
 				for( $j = 0 ; $j < count($arrayList) ; $j++ )
 				{
-					echo $arrayList[$j] . "
-";
+					echo $arrayList[$j] . chr(0x0A);
 				}
 			}
 		}
 		
 		//Select special places
-		echo count($s_places) . "
-";
+		echo count($s_places) . chr(0x0A);
 		foreach( $s_places as $place_id=>$arrayList )
 		{
 			$res = mysqli_query($con, "SELECT * FROM special_places WHERE id='".$place_id."'");
 			if( $result = mysqli_fetch_assoc($res) )
 			{
-				echo $result['name'] . "
-"					. count($arrayList) . "
-";
+				echo $result['name'] . chr(0x0A)
+					. count($arrayList) . chr(0x0A);
 				for( $j = 0 ; $j < count($arrayList) ; $j++ )
 				{
-					echo $arrayList[$j] . "
-";
+					echo $arrayList[$j] . chr(0x0A);
 				}
 			}
 		}
 		
 	}
-	
+	else echo "No such map found" . chr(0x0A);
 }
-else echo "Wrong argument";
+else echo "Wrong argument" . chr(0x0A);
 
 ?>
