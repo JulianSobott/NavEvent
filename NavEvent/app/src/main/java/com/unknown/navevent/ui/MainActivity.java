@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 				builder.setPositiveButton(android.R.string.ok, null);
 				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-					@TargetApi(23)//todo find out what this is
+					@TargetApi(23)
 					@Override
 					public void onDismiss(DialogInterface dialog) {
 						requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);

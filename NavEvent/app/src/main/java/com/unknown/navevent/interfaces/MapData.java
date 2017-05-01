@@ -10,6 +10,9 @@ public interface MapData
 	//Returns the human-readable name of the Map.
 	String getName();
 
+	//Returns the id of the Map.
+	int getID();
+
 	//Returns the image which represents the map.
 	Bitmap getImage();
 

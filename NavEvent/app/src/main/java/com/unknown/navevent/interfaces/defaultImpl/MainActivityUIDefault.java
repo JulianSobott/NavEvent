@@ -12,7 +12,7 @@ public class MainActivityUIDefault implements MainActivityUI
 		mIfc = new MainActivityLogicDefault(this);
 	}
 
-	public void initCompleted() { mIfc.getMap("DefaultMap"); }//Not called necessarily
+	public void initCompleted() { mIfc.getMap(1); }//Not called necessarily
 	public void notSupported(String errorcode) {}
 	public void bluetoothDeactivated() {}
 	public void askForPermissions() { mIfc.retryBeaconConnection(); }

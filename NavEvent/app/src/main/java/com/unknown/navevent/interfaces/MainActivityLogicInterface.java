@@ -14,5 +14,5 @@ public interface MainActivityLogicInterface
 	void retryBeaconConnection();
 
 	//Starts loading of active map, if not already loaded. Will respond with MainActivityUI.updateMap()
-	void getMap(String name);
+	void getMap(int id);
 }
