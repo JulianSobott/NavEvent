@@ -43,6 +43,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 msif.downloadMap(maps.get(i));
+                //TODO: Add intent to switch to main activity if not hanedl through the logic
             }
         });
     }

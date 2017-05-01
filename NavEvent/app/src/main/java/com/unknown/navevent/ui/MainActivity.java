@@ -1,5 +1,6 @@
 package com.unknown.navevent.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.Manifest;
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     }
 
     public static void updateDisplayedText(){
-        text.changeText(activeMap.getStringOfDisplayedBeacon(activeMap.getSelectedBeacon()));
+
     }
 
     public static MapForTests getMap(){
@@ -205,10 +206,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void switchToMapSelectActivity() {
-		//todo: first create MapSelect activity and then use this code
-		/*Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
+		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
 		startActivity(intent);
-		finish();*/
+		finish();
 	    Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
     }
 
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void updateMap(MapData map) {
         activeMap=MapdataAdapter(map);
         mapDisplayFragment.LoadBeacons();
-        Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Map '"+map.getName()+" loaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -229,8 +229,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void markBeacons(List<Integer> beaconIDs) {
-        //int [] IDArray= beaconIDs.toArray(new int[beaconIDs.size()]);
-
+        activeMap.selectBeacons(beaconIDs);
     }
     private MapForTests MapdataAdapter(MapData in){
         List <BeaconForTests> newBeaconList=new ArrayList<BeaconForTests>();
