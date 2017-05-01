@@ -9,6 +9,8 @@ public class MapUpdateEvent {
 	public static final int EVENT_MAP_LOADED = 1;
 	public static final int EVENT_AVAIL_OFFLINE_MAPS_LOADED = 2;
 	public static final int EVENT_FOUND_ONLINE_MAPS = 3;
+	public static final int EVENT_FOUND_ONLINE_MAP_BY_ID = 4;
+	public static final int EVENT_MAP_DOWNLOADED = 5;
 
 	public final int message;
 	public List<MapIR> maps;

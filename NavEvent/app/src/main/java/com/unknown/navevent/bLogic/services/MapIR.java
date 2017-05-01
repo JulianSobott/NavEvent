@@ -62,4 +62,7 @@ public class MapIR implements MapData {
 		for( int i = 0 ; i < beacons.size() ; i++ ) newList.add( beacons.valueAt(i) );
 		return newList;
 	}
+	public SparseArray<MapBeaconIR> getBeaconsIR() {
+		return beacons;
+	}
 }

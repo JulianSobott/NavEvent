@@ -5,13 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.MapUpdateEvent;
-import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,13 +29,11 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,9 +50,11 @@ public class MapService extends Service {
 	private Thread mBackgroundThread;
 	private AtomicBoolean mBackgroundThreadRunning = new AtomicBoolean();
 	private AtomicBoolean mBackgroundThreadShouldStop = new AtomicBoolean();
-	private AtomicInteger mBackgroundThreadShouldWait = new AtomicInteger();//In 100 milliseconds
+	private int mBackgroundThreadShouldWait = 5;//Milliseconds to sleep in thread. Will be automatically set longer after start, to stop battery drain.
+	private int mBackgroundThreadSlowdownCount = 0;
 
 	private Queue<MapServiceEvent> backgroundTaskQueue = new ConcurrentLinkedQueue<>();
+
 
 
 	/////////////////////////////////////////////////////////
@@ -65,11 +65,10 @@ public class MapService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-		EventBus.getDefault().register(this);
+
 
 		//Thread
 		mBackgroundThreadShouldStop.set(false);
-		mBackgroundThreadShouldWait.set(10);
 
 		mBackgroundThread = new Thread(new Runnable() {
 			@Override
@@ -78,34 +77,48 @@ public class MapService extends Service {
 				try {
 					mBackgroundThreadRunning.set(true);
 					while( !mBackgroundThreadShouldStop.get() ) {//Loop until thread should stop
-						mBackgroundThreadShouldWait.set( 10 );
-						while( mBackgroundThreadShouldWait.getAndDecrement() > 0 ) Thread.sleep(100);
+						Thread.sleep( mBackgroundThreadShouldWait );//Wait to save cpu time
+
+						if( mBackgroundThreadShouldWait < 1000 ) {
+							mBackgroundThreadSlowdownCount++;
+							if (mBackgroundThreadSlowdownCount >= 100) {//Slow down event. From 5 ms to 100 ms after 500 ms. From 100 ms to 1 s after 10 s.
+								if (mBackgroundThreadShouldWait == 5)
+									mBackgroundThreadShouldWait = 100;
+								else mBackgroundThreadShouldWait = 1000;
+								mBackgroundThreadSlowdownCount = 0;
+							}
+						}
 
 						while( ( task = backgroundTaskQueue.poll() ) != null ) {
+							mBackgroundThreadShouldWait = 5;//Set to high frequency
 
 							if( task.task == MapServiceEvent.EVENT_LOAD_MAP_LOCAL) {
-								Log.d(TAG, "mapThread: EVENT_LOAD_MAP_LOCAL");
-								loadLocalMap(task.map);
+								Log.i(TAG, "mapThread: EVENT_LOAD_MAP_LOCAL");
+								loadLocalMap(task.mapID);
 							}
 							else if( task.task == MapServiceEvent.EVENT_SAVE_MAP_LOCAL) {
-								Log.d(TAG, "mapThread: EVENT_SAVE_MAP_LOCAL");
+								Log.i(TAG, "mapThread: EVENT_SAVE_MAP_LOCAL");
 								saveLocalMap(task.map);
 							}
 							else if( task.task == MapServiceEvent.EVENT_DOWNLOAD_MAP) {
-								Log.d(TAG, "mapThread: EVENT_DOWNLOAD_MAP");
+								Log.i(TAG, "mapThread: EVENT_DOWNLOAD_MAP");
 								downloadMap(task.mapID);
 							}
 							else if( task.task == MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS) {
-								Log.d(TAG, "mapThread: EVENT_GET_ALL_LOCAL_MAPS");
+								Log.i(TAG, "mapThread: EVENT_GET_ALL_LOCAL_MAPS");
 								getAllLocalMaps();
 							}
-							else if( task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP) {
-								Log.d(TAG, "mapThread: EVENT_FIND_ONLINE_MAP");
+							else if( task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_QUERY) {
+								Log.i(TAG, "mapThread: EVENT_FIND_ONLINE_MAP_BY_QUERY");
 								findOnlineMap(task.query);
 							}
+							else if( task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_ID) {
+								Log.i(TAG, "mapThread: EVENT_FIND_ONLINE_MAP_BY_ID");
+								findOnlineMap(task.mapID);
+							}
 							else if( task.task == MapServiceEvent.EVENT_STOP_SELF) {
-								Log.d(TAG, "mapThread: EVENT_STOP_SELF");
-								stopSelf();
+								Log.i(TAG, "mapThread: EVENT_STOP_SELF");
+								mBackgroundThreadShouldStop.set( true );
 							}
 						}
 					}
@@ -117,8 +130,11 @@ public class MapService extends Service {
 		});
 		mBackgroundThread.start();
 
+		EventBus.getDefault().register(this);
+
 		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED));
 	}
+
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -131,6 +147,7 @@ public class MapService extends Service {
 
 		mBackgroundThreadShouldStop.set(true);
 		try {
+			while (mBackgroundThreadRunning.get()) Thread.sleep(10);
 			mBackgroundThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -144,7 +161,7 @@ public class MapService extends Service {
 	// Event handling
 	/////////////////////////////////////////////////////////
 
-	@Subscribe(threadMode = ThreadMode.POSTING)
+	@Subscribe(threadMode = ThreadMode.ASYNC)
 	public void onMessageEvent(MapServiceEvent event) {
 		backgroundTaskQueue.add( event );
 	}
@@ -165,13 +182,15 @@ public class MapService extends Service {
 		return file;
 	}
 
-	private void loadLocalMap( MapIR map ) {
+	private void loadLocalMap( int mapID ) {
 		try {
-			if( !getFile("maps/" + map.id + ".mapDat").exists()) {
+			MapIR map = new MapIR();
+
+			if( !getFile("maps/" + mapID + ".mapDat").exists()) {
 				Toast.makeText(this, "Map '" + map.name + "' does not exist!", Toast.LENGTH_LONG).show();
 				return;
 			}
-			BufferedReader bufReader = new BufferedReader( new InputStreamReader(new FileInputStream(getFile("maps/"+map.id+".mapDat")), "UTF-8"));
+			BufferedReader bufReader = new BufferedReader( new InputStreamReader(new FileInputStream(getFile("maps/"+mapID+".mapDat")), "UTF-8"));
 
 			map.name = getNextString(bufReader);
 			map.id = Integer.parseInt(getNextString(bufReader));
@@ -229,10 +248,12 @@ public class MapService extends Service {
 
 			bufReader.close();
 
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED));
+			List<MapIR> retList = new ArrayList<>();
+			retList.add(map);
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED, retList));
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(this, "Failed to load map '" + map.name + "'", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Failed to load map '" + mapID + "'", Toast.LENGTH_LONG).show();
 		}
 	}
 	//Reads the next piece of data from a file (items are separated by SEP_CHAR)
@@ -405,7 +426,9 @@ public class MapService extends Service {
 				//Update available local maps
 				getAllLocalMaps();
 
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
+				List<MapIR> retList = new ArrayList<>();
+				retList.add(newMap);
+				EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOADED, retList));
 
 			}
 				reader.close();
@@ -447,10 +470,12 @@ public class MapService extends Service {
 		try {
 			File []files = getFile("maps/").listFiles();
 			List<MapIR> list = new ArrayList<>();
-			for (File file : files) {
-				BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
-				list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader)), Integer.parseInt(getNextString(bufReader))));
-				bufReader.close();
+			if( files != null ) {
+				for (File file : files) {
+					BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+					list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader)), Integer.parseInt(getNextString(bufReader))));
+					bufReader.close();
+				}
 			}
 			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));
 		} catch (Exception e) {
@@ -509,5 +534,61 @@ public class MapService extends Service {
 		}
 		//Return map if found any
 		EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS, foundMaps));
+	}
+
+	private void findOnlineMap( int majorID ) {
+		List<MapIR> foundMaps = new ArrayList<>();
+
+		try {
+			//Connect
+			URL url = new URL("http://"+URL_TO_SERVER+"/php/includes/app_request_find_map.php");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoInput(true);
+			connection.setDoOutput(true);
+
+			OutputStream outputStream = connection.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+
+			String postData = URLEncoder.encode("majorID", "UTF-8") + "=" +
+					URLEncoder.encode(""+majorID, "UTF-8");
+
+			writer.write(postData);
+			writer.flush();
+			writer.close();
+			outputStream.close();
+
+			InputStream inputStream = connection.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+			/*String result = "";//todo del
+			String line;
+			while( (line = reader.readLine()) != null) {
+				result += line;
+			}*/
+
+			int tmpSize = Integer.parseInt(reader.readLine());
+			for( int i = 0 ; i < tmpSize ; i++ ) {
+				MapIR map = new MapIR();
+				map.name = reader.readLine();
+				map.id = Integer.parseInt(reader.readLine());
+				map.majorID = Integer.parseInt(reader.readLine());
+				map.description = reader.readLine();
+
+				foundMaps.add(map);
+			}
+
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_FOUND_ONLINE_MAP_BY_ID, foundMaps));
+
+			reader.close();
+			inputStream.close();
+			connection.disconnect();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (RuntimeException e){
+			e.printStackTrace();
+		}
+		//Return map if found any
 	}
 }
