@@ -17,6 +17,7 @@ public interface MapSelectActivityLogicInterface
 
 	//Returns true, if connection to server is available
 	boolean isOnline();
+
 	//Load maps which match to the string \p name. Responses in MapSelectActivityUI.onlineMapsRespond(), MapSelectActivityUI.downloadFailed() or MapSelectActivityUI.isOffline()
 	void loadOnlineMaps(String name);
 

@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         MapForTests out=new MapForTests(newBeaconList,in.getImage(),in.getBeacons().size());
         return out;
     }
+
     public static boolean mapIsSelected(){
         if (activeMap==null)
             return false;
