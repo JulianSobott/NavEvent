@@ -32,7 +32,11 @@ import java.util.List;
 public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private static final String TAG = "BeaconService";
 
-	//BeaconManagement
+
+	/////////////////////////////////////////////////////////
+	// Data
+	/////////////////////////////////////////////////////////
+
 	private BeaconManager internBeaconMgr;
 
 	private boolean isBluetoothSupported = true;
@@ -41,7 +45,11 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
 	public List<BeaconIR> beacons = new ArrayList<>();
-	
+
+
+	/////////////////////////////////////////////////////////
+	// Lifecycle methods
+	/////////////////////////////////////////////////////////
 
 	@Override
 	public void onCreate() {
@@ -65,20 +73,29 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	}
 
 
+	/////////////////////////////////////////////////////////
+	// Event handling
+	/////////////////////////////////////////////////////////
+
 	@Subscribe(threadMode = ThreadMode.ASYNC)
 	public void onMessageEvent(BeaconServiceEvent event) {
 		if( event.message == BeaconServiceEvent.EVENT_START_LISTENING) {
-			Log.d(TAG, "onMessageEvent: START_LISTENING");
+			Log.i(TAG, "onMessageEvent: START_LISTENING");
 			startBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_LISTENING) {
-			Log.d(TAG, "onMessageEvent: START_LISTENING");
+			Log.i(TAG, "onMessageEvent: START_LISTENING");
 			stopBeaconManager();
 		}
 		else if( event.message == BeaconServiceEvent.EVENT_STOP_SELF) {
 			stopSelf();
 		}
 	}
+
+
+	/////////////////////////////////////////////////////////
+	// Beacon methods
+	/////////////////////////////////////////////////////////
 
 	private void startBeaconManager() {
 		verifyBluetooth();
@@ -97,8 +114,6 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			stopListening();
 		}
 	}
-
-
 
 	//Returns true if bluetooth is enabled
 	private void verifyBluetooth() {
@@ -144,6 +159,8 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 				setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));//Specific layout for iBeacons
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
+
+		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_LISTENER_STARTED));
 	}
 	private void stopListening() {
 		if( internBeaconMgr != null )

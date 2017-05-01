@@ -18,5 +18,5 @@ public class MainActivityLogicDefault implements MainActivityLogicInterface
 
 	public void retryBeaconConnection() { mResponder.initCompleted(); }
 
-	public void getMap(String name) { mResponder.updateMap(new MapDataDefault()); mResponder.updateBeaconPosition(0); } //Second call not necessarily
+	public void getMap(int id) { mResponder.updateMap(new MapDataDefault()); mResponder.updateBeaconPosition(0); } //Second call not necessarily
 }
