@@ -1,5 +1,6 @@
 package com.unknown.navevent.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.Manifest;
@@ -13,13 +14,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.MainActivityLogic;
+import com.unknown.navevent.interfaces.BeaconData;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
 import com.unknown.navevent.interfaces.MapData;
@@ -41,9 +45,10 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     private SideBar bar;
     private Button sideOpen;
     private MapDisplayFragment mapDisplayFragment;
-    private static MapForTests activeMap;
     MapForTests mapFlur;
     MapForTests mapFlurKreuzung;
+    private static MapForTests activeMap;
+    private float displayDensity;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +69,16 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         mapFlur = new MapForTests(list1, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflur), 2);
 
         mapFlurKreuzung = new MapForTests(list2, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflurkreuzung),3);
-
-        activeMap = mapFlur;
+        if (activeMap==null) {
+            activeMap=mapFlur;
+        }
 
         setContentView(R.layout.activity_main);
 		
 		//Creating background-logic for this activity
 		mIfc = new MainActivityLogic(this);
 		mIfc.onCreate(this);
-		
+
 
         bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
         text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
@@ -110,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     }
 
     public static void updateDisplayedText(){
-        text.changeText(activeMap.getStringOfDisplayedBeacon(activeMap.getSelectedBeacon()));
+
     }
 
     public static MapForTests getMap(){
@@ -131,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void showMapKreuz() {
         activeMap=mapFlurKreuzung;
         mapDisplayFragment.LoadBeacons();
+
     }
 
 
@@ -202,21 +209,23 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void switchToMapSelectActivity() {
-		//todo: first create MapSelect activity and then use this code
-		/*Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
+		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
 		startActivity(intent);
-		finish();*/
+		finish();
 	    Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void updateMap(MapData map) {
-		Toast.makeText(this, "Map '"+map.getName()+"'' loaded!", Toast.LENGTH_SHORT).show();
+        activeMap=MapdataAdapter(map);
+        mapDisplayFragment.LoadBeacons();
+        Toast.makeText(this, "Map '"+map.getName()+" loaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void updateBeaconPosition(int beaconID) {
-		//example implementation
+		//this method gives the beacon where the usern is standing at right now
+        //example implementation
 		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
 		else outputView.setText("Beacon id: " + beaconID);*/
@@ -224,7 +233,25 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void markBeacons(List<Integer> beaconIDs) {
-
+        activeMap.selectBeacons(beaconIDs);
     }
+    private MapForTests MapdataAdapter(MapData in){
+        List <BeaconForTests> newBeaconList=new ArrayList<BeaconForTests>();
+        BeaconData[] oldBeacons;
+        oldBeacons= in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
+        for(int i=0;i<in.getBeacons().size();i++){
+            newBeaconList.add(new BeaconForTests(oldBeacons[i].getMapPositionX(),oldBeacons[i].getMapPositionY()));
+        }
+        MapForTests out=new MapForTests(newBeaconList,in.getImage(),in.getBeacons().size());
+        return out;
+    }
+
+
+    public static boolean mapIsSelected(){
+        if (activeMap==null)
+            return false;
+        else return true;
+    }
+
 
 }

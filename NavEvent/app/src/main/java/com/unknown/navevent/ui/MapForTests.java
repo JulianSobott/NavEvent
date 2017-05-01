@@ -2,7 +2,9 @@ package com.unknown.navevent.ui;
 
 
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,6 +16,7 @@ public class MapForTests {
     BeaconForTests[] Beacons;
     MapForTests(List<BeaconForTests> bList, Bitmap map, int NR){
         Map=map;
+        //Map.setDensity(Bitmap.DENSITY_NONE);
         Beacons=bList.toArray(new BeaconForTests[NR]);
         beaconNumber=NR;
 
@@ -23,20 +26,29 @@ public class MapForTests {
         return Beacons[beaconToDisplay].getDisplayedText();
         else return " ";
     }
-    public int getSelectedBeacon(){
-        int selectedB=theMagicNumberThatNeverShouldBeUsed;
+    public List<Integer> getSelectedBeacon(){
+        List<Integer> selectedBeacons = new ArrayList<>();
         for(int i=0;i<beaconNumber;i++){
             if (Beacons[i].isSelected()){
-                selectedB=i;
+                selectedBeacons.add(i);
             }
         }
-        return selectedB;
+        return selectedBeacons;
     }
     public int getBeaconNumber(){
         return beaconNumber;
     }
     public Bitmap getMap(){
         return Map;
+    }
+    public void selectBeacons(List<Integer> listToSelect){
+        Integer [] toSelect = listToSelect.toArray(new Integer[listToSelect.size()]);
+        for (int i=0;i<Beacons.length;i++){
+            Beacons[i].select(false);
+        }
+        for (int i=0;i<toSelect.length;i++){
+            Beacons[toSelect[i]].select(true);
+        }
     }
 
 }

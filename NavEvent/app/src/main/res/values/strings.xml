@@ -15,6 +15,16 @@
     <string name="bluetoothNotEnabled">Bluetooth not enabled! Please enable bluetooth in settings.</string>
     <string name="bluetoothNotAvailable">Sorry, this device does not support required Bluetooth LE.</string>
     <string name="bluetoothTurnedOffWarning">Bluetooth turned off. Functionality limited!</string>
+    <string name="please_select_a_map">Please select a Map:</string>
+    <string name="NoInternetAccess">You are not connected to the internet. Mapdownload unavailable.</string>
+    <string name="Download_failed">"Download failed state reason: "</string>
+    <string name="invalid_MapID">Map not loaded, invalid ID</string>
+    <string name="BeaconSuccessfullyConfigured">This beacon was successfully configured</string>
+    <string name="BeaconNotConfigured">"This beacon could not be configured state reason: "</string>
+    <string name="FoundMap">FoundMap</string>
+    <string name="Download_Finished">Download Finished</string>
+    <string name="String_No">No</string>
+    <string name="String_Yes">Yes</string>
 
 
 </resources>

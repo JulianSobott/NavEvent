@@ -20,7 +20,6 @@ import java.util.List;
 public class MapDisplayFragment extends Fragment {
 
     View v;
-    RelativeLayout layout;
     DrawTheMap theMap;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,6 +30,7 @@ public class MapDisplayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_map_display, container, false);
+        //if(theMap!=null){
         theMap = new DrawTheMap(getActivity(),MainActivity.getMap());
         return theMap;
     }
@@ -40,8 +40,12 @@ public class MapDisplayFragment extends Fragment {
 
     }
     static public int getBeaconToDisplay(MapForTests map){
-        int beaconToDisplay;
-        beaconToDisplay=map.getSelectedBeacon();
-        return beaconToDisplay;
+        // // TODO Add a method to return the Beacon that is closest to you because it is always seleced an dits massage is displayed at the bottom by default
+
+        return 0;
     }
+
+    /*public int getParentsViewID(){
+        return ((ViewGroup) getView().getParent()).getId();
+    }*/
 }

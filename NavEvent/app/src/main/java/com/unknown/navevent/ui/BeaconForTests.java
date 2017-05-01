@@ -2,12 +2,12 @@ package com.unknown.navevent.ui;
 
 //This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\well its not
 public class BeaconForTests {
-    private int xCord;
-    private int yCord;
+    private double xCord;
+    private double yCord;
     private String displayedText;
     private boolean isSelected=false;
 
-    BeaconForTests(int x,int y){
+    BeaconForTests(double x,double y){
         xCord=x;
         yCord=y;
     }
@@ -18,10 +18,10 @@ public class BeaconForTests {
     public void setDisplayedText(String T){
         displayedText=T;
     }
-    public int getxCord(){
+    public double getxCord(){
         return xCord;
     }
-    public int getyCord(){
+    public double getyCord(){
         return yCord;
     }
     public String getDisplayedText(){
