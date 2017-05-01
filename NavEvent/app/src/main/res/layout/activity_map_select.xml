@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView4"
+        android:id="@+id/textViewPleaseSelectMap"
         android:layout_alignParentEnd="true" />
 
     <ListView
@@ -24,5 +24,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView4" />
+        android:layout_below="@+id/textViewPleaseSelectMap"
+        android:id="@+id/onlineMapList" />
 </RelativeLayout>

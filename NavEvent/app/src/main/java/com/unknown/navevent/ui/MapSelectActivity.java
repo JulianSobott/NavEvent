@@ -5,6 +5,10 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
@@ -20,6 +24,8 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_select);
+
+        //Creatin the mapSelectLogic
         msif=new MapSelectActivityLogicDefault(this);
         msif.onCreate(this);
     }
@@ -29,8 +35,16 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
 
     @Override
-    public void onlineMapsRespond(List<String> maps) {
-
+    public void onlineMapsRespond(final List<String> maps) {
+        final ListView list=(ListView) findViewById(R.id.onlineMapList);
+        ArrayAdapter <String> adapter =new ArrayAdapter<String>(MapSelectActivity.this,android.R.layout.simple_list_item_1,maps);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                msif.downloadMap(maps.get(i));
+            }
+        });
     }
 
     @Override
@@ -45,7 +59,8 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
     @Override
     public void downloadFinished(String name) {
-
+        Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
+        msif.setActiveMap(name);
     }
 
     @Override
@@ -59,12 +74,12 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         alertDialogBuilder
                 .setMessage("Local Map "+ name+ "found, do you want to load it?")
                 .setCancelable(false)
-                .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         //Load the map current in storage
                     }
                 })
-                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.String_No),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
                         dialog.cancel();
                     }

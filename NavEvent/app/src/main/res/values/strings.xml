@@ -22,6 +22,9 @@
     <string name="BeaconSuccessfullyConfigured">This beacon was successfully configured</string>
     <string name="BeaconNotConfigured">"This beacon could not be configured state reason: "</string>
     <string name="FoundMap">FoundMap</string>
+    <string name="Download_Finished">Download Finished</string>
+    <string name="String_No">No</string>
+    <string name="String_Yes">Yes</string>
 
 
 </resources>
