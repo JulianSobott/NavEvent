@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.unknown.navevent.R;
 
@@ -50,9 +52,14 @@ public class DrawTheMap extends View implements View.OnTouchListener {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(testMap.getMap(),0,0,new Paint());
+        Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
+        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());
+        float scale=(float)(240.0/ testMap.getMap().getDensity());
+        Log.e("TestLog","scale:"+scale);
+        canvas.drawBitmap(testMap.getMap(),null,new RectF(0,0,((float)(testMap.getMap().getWidth()*scale)),((float)(testMap.getMap().getHeight()*scale))),new Paint());
+
         for (int i=0;i<BeaconNumber;i++){
-            canvas.drawBitmap(beaconTexture[i],x[i],y[i],new Paint());
+            canvas.drawBitmap(beaconTexture[i],null,new RectF(x[i],y[i],x[i]+50,y[i]+50),new Paint());
 
         }
         MainActivity.updateDisplayedText();

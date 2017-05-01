@@ -25,8 +25,8 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_select);
 
-        //Creatin the mapSelectLogic
-        msif=new MapSelectActivityLogicDefault(this);
+        //Creating the mapSelectLogic // TODO uncomment when changed to the right class
+        //msif=new MapSelectActivityLogicDefault(this);
         msif.onCreate(this);
     }
 

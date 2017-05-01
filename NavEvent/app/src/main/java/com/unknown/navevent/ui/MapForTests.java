@@ -2,6 +2,7 @@ package com.unknown.navevent.ui;
 
 
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ public class MapForTests {
     BeaconForTests[] Beacons;
     MapForTests(List<BeaconForTests> bList, Bitmap map, int NR){
         Map=map;
+        //Map.setDensity(Bitmap.DENSITY_NONE);
         Beacons=bList.toArray(new BeaconForTests[NR]);
         beaconNumber=NR;
 

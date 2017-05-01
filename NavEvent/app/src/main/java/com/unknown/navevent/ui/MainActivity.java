@@ -14,8 +14,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     MapForTests mapFlur;
     MapForTests mapFlurKreuzung;
     private static MapForTests activeMap;
+    private float displayDensity;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		//Creating background-logic for this activity
 		mIfc = new MainActivityLogic(this);
 		mIfc.onCreate(this);
-		
+
 
         bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
         text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
@@ -221,7 +224,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void updateBeaconPosition(int beaconID) {
-		//example implementation
+		//this method gives the beacon where the usern is standing at right now
+        //example implementation
 		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
 		else outputView.setText("Beacon id: " + beaconID);*/
@@ -242,10 +246,12 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         return out;
     }
 
+
     public static boolean mapIsSelected(){
         if (activeMap==null)
             return false;
         else return true;
     }
+
 
 }
