@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.bLogic.MapSelectActivityLogic;
+import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
 import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault;
@@ -19,15 +21,17 @@ import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault
 import java.util.List;
 
 public class MapSelectActivity extends AppCompatActivity implements MapSelectActivityUI {
-    private MapSelectActivityLogicInterface msif = null;
+    private MapSelectActivityLogicInterface mIfc = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_select);
 
+
         //Creating the mapSelectLogic // TODO uncomment when changed to the right class
-        //msif=new MapSelectActivityLogicDefault(this);
-        //msif.onCreate(this);//todo fix bug
+        mIfc = new MapSelectActivityLogic(this);
+        mIfc.onCreate(this);
     }
 
 
@@ -42,7 +46,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                msif.downloadMap(maps.get(i));
+                mIfc.downloadMap(maps.get(i));
                 //TODO: Add intent to switch to main activity if not hanedl through the logic
             }
         });
@@ -61,7 +65,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     @Override
     public void downloadFinished(String name) {
         Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
-        msif.setActiveMap(name);
+        mIfc.setActiveMap(name);
     }
 
     @Override
