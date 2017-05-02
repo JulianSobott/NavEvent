@@ -27,7 +27,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
         //Creating the mapSelectLogic // TODO uncomment when changed to the right class
         //msif=new MapSelectActivityLogicDefault(this);
-        msif.onCreate(this);
+        //msif.onCreate(this);//todo fix bug
     }
 
 
