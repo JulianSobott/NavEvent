@@ -5,10 +5,10 @@ $connectionError = 'Verbindung fehlgeschlagen';
 $host = 'localhost';
 $username = 'root';
 $password = '';
-
 $mysqlDb = 'navevent01';
 
-$pdo = new PDO('mysql:host=localhost;dbname=navevent01', 'root', '');
+$con = mysqli_connect($host, $username, $password, $mysqlDb);
+//$pdo = new PDO('mysql:host=localhost;dbname=navevent01', 'root', '');
 
 function randomString()
 {

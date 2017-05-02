@@ -1,5 +1,5 @@
 <?php
-require 'php/includes/DatenbankConnect.inc.php';
+//require 'php/includes/DatenbankConnect.inc.php';
 if(isset($_POST['register']))
 {
 
@@ -7,8 +7,9 @@ if(isset($_POST['register']))
   {
     $username = $_POST['username'];
     $sql = "SELECT nutzername FROM accounts WHERE nutzername ='$username'";
-    $usernameArray = $pdo->query($sql)->fetch();
-    if(isset($usernameArray['nutzername']))
+    $res = mysqli_query($con, $sql);
+    $result = mysqli_fetch_assoc($res);
+    if(isset($result['nutzername']))
     {
       $error['username'] = "Benutzername bereits vorhanden";
     }
@@ -20,8 +21,9 @@ if(isset($_POST['register']))
     $error['email'] = "Bitte eine gültige Email angeben";
   }else{
     $sql = "SELECT email FROM accounts WHERE email ='$email'";
-    $emailArray = $pdo->query($sql)->fetch();
-    if(isset($emailArray['email']))
+    $res = mysqli_query($con, $sql);
+    $result = mysqli_fetch_assoc($res);
+    if(isset($result['email']))
     {
       $error['email'] = "E-Mail Adresse bereits vorhanden";
     }
@@ -39,12 +41,17 @@ if(isset($_POST['register']))
   }
   if(!isset($error['username']) && !isset($error['passwordShort']) && !isset($error['passwordNotEqual']) && !isset($error['email']))
   {
-    $statement = $pdo->prepare("INSERT INTO accounts (nutzername, email, passwort) VALUES(:nutzername, :email, :passwort)");
-    $result = $statement->execute(array('nutzername' => $username, 'email' => $email, 'passwort' => $password));
-    $_SESSION['loggedIn'] = true;
-    $_SESSION['accountId'] = $pdo->lastInsertId();
-    
-    header("Location: http://localhost/NavEvent/index.php?action=profil");
+    $statement = "INSERT INTO accounts (nutzername, email, passwort) VALUES ('$username', '$email', '$password')";
+    if($res = mysqli_query($con, $statement)){
+      $_SESSION['loggedIn'] = true;
+      $sql = "SELECT * FROM accounts WHERE nutzername = '$username'";
+      $res = mysqli_query($con, $sql);
+      $result = mysqli_fetch_assoc($res);
+      $_SESSION['accountId'] = $result['id'];
+
+      header("Location: http://localhost/NavEvent/index.php?action=profil");
+    }
+
   }
 }
 ?>

@@ -2,10 +2,13 @@
 require '../../includes/DatenbankConnect.inc.php';
 
 $id = addslashes($_GET['id']);
-$id = $_GET['id'];
-$result = mysql_query("SELECT `bild`, `mime` FROM `karten` WHERE `kartenId`='$id'");
-$row = mysql_fetch_object($result);
-header("Content-type: $row->mime");
-echo $row->bild;
+$sql = "SELECT * FROM `karten` WHERE `kartenId`='$id'";
+$res = mysqli_query($con, $sql);
+$result = mysqli_fetch_assoc($res);
+$mime = $result['mime'];
+echo $mime;
+
+header("Content-type: $mime");
+echo $result['bild'];
 
 ?>

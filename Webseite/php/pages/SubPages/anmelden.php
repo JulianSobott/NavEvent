@@ -1,5 +1,5 @@
 <?php
-require 'php/includes/DatenbankConnect.inc.php';
+//require 'php/includes/DatenbankConnect.inc.php';
 
 if (isset($_POST['anmelden']))
 {
@@ -10,24 +10,27 @@ if (isset($_POST['anmelden']))
     $error['passwordLI'] = "Bitte Passwort eingeben";
   }
   $username = $_POST['username'];
-  $statement = $pdo->prepare("SELECT * FROM accounts WHERE nutzername = :nutzername");
-  $result = $statement->execute(array('nutzername' => $username));
-  $user = $statement->fetch();
-  if(isset($user['nutzername']))
+  $sql = "SELECT * FROM accounts WHERE nutzername = '$username'";
+  $res = mysqli_query($con, $sql);
+
+  $result = mysqli_fetch_assoc($res);
+  if(isset($result['nutzername']))
   {
-    if(password_verify($password, $user['passwort']))
+    if(password_verify($password, $result['passwort']))
     {
       $_SESSION['loggedIn'] = true;
-      $_SESSION['accountId'] = $user['id'];
-      $_SESSION['nutzername'] = $user['nutzername'];
+      $_SESSION['accountId'] = $result['id'];
+      $_SESSION['nutzername'] = $result['nutzername'];
       if(isset($_POST['angemeldetBleiben'])){
         $identifier = randomString();
         $securitytoken = randomString();
+        $securitytokenCrypted = sha1($securitytoken);
+        $userId = $result['id'];
 
-        $insert = $pdo->prepare("INSERT INTO securitytokens (user_id, identifier, securitytoken) VALUES (:user_id, :identifier, :securitytoken)");
-        $insert->execute(array('user_id' => $user['id'], 'identifier' => $identifier, 'securitytoken' => sha1($securitytoken)));
-        setcookie("identifier",$identifier,time()+(3600*24*365)); //1 Jahr Gültigkeit
-        setcookie("securitytoken",$securitytoken,time()+(3600*24*365));
+        if($insert = mysqli_query($con, "INSERT INTO securitytokens (user_id, identifier, securitytoken) VALUES ('$userId', '$identifier', '$securitytokenCrypted')")){
+          setcookie("identifier",$identifier,time()+(3600*24*365)); //1 Jahr Gültigkeit
+          setcookie("securitytoken",$securitytoken,time()+(3600*24*365));
+        }
       }
       header("Location: http://localhost/NavEvent/index.php?action=profil");
     }else {

@@ -2,22 +2,20 @@
 session_start();
 error_reporting(E_ALL);
 //Verbindung mit Datenbank herstellen
-//include 'DatenbankConnect.inc.php';
+include 'DatenbankConnect.inc.php';
 
 //Read from database
 if(isset($_POST['mapID']))
-{
-	$con = mysqli_connect("localhost", "root", "password", "navevent01");
-	
+{	
 	//Select map data
 	$mapID = $_POST['mapID'];
 	$sql = "SELECT * FROM maps WHERE id='" . $mapID . "'";
 	$res = mysqli_query($con, $sql);
-	
+
 	if( $result = mysqli_fetch_assoc($res) )//Select only first result, if more than one
 	{
 		echo "found map" . chr(0x0A);
-		
+
 		echo $result['name'] . chr(0x0A)
 			. $result['id'] . chr(0x0A)
 			. $result['major_id'] . chr(0x0A)
@@ -27,10 +25,10 @@ if(isset($_POST['mapID']))
 		//Select beacon data
 		$o_places = array();
 		$s_places = array();
-		
+
 		$sql = "SELECT * FROM beacons WHERE fk_map_id='" . $mapID . "'";
 		$res = mysqli_query($con, $sql);
-		
+
 		echo mysqli_num_rows($res) . chr(0x0A);
 		while( $result = mysqli_fetch_assoc($res) )//Select all beacons
 		{
@@ -41,7 +39,7 @@ if(isset($_POST['mapID']))
 				. $result['pos_x'] . chr(0x0A)
 				. $result['pos_y'] . chr(0x0A)
 				. $result['description'] . chr(0x0A);
-				
+
 			if( isset($result['fk_ordinary']) )
 			{
 				$place_id = $result['fk_ordinary'];
@@ -55,7 +53,7 @@ if(isset($_POST['mapID']))
 				$s_places[$place_id][count($s_places[$place_id])] = $beacon_id;
 			}
 		}
-		
+
 		//Select ordinary places
 		echo count($o_places) . chr(0x0A);
 		foreach( $o_places as $place_id=>$arrayList )
@@ -71,7 +69,7 @@ if(isset($_POST['mapID']))
 				}
 			}
 		}
-		
+
 		//Select special places
 		echo count($s_places) . chr(0x0A);
 		foreach( $s_places as $place_id=>$arrayList )
@@ -87,7 +85,7 @@ if(isset($_POST['mapID']))
 				}
 			}
 		}
-		
+
 	}
 	else echo "No such map found" . chr(0x0A);
 }

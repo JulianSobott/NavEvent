@@ -24,33 +24,35 @@ require 'php/includes/DatenbankConnect.inc.php';
     <?php
     include 'php/includes/header.php';
 
-    if(!isset($_SESSION['accountId']) && isset($_COOKIE['identifier']) && isset($_COOKIE['securitytoken'])){
+    /*if(!isset($_SESSION['accountId']) && isset($_COOKIE['identifier']) && isset($_COOKIE['securitytoken'])){
       $identifier = $_COOKIE['identifier'];
       $securitytoken = $_COOKIE['securitytoken'];
 
-      $statement = $pdo->prepare("SELECT * FROM securitytokens WHERE identifier = ?");
-      $result = $statement->execute(array($identifier));
-      $securitytoken_row = $statement -> fetch();
 
-      if(sha1($securitytoken) !== $securitytoken_row['securitytoken']){
+      $statement = "SELECT * FROM securitytokens WHERE identifier =".$identifier;
+      $res = mysqli_query($con, $statement);
+      $result = mysqli_fetch_assoc($res);
+
+      if(sha1($securitytoken) !== $result['securitytoken']){
         echo('Ein vermutlich gestohlener Security Token wurde identifiziert');
       }else{
         $neuer_securitytoken = randomString();
-        $insert = $pdo->prepare("UPDATE securitytokens SET securitytoken = :securitytoken WHERE identifier = :identifier");
-        $insert->execute(array('securitytoken' => sha1($neuer_securitytoken), 'identifier' => $identifier));
+        $neuer_securitytokenCrypted = sha1($neuer_securitytoken);
+        $statement = "UPDATE securitytokens SET securitytoken = ".$neuer_securitytokenCrypted." WHERE identifier =".$identifier;
         setcookie("identifier", $identifier, time()+(3600*24*365));
         setcookie("securitytoken", $neuer_securitytoken, time()+(3600*24*365));
 
-        $_SESSION['accountId'] = $securitytoken_row['user_id'];
+        $_SESSION['accountId'] = $result['user_id'];
+        $accountId = $result['user_id'];
         $_SESSION['loggedIn'] = true;
         echo $_SESSION['accountId'];
         echo "string";
-        $statement = $pdo->prepare("SELECT * FROM accounts WHERE id = :id");
-        $result = $statement->execute(array('id' => $_SESSION['accountId']));
-        $user = $statement->fetch();
-        $_SESSION['nutzername'] = $user['nutzername'];
+        $statement = "SELECT * FROM accounts WHERE id =".$accountId;
+        $res = mysqli_query($con, $statement);
+        $result = mysqli_fetch_assoc($res);
+        $_SESSION['nutzername'] = $result['nutzername'];
       }
-    }
+    }*/
     if(!isset($_SESSION['loggedIn']))
     {
       $_SESSION['loggedIn'] = false;

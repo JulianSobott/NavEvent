@@ -17,6 +17,56 @@
       position: relative
       width: 100%
 
+    .bildUpload
+      form
+        input
+          font-size: 2em
+          display: block
+          margin: 3% 5%
+          background: lighten(#000000, 25)
+          border: 2px solid lighten(#000000, 30)
+          padding: 2%
+          color: white !important
+          &:hover
+            background: lighten(#000000, 50)
+        .errorClass
+          border: 2px solid #f44
+
+        .error
+          font-size: 1.3em
+          margin-left: 5%
+          color: #f44
+        label
+          //margin-left: 20%
+          display: block
+          padding: 1em
+          padding-bottom: 0.7em
+          font-size: 1.5em
+          color: #545554
+
+          input
+            color: white !important
+            margin-top: 1%
+            display: block
+            margin-left: 0
+            width: 50%
+            height: 2em
+            font-size: 1.5em
+            color: #111
+            line-height: 1.5em
+            border: 2px solid #545554
+            border-radius: 4px
+
+            //&:hover
+              cursor: default
+
+          .errorClass
+            border: 2px solid #f44
+
+          .error
+            font-size: .7em
+            color: #f44
+
 .pError
   margin-top: 10%
   padding: 2%
@@ -34,15 +84,7 @@
       transform: scale(1.1)
     100%
       transform: scale(1)
-input
-  font-size: 2em
-  margin-top: 3%
-  background: lighten(#000000, 25)
-  border: 2px solid lighten(#000000, 30)
-  padding: 2%
 
-  &:hover
-    background: lighten(#000000, 20)
 
 
 
