@@ -30,7 +30,7 @@ public class MapSelectActivityLogicDefault implements MapSelectActivityLogicInte
 
 		List<String> m = new ArrayList<String>();
 		m.add("DefaultMap");
-		mResponder.onlineMapsRespond(m);
+		//mResponder.onlineMapsRespond(m);//todo del
 	}
 
 	public void downloadMap(String name) { mResponder.downloadFinished(name); }

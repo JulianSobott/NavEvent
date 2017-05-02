@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.MapSelectActivityLogic;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
+import com.unknown.navevent.interfaces.MapData;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
 import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault;
@@ -39,14 +40,14 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
 
     @Override
-    public void onlineMapsRespond(final List<String> maps) {
+    public void onlineMapsRespond(final List<MapData> maps) {
         final ListView list=(ListView) findViewById(R.id.onlineMapList);
-        ArrayAdapter <String> adapter =new ArrayAdapter<String>(MapSelectActivity.this,android.R.layout.simple_list_item_1,maps);
+        ArrayAdapter <MapData> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,maps);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mIfc.downloadMap(maps.get(i));
+                mIfc.downloadMap(maps.get(i).getName());
                 //TODO: Add intent to switch to main activity if not hanedl through the logic
             }
         });

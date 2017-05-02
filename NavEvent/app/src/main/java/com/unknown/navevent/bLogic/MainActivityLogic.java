@@ -29,6 +29,10 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 	}
 
 
+	/////////////////////////////////////////////////////////
+	// Lifecycle methods
+	/////////////////////////////////////////////////////////
+
 	@Override
 	public void onCreate(Context context) {
 		EventBus.getDefault().register(this);
@@ -42,6 +46,11 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 		EventBus.getDefault().unregister(this);
 	}
+
+
+	/////////////////////////////////////////////////////////
+	// UI calls
+	/////////////////////////////////////////////////////////
 
 	@Override
 	public void retryBeaconConnection() {
@@ -68,6 +77,11 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, id));
 		}
 	}
+
+
+	/////////////////////////////////////////////////////////
+	// Event handling
+	/////////////////////////////////////////////////////////
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
@@ -116,7 +130,6 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
 			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
-			//todo copy to mapSelectActivity
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");

@@ -226,8 +226,13 @@ public class ServiceInterface {
 				lastDownloadedMap = event.maps.get(0);
 				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
 				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
-				if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;
+				if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 			}
+		}
+		else if (event.message == MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED) {
+			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED));
+			if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 		}
 	}
 	@Subscribe(threadMode = ThreadMode.MAIN)

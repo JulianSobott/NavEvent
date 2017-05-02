@@ -11,6 +11,7 @@ public class MapUpdateEvent {
 	public static final int EVENT_FOUND_ONLINE_MAPS = 3;
 	public static final int EVENT_FOUND_ONLINE_MAP_BY_ID = 4;
 	public static final int EVENT_MAP_DOWNLOADED = 5;
+	public static final int EVENT_MAP_DOWNLOAD_FAILED = 6;
 
 	public final int message;
 	public List<MapIR> maps;

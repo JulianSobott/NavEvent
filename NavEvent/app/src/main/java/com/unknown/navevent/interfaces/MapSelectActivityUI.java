@@ -6,7 +6,7 @@ import java.util.List;
 public interface MapSelectActivityUI
 {
 	//Respond to MapSelectActivityLogicInterface.loadOnlineMaps()
-	void onlineMapsRespond(List<String> maps);
+	void onlineMapsRespond(List<MapData> maps);
 	//Map-download failed. \p errorcode contains a human-readable descrition of the problem.
 	void downloadFailed(String errorcode);
 	//Network-action failed. Cannot connect to server.
