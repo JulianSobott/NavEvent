@@ -1,11 +1,16 @@
 package com.unknown.navevent.bLogic;
 
+import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
+import com.unknown.navevent.bLogic.services.MapIR;
+import com.unknown.navevent.bLogic.services.MapService;
 import com.unknown.navevent.interfaces.MainActivityUI;
+import com.unknown.navevent.interfaces.MapData;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
 
@@ -13,6 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
@@ -35,16 +41,18 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 	@Override
 	public void onCreate(Context context) {
-		//EventBus.getDefault().register(this);
+		EventBus.getDefault().register(this);
 
 		serviceInterface.onCreate(context);
+
+		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));//todo debug-code
 	}
 
 	@Override
 	public void onDestroy() {
 		serviceInterface.onDestroy();
 
-		//EventBus.getDefault().unregister(this);
+		EventBus.getDefault().unregister(this);
 	}
 
 
@@ -109,6 +117,9 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");
 
+			List<MapData> tmpList = new ArrayList<>();//Todo: remove this debug code
+			for( int i = 0 ; i < serviceInterface.availableLocalMaps.size() ; i++ ) tmpList.add(serviceInterface.availableLocalMaps.get(i));
+			mResponder.onlineMapsRespond(tmpList);
 			//todo
 		}
 	}

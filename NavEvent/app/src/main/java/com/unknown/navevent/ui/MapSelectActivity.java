@@ -2,6 +2,7 @@ package com.unknown.navevent.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
 import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapSelectActivity extends AppCompatActivity implements MapSelectActivityUI {
@@ -42,13 +44,22 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     @Override
     public void onlineMapsRespond(final List<MapData> maps) {
         final ListView list=(ListView) findViewById(R.id.onlineMapList);
-        ArrayAdapter <MapData> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,maps);
+
+        List<String> tmpList = new ArrayList<>();//convert to string list
+        for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+
+        ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mIfc.downloadMap(maps.get(i).getName());
-                //TODO: Add intent to switch to main activity if not hanedl through the logic
+                //TODO: Add intent to switch to main activity if not handled through the logic
+
+                //todo remove debug code
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

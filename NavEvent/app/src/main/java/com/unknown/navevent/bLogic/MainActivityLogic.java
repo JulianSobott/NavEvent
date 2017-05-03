@@ -38,6 +38,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 		EventBus.getDefault().register(this);
 
 		serviceInterface.onCreate(context);
+
 	}
 	@Override
 	public void onDestroy() {
