@@ -26,12 +26,17 @@ require 'php/includes/DatenbankConnect.inc.php';
 
     /*if(!isset($_SESSION['accountId']) && isset($_COOKIE['identifier']) && isset($_COOKIE['securitytoken'])){
       $identifier = $_COOKIE['identifier'];
+      echo $identifier." ";
       $securitytoken = $_COOKIE['securitytoken'];
+      echo $securitytoken;
 
 
-      $statement = "SELECT * FROM securitytokens WHERE identifier =".$identifier;
+
+      $statement = "SELECT * FROM securitytokens WHERE identifier ='$identifier'";
       $res = mysqli_query($con, $statement);
       $result = mysqli_fetch_assoc($res);
+      echo "</br>".sha1($securitytoken);
+      echo "</br>".$result['securitytoken'];
 
       if(sha1($securitytoken) !== $result['securitytoken']){
         echo('Ein vermutlich gestohlener Security Token wurde identifiziert');
@@ -53,6 +58,7 @@ require 'php/includes/DatenbankConnect.inc.php';
         $_SESSION['nutzername'] = $result['nutzername'];
       }
     }*/
+
     if(!isset($_SESSION['loggedIn']))
     {
       $_SESSION['loggedIn'] = false;

@@ -23,7 +23,7 @@ if (isset($_POST['anmelden']))
       $_SESSION['nutzername'] = $result['nutzername'];
       if(isset($_POST['angemeldetBleiben'])){
         $identifier = randomString();
-        $securitytoken = randomString();
+        $securitytoken = $identifier;
         $securitytokenCrypted = sha1($securitytoken);
         $userId = $result['id'];
 

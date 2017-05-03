@@ -29,7 +29,7 @@ session_name("session");
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mehr <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="http://localhost/NavEvent/php/pages/Karteneditor.php" target="_blank">Neue Karte erstellen</a></li>
+              <li><a href="http://localhost/NavEvent/php/pages/Karteneditor.php?user=<?php if(isset($_SESSION["nutzername"]))echo $_SESSION["accountId"]?>" target="_blank">Neue Karte erstellen</a></li>
               <li><a href="http://omfgdogs.com/" target="_blank">Crazy Dogs</a></li>
             </ul>
           </li>

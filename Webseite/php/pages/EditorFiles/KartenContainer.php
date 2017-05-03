@@ -1,8 +1,10 @@
 <?php require '../includes/DatenbankConnect.inc.php'; ?>
 <?php
-session_start();
-if(!isset($_SESSION['accountId'])){
-  $_SESSION['accountId'] = 1;
+if(isset($_GET['user'])){
+  $accountId = $_GET['user'];
+  $_SESSION['accountId'] = $accountId;
+}else if(isset($_SESSION['accountId'])){
+  $accountId = $_SESSION['accountId'];
 }
 // löscht alle Bilder aus den Verzeichnis
 //array_map('unlink', glob("../../uploads/*"));
@@ -11,7 +13,7 @@ if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filePath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/';
+      $filepath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/';
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
@@ -21,23 +23,21 @@ if (isset($_FILES['uploaddatei']))
         $meta = getimagesize($image);
         $mime = $meta['mime'];
         $updated_at = time();
-        $kartenName = "Karte02"; //TODO anpassen
-        $accountId = $_SESSION['accountId'];
+        $kartenName = "Karte03"; //TODO anpassen
+        echo $accountId;
         //$_SESSION['timestamp'] = $updated_at;
         //echo $_SESSION['timestamp'];
         $path = $filepath.$default_imageName.'.'.$endung;
-        if(file_exists($path)){
-          $id = 1;
-          do{
-            $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
-            $id++;
-          }while(file_exists($path));
+        $id = 1;
+        do{
+          $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
           $imageName = $default_imageName.'_'.$id;
-        }
+          $id++;
+        }while(file_exists($path));
 
         $statement = "INSERT INTO karten (kartenName, bild, mime, updated_at, fk_accountId) VALUES('$kartenName', '$imageName', '$endung', '$updated_at', '$accountId')";
         $res = mysqli_query($con, $statement);
-        $sql = "SELECT * FROM karten WHERE bild like %'$id'";
+
         move_uploaded_file($image, $path); //TODO Ordner name anpassen
         //$_SESSION['kartenId'] = $pdo->lastInsertId();
         header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$updated_at");

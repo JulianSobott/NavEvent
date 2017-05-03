@@ -40,20 +40,20 @@ $(document).ready( function(){
       //----Beacon in DB anlegen (standard Werte)--------
       $.ajax({
         type: "POST",
-        url: $('#daten').attr('action'),
+        url: "datenbank.inc.php",
         data: {
-          'beaconId': 0,
+          'beaconId': "0",
           'name': "NULL",
-          'besonders': false,
+          'besonders': "false",
           'besondersName': "NULL",
           'informationen': "NULL",
           'posX': x,
           'posY': y
         }
       }).done(function() {
-        $('.sumbit').css('background', '#122');
+        $('body').css('background', '#122');
       }).fail(function() {
-        $('.sumbit').css('background', '#f00');
+        $('body').css('background', '#f00');
       });
     }
     freierOrt = true;

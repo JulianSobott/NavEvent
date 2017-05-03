@@ -2,12 +2,12 @@
 session_start();
 error_reporting(E_ALL);
 //Verbindung mit Datenbank herstellen
-include 'DatenbankConnect.inc.php';
+require 'DatenbankConnect.inc.php';
 
 //------Daten in Datenbank rein schreiben--------
 if(isset($_POST['name']))
 {
-  $kartenId = $_SESSION['kartenId'];
+  $kartenId = "5";
   $beaconId = $_POST['beaconId'];
   $beaconId = str_replace("beacon-", "", $beaconId);
   $name = $_POST['name'];
@@ -44,7 +44,7 @@ if(isset($_POST['name']))
     '$posY'
   );";
 
-  $insert = mysql_query($sql);
+  $insert = mysqli_query($con, $sql);
 
 }
 

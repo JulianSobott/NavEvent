@@ -21,5 +21,5 @@
     </div>
   </div>
 
-  <a class="btn btn-default btn-lg" href="http://localhost/NavEvent/php/pages/Karteneditor.php" target="_blank" role="button">Und Los</a>
+  <a class="btn btn-default btn-lg" href="http://localhost/NavEvent/php/pages/Karteneditor.php?user=<?php if(isset($_SESSION["nutzername"]))echo $_SESSION["accountId"]?>" target="_blank" role="button">Und Los</a>
 </div>
