@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonClose"
-        android:background="@android:drawable/ic_delete"
+        android:background="@android:drawable/ic_menu_close_clear_cancel"
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />

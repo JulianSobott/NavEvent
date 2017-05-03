@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
         sideOpen=(Button)findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
-        bar.getView().setBackgroundColor(Color.BLUE);
+        bar.getView().setBackgroundColor(Color.argb(220,240,240,240));
 
         hideFragment(bar);
 

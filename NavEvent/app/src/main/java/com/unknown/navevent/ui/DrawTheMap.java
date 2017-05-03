@@ -54,10 +54,10 @@ public class DrawTheMap extends View implements View.OnTouchListener {
         super.onDraw(canvas);
         /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
 
-        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());
+        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());*/
 
         float scale=1;
-        if(true){
+        /*if(true){
         scale=(float)(240.0/ testMap.getMap().getDensity());}
 
         Log.e("TestLog","scale:"+scale);*/
