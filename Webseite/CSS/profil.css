@@ -1,0 +1,71 @@
+.body {
+  height: 100%;
+  position: relative; }
+  .body .toggleSidebar {
+    font-size: 3em;
+    position: absolute;
+    left: 1%;
+    margin-top: 0;
+    z-index: 2; }
+  .body .seitenmenue {
+    position: absolute;
+    width: 30%;
+    background: #B19A8E;
+    padding: 5%;
+    padding-left: 1%;
+    z-index: 0;
+    height: 90%; }
+    .body .seitenmenue ul {
+      list-style: none; }
+      .body .seitenmenue ul li {
+        color: rgba(17, 17, 17, 0.8);
+        font-size: 1.5em;
+        padding: 1rem; }
+        .body .seitenmenue ul li:hover {
+          color: black;
+          cursor: pointer; }
+  .body .content {
+    position: relative;
+    padding-left: 4rem;
+    margin-right: auto;
+    background: #7E807F;
+    height: 100%;
+    z-index: 1; }
+    .body .content .btnNeueKarteHinzufuegen {
+      width: 10rem;
+      height: 10rem;
+      background: rgba(13, 66, 103, 0.2);
+      border: 2px solid #288;
+      border-radius: 5px 10px;
+      text-align: center;
+      padding: 1%;
+      filter: contrast(80%) grayscale(70%); }
+      .body .content .btnNeueKarteHinzufuegen:hover {
+        cursor: default;
+        filter: contrast(100%); }
+      .body .content .btnNeueKarteHinzufuegen .add {
+        display: inline-block;
+        font-size: 3em; }
+      .body .content .btnNeueKarteHinzufuegen p {
+        display: inline-block;
+        font-size: 1.3em; }
+    .body .content .neueKarte {
+      height: 200px;
+      width: 200px;
+      background: #222; }
+
+#toggleSidebar {
+  display: none; }
+  #toggleSidebar:checked + .body .toggleSidebar {
+    left: 25%; }
+  #toggleSidebar:checked + .body .content {
+    animation: openMenu 200ms ease-in-out forwards; }
+@keyframes openMenu {
+  0% {
+    margin-left: 0; }
+  100% {
+    margin-left: 30%; } }
+.footer {
+  margin-top: 0 !important; }
+
+/*# sourceMappingURL=profil.css.map */

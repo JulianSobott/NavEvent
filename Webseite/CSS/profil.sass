@@ -1,0 +1,92 @@
+$heightSMenu: 90%
+$widthSMenu: 30%
+.body
+  height: 100%
+  position: relative
+
+  .toggleSidebar
+    font-size: 3em
+    position: absolute
+    left: 1%
+    margin-top: 0
+    z-index: 2
+
+  .seitenmenue
+    position: absolute
+    width: $widthSMenu
+    background: #B19A8E
+    padding: 5%
+    padding-left: 1%
+    z-index: 0
+    height: 90%
+
+    ul
+      list-style: none
+      li
+        color: rgba(#111, 0.8)
+        font-size: 1.5em
+        padding: 1rem
+
+        &:hover
+          color: rgba(#000, 1)
+          cursor: pointer
+
+
+  .content
+    position: relative
+    padding-left: 4rem
+    margin-right: auto
+    background: #7E807F
+    height: 100%
+    //width: 90%
+    //overflow: scroll
+    z-index: 1
+    // TODO: Pixelwert anpassen
+
+    .btnNeueKarteHinzufuegen
+      width: 10rem
+      height: 10rem
+      background: rgba(#0D4267, 0.2)
+      border: 2px solid #288
+      border-radius: 5px 10px
+      text-align: center
+      padding: 1%
+      filter: contrast(80%) grayscale(70%)
+
+      &:hover
+        cursor: default
+        filter: contrast(100%)
+
+
+
+      .add
+        display: inline-block
+        font-size: 3em
+
+      p
+        display: inline-block
+        font-size: 1.3em
+
+
+    .neueKarte
+      height: 200px
+      width: 200px
+      background: #222
+
+#toggleSidebar
+  display: none
+
+  &:checked + .body
+    .toggleSidebar
+      left: ($widthSMenu) - 5%
+    .content
+      animation: openMenu 200ms ease-in-out forwards
+
+      @keyframes openMenu
+        0%
+          margin-left: 0
+        100%
+          margin-left: $widthSMenu
+
+.footer
+  margin-top: 0 !important

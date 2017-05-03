@@ -1,6 +1,6 @@
 $( document ).ready(function() {
 
-  var anzSlides=3;
+  var anzSlides=4;
   var animationTime= 1200;
 
   //-------erschaffen des Counters---------
@@ -13,7 +13,7 @@ $( document ).ready(function() {
 
   for(var i=1;i<=anzSlides;i++)
   {
-  	$('.dot:nth-child(' + i + ')').addClass("dot"+i);
+  	$('.dot').addClass("dot"+i);
   }
 
   //--------erschaffen der Slides-----------
@@ -34,7 +34,22 @@ $( document ).ready(function() {
   $('.dot:nth-child(' + 1 + ')').addClass("actual");
 
 
-
+  //-------Weiter Button-------------
+  $('#btnWeiter').submit(function(event) {
+    event.preventDefault();
+    var kartenName = $('.kartenName').val();
+    $.ajax({
+      type: "POST",
+      ulr: "http://localhost/NavEvent/php/includes/datenbank.inc.php",
+      data: {'kartenName': kartenName}
+    }).done(function() {
+      $('body').css('display', 'none');
+    }).fail(function() {
+      $('body').css('transform', 'rotate(90deg)');
+    });
+    //nextRightSlide();
+    return false;
+  });
   //-----rechts Pfeil----------
   var viable=true;
   var rechts=true;
@@ -43,12 +58,13 @@ $( document ).ready(function() {
   {
   	$('.linkspfeil').css('display', 'none');
   }
-  $('.rechtspfeil').click(function()
+  $('.rechtspfeil').click(nextRightSlide);
+
+  function nextRightSlide()
   {
     if ($('.slide:last-child()').hasClass('is-active')||viable==false)
     {
   		rechts=false;
-  		alert("rechtsfalse");
     }
     else
     {
@@ -101,7 +117,7 @@ $( document ).ready(function() {
 
     }
 
-  });
+  }
 
   //-------links pfeil------------
   $('.linkspfeil').click(function()

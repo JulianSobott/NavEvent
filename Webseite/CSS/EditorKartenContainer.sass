@@ -1,0 +1,146 @@
+.mitte
+  display: inline-block
+  margin-left: 20%
+  margin-right: 20%
+  width: 60%
+
+  .kartenContainer
+    border: 4px dotted red
+    z-index: 10
+    height: auto
+    position: relative
+    width: 100%
+
+    #bildContainer
+      border: 4px dotted green
+      height: 500px
+      position: relative
+      width: 100%
+
+    .bildUpload
+      form
+        input
+          font-size: 2em
+          display: block
+          margin: 3% 5%
+          background: lighten(#000000, 25)
+          border: 2px solid lighten(#000000, 30)
+          padding: 2%
+          color: white !important
+          &:hover
+            background: lighten(#000000, 50)
+        .errorClass
+          border: 2px solid #f44
+
+        .error
+          font-size: 1.3em
+          margin-left: 5%
+          color: #f44
+        label
+          //margin-left: 20%
+          display: block
+          padding: 1em
+          padding-bottom: 0.7em
+          font-size: 1.5em
+          color: #545554
+
+          input
+            color: white !important
+            margin-top: 1%
+            display: block
+            margin-left: 0
+            width: 50%
+            height: 2em
+            font-size: 1.5em
+            color: #111
+            line-height: 1.5em
+            border: 2px solid #545554
+            border-radius: 4px
+
+            //&:hover
+              cursor: default
+
+          .errorClass
+            border: 2px solid #f44
+
+          .error
+            font-size: .7em
+            color: #f44
+
+.pError
+  margin-top: 10%
+  padding: 2%
+  text-align: center
+  font-size: 3em
+  color: #CEF900
+  border: 3px solid #7D0707
+  border-radius: 10px
+  background: rgba(#9F0606, 0.79)
+  animation: error 2000ms ease-in-out infinite
+  @keyframes error
+    0%
+      transform: scale(1)
+    50%
+      transform: scale(1.1)
+    100%
+      transform: scale(1)
+
+
+
+
+#pHochgeladen
+  font-size: 1.7em
+  position: relative
+  width: 15em
+  padding: 1%
+  margin-left: auto
+  margin-right: auto
+  margin-top: 2%
+  border: 1px solid #222222
+  background: #00ff00
+
+.animate
+  width: 100px
+  height: 100px
+  border-radius: 50%
+  border-top: 5px solid #ff9105
+  margin-left: auto
+  margin-right: auto
+  margin-top: 10%
+  animation: load 2s linear infinite
+
+@keyframes load
+  0%
+    transform: rotate(0deg) scale(0.8)
+  50%
+    transform: rotate(180deg) scale(1.2)
+  100%
+    transform: rotate(360deg) scale(0.8)
+img
+  position: relative
+  border: .3em solid #444444
+  border-radius: 0.1em
+
+  width: 100%
+  height: auto
+
+.beaconContainer
+  position: absolute
+  font-size: 10px !important
+
+.beacon
+  display: inline-block
+  width: 10px
+  height: 10px
+  border-radius: 50%
+  background: #f44
+  border: 2px solid black
+  z-index: 5
+
+  &:hover
+    width: 12px
+    height: 12px
+    border: 3px solid #22f
+
+.actualBeacon
+  background: #2f2

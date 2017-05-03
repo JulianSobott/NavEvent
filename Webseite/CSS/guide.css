@@ -1,15 +1,6 @@
-body .content {
-  position: relative;
-  background: #bbbbbb;
-  width: 80%;
-  height: auto;
-  padding: 3%;
-  padding-bottom: 3%;
-  margin-left: auto;
-  margin-right: auto; }
-  body .content ul {
-    line-height: 1.5em;
-    font-size: 1.5em;
-    margin-left: 15%; }
+html, body {
+  height: 100%; }
+  html .guideContent, body .guideContent {
+    padding-bottom: 10%; }
 
 /*# sourceMappingURL=guide.css.map */
