@@ -1,178 +1,45 @@
-html {
-  height: 100%; }
-
 body {
-  background: linear-gradient(80deg, #aab3ee, white, #d4d9f7);
-  font-size: 16px;
-  font-family: fantasy;
-  overflow-x: hidden;
-  height: 100%; }
+  background: #4477ff;
+  font-size: 1em;
+  font-family: fantasy; }
   body p {
-    text-align: left;
-    font-size: 1.5rem; }
+    text-align: center;
+    font-size: 1.5em; }
   body h1 {
-    font-size: 7rem;
+    font-size: 7em;
     margin-left: 20%; }
   body h2 {
-    font-size: 2rem;
+    font-size: 2em;
     color: #4d4d4d;
-    margin-left: 1%;
-    width: 15em;
-    border-left: 6px groove #999;
-    background: linear-gradient(90deg, #aaa, #fff, #fff); }
+    margin-left: 30%; }
   body .header {
     display: inline-block;
-    overflow: hidden;
+    height: 300px;
     width: 100%;
-    background: linear-gradient(90deg, #fff, #dddbd3, #fff); }
-    body .header h1 {
-      float: left;
-      font-size: 5rem;
-      position: relative;
-      margin: 0.5% 0 0.5% 10%; }
-    body .header .anmelden {
-      margin-left: 2%; }
-    body .header .anmelden, body .header .registrieren, body .header .mehr {
-      float: right;
-      font-size: 1.3em;
-      margin-right: 5%;
-      margin-top: 34px; }
-      body .header .anmelden:hover, body .header .registrieren:hover, body .header .mehr:hover {
-        cursor: pointer;
-        margin-top: 32px; }
-  body .startInfo {
-    position: relative;
-    overflow: hidden;
-    background: red;
-    clear: both;
-    height: 80%; }
-    body .startInfo .logo {
-      display: block;
-      float: left;
-      margin: 1% 0 1% 0;
-      width: 20%; }
-    body .startInfo .bildershow {
-      display: block;
-      position: relative;
-      overflow: visible;
-      float: left;
-      margin: 1% 0 1% 5%;
-      width: 70%;
-      height: 60%;
-      background-size: cover;
-      perspective: 1000px; }
-      body .startInfo .bildershow .karte {
-        width: 100%;
-        max-height: 100%;
-        position: absolute;
-        transform-origin: top center; }
-        body .startInfo .bildershow .karte.animate-in {
-          display: block !important;
-          animation: animate-in 2000ms cubic-bezier(0.17, 0.53, 0.29, 0.9) forwards; }
-@keyframes animate-in {
-  0% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-@keyframes animate-in3 {
-  0% {
-    transform: rotateX(90deg);
-    opacity: 0; }
-  50% {
-    transform: rotateX(-10deg); }
-  100% {
-    transform: rotateX(0deg);
-    opacity: 1; } }
-@keyframes animate-in2 {
-  0% {
-    transform: translateX(100%);
-    opacity: 0; }
-  100% {
-    transform: translateX(0);
-    opacity: 1; } }
-@keyframes animate-in1 {
-  0% {
-    transform: scale(1); }
-  100% {
-    transform: scale(0); } }
-        body .startInfo .bildershow .karte.animate-out {
-          display: block !important;
-          animation: animate-out 2000ms cubic-bezier(0.17, 0.53, 0.9, 0.9) forwards; }
-@keyframes animate-out {
-  0% {
-    opacity: 1; }
-  100% {
-    opacity: 0; } }
-@keyframes animate-out2 {
-  0% {
-    transform: rotateX(0deg);
-    opacity: 1; }
-  100% {
-    transform: rotateX(-90deg);
-    opacity: 0; } }
-@keyframes animate-out1 {
-  0% {
-    transform: scale(1);
-    opacity: 1; }
-  50% {
-    transform: scale(0); }
-  100% {
-    transform: scale(0);
-    opacity: 0; } }
-    body .startInfo .leitsatz {
-      display: block;
-      float: left;
-      font-size: 5em;
-      font-family: serif;
-      font-style: oblique;
-      margin-left: 5%;
-      margin-bottom: 2%; }
-  body:before, body:after {
-    content: "";
-    display: table; }
-  body:after {
-    clear: both; }
+    background-image: url(../Bilder/DSC_0029.JPG); }
+    body .header img {
+      display: inline;
+      position: absolute;
+      opacity: 0.5; }
   body .ueberDieApp, body .neueKarte {
     position: relative;
+    background: #999999;
     width: 80%;
     height: auto;
     padding: 3%;
     padding-bottom: 3%;
     margin-left: auto;
-    margin-right: auto;
-    border-bottom: 1px groove #666; }
-    body .ueberDieApp .text, body .neueKarte .text {
-      float: left;
-      width: 60%; }
-    body .ueberDieApp .aboutPicture, body .neueKarte .aboutPicture {
-      display: inline-block;
-      float: right;
-      width: 30%;
-      margin-left: 5%;
-      border: 4px groove #666; }
-      body .ueberDieApp .aboutPicture img, body .neueKarte .aboutPicture img {
-        width: 100%; }
-  body .neueKarte .clearfix .newCardPicture {
-    display: inline-block;
-    float: left;
-    width: 30%;
-    border: 4px groove #666; }
-    body .neueKarte .clearfix .newCardPicture img {
-      width: 100%; }
-  body .neueKarte .clearfix .text {
-    float: right;
-    width: 60%; }
-  body .neueKarte .btnNeueKarteHinzufuegen {
-    display: table; }
+    margin-right: auto; }
+  body .neueKarte {
+    background: #b3b3b3; }
   body .footer {
     background: #222222;
     width: 100%;
-    height: 2em;
+    height: 10px;
     padding: 2%;
     color: gray; }
     body .footer span {
-      margin-left: 10%;
-      margin-bottom: 10px; }
+      margin-left: 10%; }
       body .footer span:hover {
         cursor: pointer; }
 
@@ -194,55 +61,13 @@ a {
   padding: 1%;
   line-height: 1.7em; }
   .button p {
-    display: inline;
-    font-family: fantasy; }
+    display: inline; }
   .button:hover {
     cursor: pointer;
-    font-family: cursive;
-    background: #2537b7; }
+    border-radius: 10%;
+    background: #182477; }
   .button .material-icons {
     font-size: 3em;
     vertical-align: middle; }
-
-.clearfix:before {
-  content: " ";
-  display: table; }
-
-.clearfix:after {
-  content: " ";
-  display: table;
-  clear: both; }
-
-@media only screen and (max-width: 480px) {
-  .logo {
-    width: 20%; }
-
-  .bildershow {
-    margin: 1% 0 1% 0.5% !important;
-    width: 99% !important; }
-
-  .aboutPicture, .newCardPicture {
-    width: 90% !important; }
-
-  .text {
-    width: 100% !important; }
-
-  #headerH1 {
-    margin-left: 0; }
-
-  body {
-    background: green; }
-
-  .ueberDieApp, body .neueKarte, .neueKarte {
-    width: 100%; }
-
-  h2 {
-    margin-left: 0em !important; } }
-@media only screen and (max-width: 1000px) {
-  #headerH1 {
-    width: 100%; }
-
-  .anmelden, .registrieren, .mehr {
-    margin-bottom: 2%; } }
 
 /*# sourceMappingURL=main.css.map */
