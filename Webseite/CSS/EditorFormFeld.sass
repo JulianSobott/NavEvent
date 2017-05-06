@@ -8,10 +8,17 @@ label
 .seite-rechts
   border: 2px groove rgba(#417944, 0.9)
   overflow: auto
+  filter: contrast(50%)
   .beaconBearbeiten
+    border: 0.1px solid rgba(#FFFFFF, 0)
+    height: 100%
+    .progress
+      margin-bottom: 0px !important
+      filter: brightness(60%)
     .header
       padding: 0 !important
       height: 50px
+      margin-top: 0 !important
       background: #e1e1e1
       .delete
         height: inherit
@@ -28,6 +35,10 @@ label
         height: inherit
         line-height: 3em
         font-size: 3em
+        margin-top: 0px !important
+
+        h3
+          margin-top: 0px
     .feld
       padding: 2%
       padding-bottom: 10%

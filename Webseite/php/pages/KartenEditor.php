@@ -1,5 +1,7 @@
 <?php
 session_start();
+require '../includes/DatenbankConnect.inc.php';
+
 /*
 include 'DatenbankConnect.inc.php';
 if (isset($_GET['beaconId'])) {

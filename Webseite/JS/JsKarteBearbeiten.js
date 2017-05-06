@@ -2,9 +2,9 @@ var anzBeacons = 0;
 var freierOrt = true;
 var ready = false; //TODO Remove this
 $('#bildContainer').removeClass('beacon');
+
 $(document).ready( function(){
   var container = document.querySelector('#bildContainer');
-
 
   //Bild Container Grösse anpassen
   var widthBild = $('#bild').css('width');
@@ -35,29 +35,35 @@ $(document).ready( function(){
       //alert(y);
       anzBeacons++;
       beaconHinzufuegen(x, y);
-
-
+      var minor_id = $('.beaconContainer').last().attr('id').split('-')[1];
+      //alert(minor_id);
+      var map_id = $('#bild').attr('alt');
+      //alert(map_id);
       //----Beacon in DB anlegen (standard Werte)--------
       $.ajax({
         type: "POST",
-        url: "datenbank.inc.php",
+        url: "../includes/datenbank.inc.php",
         data: {
-          'beaconId': "0",
+          'id': "0",
           'name': "NULL",
-          'besonders': "false",
-          'besondersName': "NULL",
-          'informationen': "NULL",
-          'posX': x,
-          'posY': y
+          'minor_id': minor_id,
+          'pos_x': x,
+          'pos_y': y,
+          'description': "NULL",
+          'fk_map_id': map_id,
+          'fk_special': "NULL",
+          'fk_ordinary': "NULL",
         }
       }).done(function() {
-        $('body').css('background', '#122');
+        $('.seite-rechts').css('filter', 'contrast(100%)');
       }).fail(function() {
-        $('body').css('background', '#f00');
+        $('.seite-rechts').css('filter', 'contrast(10%)');
       });
     }
     freierOrt = true;
   });
+
+  //-------Beacon clicked-------------
   container.addEventListener("click", function (e) {
 
     $('.beacon').click(function() {
@@ -102,26 +108,11 @@ $(document).ready( function(){
   })
 
 //--------------Beacon Informationen zu entsprechendem Beacon hinzufuegen-------
-  container.addEventListener("click", function (e) {
+/* container.addEventListener("click", function (e) {
 
     $('.beacon').click(function() {
       var beaconId = $('.actualBeacon').attr('class').split('-')[1];
       beaconId = beaconId.split(' ')[0];
-
-      if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-        //alert("Step 1");
-      }else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("databaseStuff").innerHTML = this.responseText;
-        }
-      };
-      xmlhttp.open("GET","http://localhost/NavEvent/php/includes/FormFeld.inc.php?beaconId="+beaconId, true);
-      xmlhttp.send();
-
 
       $.ajax({
         type: "POST",
@@ -133,9 +124,11 @@ $(document).ready( function(){
         $('body').css('background', 'red');
       });
     });
-  });
+  });*/
 
 });
+
+
 
 //Drag n´Drop beaconBearbeiten
 
@@ -176,6 +169,8 @@ function beaconHinzufuegen (pX, pY){
   document.getElementById("beaconContainer-"+anzBeacons).appendChild(beacon);
   $('#beaconContainer-'+ anzBeacons).children('span').addClass('beacon');
   $('.beacon').last().addClass(' beacon-' + anzBeacons);
+  $('.actualBeacon').removeClass('actualBeacon');
+  $('.beacon').last().addClass('actualBeacon');
   $('#beaconContainer-'+ anzBeacons).css('left', pX+'%');
   $('#beaconContainer-'+ anzBeacons).css('top', pY+'%');
 }
@@ -184,5 +179,26 @@ function rotateArrow() {
   $('.dropDown').toggleClass('rotateArrow');
 }
 
+function saveData(field, value) {
+  $('.progress-bar').addClass('active');
+  $('.progress').css('filter', 'brightness(100%)');
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'id': id,
+      'field': field,
+      'value': value
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger');
+  });
+
+}
 //x = x *(100/$('#bild').width());
 //$('.beacon-'+ anzBeacons).css('margin-top', y+'px');

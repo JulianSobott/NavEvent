@@ -20,9 +20,14 @@
 
   </form>-->
   <div class="beaconBearbeiten">
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">45% Complete</span>
+      </div>
+    </div>
     <div class="feld header">
       <div class="delete">
-        <i class="material-icons miDelete">delete</i>
+        <i class="material-icons miDelete btnDelete">delete</i>
       </div>
       <div class="h3left">
         <h3>Eigenschaften</h3>
@@ -31,7 +36,7 @@
     <form id="daten" action="datenbank.inc.php" method="post">
       <div class="name">
         <label for="tfName">Name: </label>
-        <input id="tfName" class="eingabe tfName" type="text" name="tfName" placeholder="z.B. Labor" value=<?php
+        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="tfName" placeholder="z.B. Labor" value=<?php
         if (isset($_GET['beaconId'])) {
            echo $data['name'];
         }else {

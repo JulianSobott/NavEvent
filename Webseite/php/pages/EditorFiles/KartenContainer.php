@@ -1,4 +1,4 @@
-<?php require '../includes/DatenbankConnect.inc.php'; ?>
+<?php //require '../includes/DatenbankConnect.inc.php'; ?>
 <?php
 if(isset($_GET['user'])){
   $accountId = $_GET['user'];
@@ -23,8 +23,8 @@ if (isset($_FILES['uploaddatei']))
         $meta = getimagesize($image);
         $mime = $meta['mime'];
         $updated_at = time();
-        $kartenName = "Karte03"; //TODO anpassen
-        echo $accountId;
+        $mapName = "Karte03"; //TODO anpassen
+
         //$_SESSION['timestamp'] = $updated_at;
         //echo $_SESSION['timestamp'];
         $path = $filepath.$default_imageName.'.'.$endung;
@@ -34,8 +34,9 @@ if (isset($_FILES['uploaddatei']))
           $imageName = $default_imageName.'_'.$id;
           $id++;
         }while(file_exists($path));
-
-        $statement = "INSERT INTO karten (kartenName, bild, mime, updated_at, fk_accountId) VALUES('$kartenName', '$imageName', '$endung', '$updated_at', '$accountId')";
+        $major_id = 1;//TODO major_implementieren
+        $fk_account_id = $accountId;
+        $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES('$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
         $res = mysqli_query($con, $statement);
 
         move_uploaded_file($image, $path); //TODO Ordner name anpassen
@@ -74,13 +75,16 @@ if (isset($_FILES['uploaddatei']))
     <?php
     if (isset($_GET['status'])) {
       $updated_at = $_GET['id'];
-      $sql = "SELECT bild, mime FROM karten WHERE updated_at='$updated_at'";
+      $sql = "SELECT id, img_file, mime FROM maps WHERE updated_at='$updated_at'";
       $res = mysqli_query($con, $sql);
       while($result = mysqli_fetch_assoc($res)){
-        $bild = $result['bild'];
-        $endung = $result['mime'];
+        $img = $result['img_file'];
+        $mime = explode('/', $result['mime']);
+        $mime = $mime[1];
+        $map_id = $result['id'];
+        $_SESSION['map_id'] = $map_id;
 
-        echo '<img id="bild" alt="" src="http://localhost/NavEvent/uploads/'.$bild.'.'.$endung.'"/>';
+        echo '<img id="bild" alt="'.$map_id.'" src="http://localhost/NavEvent/uploads/'.$img.'.'.$mime.'"/>';
       }
     }
 

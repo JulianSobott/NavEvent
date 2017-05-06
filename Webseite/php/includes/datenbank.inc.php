@@ -4,49 +4,57 @@ error_reporting(E_ALL);
 //Verbindung mit Datenbank herstellen
 require 'DatenbankConnect.inc.php';
 
-//------Daten in Datenbank rein schreiben--------
+//------Daten in Datenbank rein schreiben-------
 if(isset($_POST['name']))
 {
-  $kartenId = "5";
-  $beaconId = $_POST['beaconId'];
-  $beaconId = str_replace("beacon-", "", $beaconId);
   $name = $_POST['name'];
-  $besonders = $_POST['besonders'];
-  $besondersName = $_POST['besondersName'];
-  $informationen = $_POST['informationen'];
-  $posX = $_POST['posX'];
-  $posY = $_POST['posY'];
-
-  //TODO alle Felder hinzufuegen
+  $minor_id = $_POST['minor_id'];
+  $minor_id = str_replace("beacon-", "", $minor_id);
+  $pos_x = $_POST['pos_x'];
+  $pos_y = $_POST['pos_y'];
+  $description = $_POST['description'];
+  $fk_map_id = $_POST['fk_map_id'];
+  $fk_special = $_POST['fk_special'];
+  $fk_ordinary = $_POST['fk_ordinary'];
 
   $sql = "INSERT INTO `beacons`
   (
     `id`,
-    `fk_kartenId`,
-    `beaconId`,
     `name`,
-    `besonders`,
-    `besondersName`,
-    `informationen`,
-    `posX`,
-    `posY`
+    `minor_id`,
+    `pos_x`,
+    `pos_y`,
+    `description`,
+    `fk_map_id`,
+    `fk_special`,
+    `fk_ordinary`
   )
   VALUES
   (
     Null,
-    '$kartenId',
-    '$beaconId',
     '$name',
-    '$besonders',
-    '$besondersName',
-    '$informationen',
-    '$posX',
-    '$posY'
+    '$minor_id',
+    '$pos_x',
+    '$pos_y',
+    '$description',
+    '$fk_map_id',
+    '$fk_special',
+    '$fk_ordinary'
   );";
 
   $insert = mysqli_query($con, $sql);
+}
+
+if(isset($_POST['value']) || isset($_POST['id']) || isset($_POST['field'])){
+  $id = $_POST['id'];
+  $field = $_POST['field'];
+  $value = $_POST['value'];
+
+  $sql = "UPDATE beacons SET ".$field." = '$value' WHERE id = '$id'";
+  $result = mysqli_query($con, $sql);
 
 }
+
 
 //----------Karten Name in Db schreiben-----------
 if (isset($_POST['kartenName'])) {
@@ -57,17 +65,15 @@ if (isset($_POST['kartenName'])) {
   echo $_SESSION['kartenId'];
   $sql = "INSERT INTO `karten`
   (
-    `kartenId`,
-    `kartenName`,
-    `fk_accountId`
+    `id`,
+    `name`,
   )
   VALUES
   (
     NULL,
     '$kartenName',
-    '1'
   );";
 
-  $insert = mysql_query($sql);
+  $insert = mysqli_query($sql);
 }
 ?>

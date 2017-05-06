@@ -6,72 +6,83 @@ label {
 
 .seite-rechts {
   border: 2px groove rgba(65, 121, 68, 0.9);
-  overflow: auto; }
-  .seite-rechts .beaconBearbeiten .header {
-    padding: 0 !important;
-    height: 50px;
-    background: #e1e1e1; }
-    .seite-rechts .beaconBearbeiten .header .delete {
-      height: inherit;
-      float: right;
-      background: #992222;
-      border-radius: 5px; }
-      .seite-rechts .beaconBearbeiten .header .delete:hover {
-        cursor: pointer;
-        background: #c32b2b; }
-      .seite-rechts .beaconBearbeiten .header .delete .miDelete {
-        font-size: 3em; }
-    .seite-rechts .beaconBearbeiten .header .h3left {
-      height: inherit;
-      line-height: 3em;
-      font-size: 3em; }
-  .seite-rechts .beaconBearbeiten .feld, .seite-rechts .beaconBearbeiten .name, .seite-rechts .beaconBearbeiten .besonders {
-    padding: 2%;
-    padding-bottom: 10%;
-    border-bottom: 2px solid #555;
-    z-index: inherit; }
-  .seite-rechts .beaconBearbeiten .name {
-    background: white; }
-    .seite-rechts .beaconBearbeiten .name label {
-      font-size: 1.2em;
-      line-height: 1.2em;
-      margin-left: 1%;
-      color: #555; }
-    .seite-rechts .beaconBearbeiten .name input {
-      font-size: 1em;
-      text-align: left;
-      border-radius: 5px;
-      background: #fff;
-      background: #fafafa; }
-  .seite-rechts .beaconBearbeiten .besonders {
-    background: white; }
-    .seite-rechts .beaconBearbeiten .besonders .specialPlace {
-      border-bottom: 1px solid #bbb; }
-      .seite-rechts .beaconBearbeiten .besonders .specialPlace fieldset {
-        font-size: 1em;
-        width: 50%;
-        border: none;
-        display: inline; }
-      .seite-rechts .beaconBearbeiten .besonders .specialPlace label {
+  overflow: auto;
+  filter: contrast(50%); }
+  .seite-rechts .beaconBearbeiten {
+    border: 0.1px solid rgba(255, 255, 255, 0);
+    height: 100%; }
+    .seite-rechts .beaconBearbeiten .progress {
+      margin-bottom: 0px !important;
+      filter: brightness(60%); }
+    .seite-rechts .beaconBearbeiten .header {
+      padding: 0 !important;
+      height: 50px;
+      margin-top: 0 !important;
+      background: #e1e1e1; }
+      .seite-rechts .beaconBearbeiten .header .delete {
+        height: inherit;
+        float: right;
+        background: #992222;
+        border-radius: 5px; }
+        .seite-rechts .beaconBearbeiten .header .delete:hover {
+          cursor: pointer;
+          background: #c32b2b; }
+        .seite-rechts .beaconBearbeiten .header .delete .miDelete {
+          font-size: 3em; }
+      .seite-rechts .beaconBearbeiten .header .h3left {
+        height: inherit;
+        line-height: 3em;
+        font-size: 3em;
+        margin-top: 0px !important; }
+        .seite-rechts .beaconBearbeiten .header .h3left h3 {
+          margin-top: 0px; }
+    .seite-rechts .beaconBearbeiten .feld, .seite-rechts .beaconBearbeiten .name, .seite-rechts .beaconBearbeiten .besonders {
+      padding: 2%;
+      padding-bottom: 10%;
+      border-bottom: 2px solid #555;
+      z-index: inherit; }
+    .seite-rechts .beaconBearbeiten .name {
+      background: white; }
+      .seite-rechts .beaconBearbeiten .name label {
         font-size: 1.2em;
         line-height: 1.2em;
         margin-left: 1%;
         color: #555; }
-      .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown {
-        font-size: 2em;
-        float: right;
-        margin-top: 3%; }
-        .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown:hover {
-          cursor: pointer; }
-        .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown.rotateArrow {
-          transform: rotateX(180deg); }
-    .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces {
-      margin-left: 0; }
-      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open {
-        display: block; }
-        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset {
-          display: block;
-          animation: fieldsetFadeIn 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
+      .seite-rechts .beaconBearbeiten .name input {
+        font-size: 1em;
+        text-align: left;
+        border-radius: 5px;
+        background: #fff;
+        background: #fafafa; }
+    .seite-rechts .beaconBearbeiten .besonders {
+      background: white; }
+      .seite-rechts .beaconBearbeiten .besonders .specialPlace {
+        border-bottom: 1px solid #bbb; }
+        .seite-rechts .beaconBearbeiten .besonders .specialPlace fieldset {
+          font-size: 1em;
+          width: 50%;
+          border: none;
+          display: inline; }
+        .seite-rechts .beaconBearbeiten .besonders .specialPlace label {
+          font-size: 1.2em;
+          line-height: 1.2em;
+          margin-left: 1%;
+          color: #555; }
+        .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown {
+          font-size: 2em;
+          float: right;
+          margin-top: 3%; }
+          .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown:hover {
+            cursor: pointer; }
+          .seite-rechts .beaconBearbeiten .besonders .specialPlace .dropDown.rotateArrow {
+            transform: rotateX(180deg); }
+      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces {
+        margin-left: 0; }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open {
+          display: block; }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset {
+            display: block;
+            animation: fieldsetFadeIn 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
 @keyframes fieldsetFadeIn {
   0% {
     height: 0; }
@@ -79,17 +90,17 @@ label {
     height: 170px; }
   100% {
     height: auto; } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList {
-            padding-left: 0; }
-            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li {
-              display: block;
-              opacity: 0; }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: -150ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList {
+              padding-left: 0; }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li {
+                display: block;
+                opacity: 0; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: -150ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -97,12 +108,12 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: 0ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: 0ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -110,12 +121,12 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: 150ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: 150ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -123,12 +134,12 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: 300ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: 300ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -136,12 +147,12 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: 450ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: 450ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -149,12 +160,12 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
-                animation-name: menu-in;
-                animation-duration: 300ms;
-                animation-delay: 600ms;
-                animation-timing-function: ease-in-out;
-                animation-fill-mode: forwards; }
+                .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
+                  animation-name: menu-in;
+                  animation-duration: 300ms;
+                  animation-delay: 600ms;
+                  animation-timing-function: ease-in-out;
+                  animation-fill-mode: forwards; }
 @keyframes menu-in {
   0% {
     opacity: 0;
@@ -162,9 +173,9 @@ label {
   100% {
     opacity: 1;
     transform: translateX(0) rotateX(0deg); } }
-      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset {
-        display: block;
-        animation: fieldsetFadeOut 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset {
+          display: block;
+          animation: fieldsetFadeOut 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
 @keyframes fieldsetFadeOut {
   0% {
     height: auto; }
@@ -172,14 +183,14 @@ label {
     height: 170px; }
   100% {
     height: 0; } }
-        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li {
-          display: block;
-          opacity: 1; }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li {
+            display: block;
+            opacity: 1; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -187,11 +198,11 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -199,11 +210,11 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -211,11 +222,11 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -223,11 +234,11 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -235,11 +246,11 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
-            animation-name: menu-out;
-            animation-duration: 400ms;
-            animation-timing-function: ease-in-out;
-            animation-fill-mode: forwards; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
+              animation-name: menu-out;
+              animation-duration: 400ms;
+              animation-timing-function: ease-in-out;
+              animation-fill-mode: forwards; }
 @keyframes menu-out {
   0% {
     opacity: 1;
@@ -247,44 +258,44 @@ label {
   100% {
     opacity: 0;
     transform: translateX(0) rotateX(0deg); } }
-      .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset {
-        border: none;
-        display: none; }
-        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList {
-          list-style: none;
-          padding-left: 0; }
-          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li {
-            line-height: 1.5em;
-            position: relative;
-            padding: 1%;
-            padding-left: 0;
-            font-size: 1em;
-            color: grey;
-            cursor: pointer;
-            display: none; }
-            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li:hover {
-              padding-left: 1%;
-              font-style: italic;
-              font-weight: bold; }
-            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li .tfSonstiges {
-              letter-spacing: 0.1em;
-              float: right;
-              width: 80%; }
-  .seite-rechts .beaconBearbeiten .submit {
-    width: 100%;
-    height: 2em;
-    background: #2f2;
-    border-radius: 10px;
-    -webkit-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 50px 4px rgba(0, 0, 0, 0.75);
-    font-size: 1.5em;
-    float: left; }
-    .seite-rechts .beaconBearbeiten .submit:hover {
-      cursor: pointer;
-      background: #0f0;
-      -webkit-box-shadow: 0px 0px 5px 4px #222;
-      -moz-box-shadow: 0px 0px 5px 4px #222;
-      box-shadow: 0px 0px 50px 4px #222; }
+        .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset {
+          border: none;
+          display: none; }
+          .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList {
+            list-style: none;
+            padding-left: 0; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li {
+              line-height: 1.5em;
+              position: relative;
+              padding: 1%;
+              padding-left: 0;
+              font-size: 1em;
+              color: grey;
+              cursor: pointer;
+              display: none; }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li:hover {
+                padding-left: 1%;
+                font-style: italic;
+                font-weight: bold; }
+              .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset ul.dropDownList li .tfSonstiges {
+                letter-spacing: 0.1em;
+                float: right;
+                width: 80%; }
+    .seite-rechts .beaconBearbeiten .submit {
+      width: 100%;
+      height: 2em;
+      background: #2f2;
+      border-radius: 10px;
+      -webkit-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 50px 4px rgba(0, 0, 0, 0.75);
+      font-size: 1.5em;
+      float: left; }
+      .seite-rechts .beaconBearbeiten .submit:hover {
+        cursor: pointer;
+        background: #0f0;
+        -webkit-box-shadow: 0px 0px 5px 4px #222;
+        -moz-box-shadow: 0px 0px 5px 4px #222;
+        box-shadow: 0px 0px 50px 4px #222; }
 
 /*# sourceMappingURL=EditorFormFeld.css.map */
