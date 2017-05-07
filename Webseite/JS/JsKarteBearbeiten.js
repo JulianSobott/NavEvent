@@ -183,20 +183,24 @@ function saveData(field, value) {
   $('.progress-bar').addClass('active');
   $('.progress').css('filter', 'brightness(100%)');
   var id = $('.actualBeacon').parent().attr('id').split('-')[1];
-
+  var map_id = $('#bild').attr('alt');
+  var position = $('.actualBeacon').parent().attr('style');
+  console.log(position);
   $.ajax({
     type: "POST",
     url: "../includes/datenbank.inc.php",
     data: {
-      'id': id,
+      'minor_id': id,
+      'map_id': map_id,
       'field': field,
-      'value': value
+      'value': value,
+      'position': position
     }
   }).done(function() {
     $('.progress-bar').removeClass('active');
     $('.progress').css('filter', 'brightness(60%)');
   }).fail(function() {
-    $('.progress-bar').addClass('progress-bar-danger');
+    $('.progress-bar').addClass('progress-bar-danger')
   });
 
 }

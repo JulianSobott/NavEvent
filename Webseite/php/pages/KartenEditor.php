@@ -1,7 +1,27 @@
 <?php
 session_start();
 require '../includes/DatenbankConnect.inc.php';
+echo "<pre>";
+var_dump($_POST);
+echo "</pre>";
+if(isset($_POST['value']) || isset($_POST['id']) || isset($_POST['field'])){
+  echo "<pre>";
+  var_dump($_POST);
+  echo "</pre>";
+  ?>
+  <script type="text/javascript">
+    console.log("isset");
+  </script>
+  <?php
+  $id = $_POST['id'];
+  $field = $_POST['field'];
+  $value = $_POST['value'];
+  echo $id." - ".$field." - ".value;
 
+  $sql = "UPDATE beacons SET ".$field." = '$value' WHERE id = '$id'";
+  $result = mysqli_query($con, $sql);
+
+}
 /*
 include 'DatenbankConnect.inc.php';
 if (isset($_GET['beaconId'])) {

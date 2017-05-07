@@ -1,7 +1,6 @@
 <?php
 session_start();
 error_reporting(E_ALL);
-//Verbindung mit Datenbank herstellen
 require 'DatenbankConnect.inc.php';
 
 //------Daten in Datenbank rein schreiben-------
@@ -45,12 +44,22 @@ if(isset($_POST['name']))
   $insert = mysqli_query($con, $sql);
 }
 
-if(isset($_POST['value']) || isset($_POST['id']) || isset($_POST['field'])){
-  $id = $_POST['id'];
+if(isset($_POST['value'])){
+  $map_id = $_POST['map_id'];
+  $minor_id = $_POST['minor_id'];
   $field = $_POST['field'];
   $value = $_POST['value'];
-
-  $sql = "UPDATE beacons SET ".$field." = '$value' WHERE id = '$id'";
+  //If position is needed
+  /*
+  $position = $_POST['position'];
+  $position = str_replace("left: ", "", $position);
+  $position = str_replace("top: ", "/", $position);
+  $position = str_replace("%;", "", $position);
+  $position = explode("/", $position);
+  $position_left = trim($position[0]);
+  $position_top = trim($position[1]);
+  */
+  $sql = "UPDATE beacons SET ".$field." = '$value' WHERE minor_id = '$minor_id' AND fk_map_id = '$map_id'";
   $result = mysqli_query($con, $sql);
 
 }

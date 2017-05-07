@@ -36,7 +36,7 @@
     <form id="daten" action="datenbank.inc.php" method="post">
       <div class="name">
         <label for="tfName">Name: </label>
-        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="tfName" placeholder="z.B. Labor" value=<?php
+        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value=<?php
         if (isset($_GET['beaconId'])) {
            echo $data['name'];
         }else {
