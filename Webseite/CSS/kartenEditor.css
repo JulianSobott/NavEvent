@@ -312,6 +312,8 @@ label {
           .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li {
             display: block;
             opacity: 1; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:hover {
+              cursor: default; }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
               animation-name: menu-out;
               animation-duration: 400ms;
@@ -320,9 +322,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
               animation-name: menu-out;
@@ -332,9 +336,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
               animation-name: menu-out;
@@ -344,9 +350,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
               animation-name: menu-out;
@@ -356,9 +364,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
               animation-name: menu-out;
@@ -368,9 +378,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
               animation-name: menu-out;
@@ -380,9 +392,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
         .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset {
           border: none;
@@ -432,6 +446,30 @@ html, body {
     margin-bottom: 0; }
   html .content, body .content {
     height: auto; }
+    html .content .publishMap, body .content .publishMap {
+      position: absolute;
+      right: 8%;
+      bottom: 3%;
+      z-index: 1000; }
+      html .content .publishMap .textPublishMap, body .content .publishMap .textPublishMap {
+        float: left;
+        font-size: 1.5em;
+        font-weight: bold;
+        line-height: 5.5em;
+        background: rgba(14, 226, 47, 0.77);
+        border: 2px solid #666;
+        border-radius: 10px; }
+      html .content .publishMap button, body .content .publishMap button {
+        background: rgba(255, 255, 255, 0); }
+        html .content .publishMap button:hover, body .content .publishMap button:hover {
+          background: #0ee22f; }
+        html .content .publishMap button .miPublish, body .content .publishMap button .miPublish {
+          font-size: 8em;
+          border: 1px solid #000;
+          border-radius: 50%;
+          background: white; }
+          html .content .publishMap button .miPublish:hover, body .content .publishMap button .miPublish:hover {
+            background: #0ee22f; }
     html .content .seite, body .content .seite {
       position: absolute;
       bottom: 0;

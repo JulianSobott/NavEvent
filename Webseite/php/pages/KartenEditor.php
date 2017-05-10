@@ -1,27 +1,7 @@
 <?php
 session_start();
 require '../includes/DatenbankConnect.inc.php';
-echo "<pre>";
-var_dump($_POST);
-echo "</pre>";
-if(isset($_POST['value']) || isset($_POST['id']) || isset($_POST['field'])){
-  echo "<pre>";
-  var_dump($_POST);
-  echo "</pre>";
-  ?>
-  <script type="text/javascript">
-    console.log("isset");
-  </script>
-  <?php
-  $id = $_POST['id'];
-  $field = $_POST['field'];
-  $value = $_POST['value'];
-  echo $id." - ".$field." - ".value;
 
-  $sql = "UPDATE beacons SET ".$field." = '$value' WHERE id = '$id'";
-  $result = mysqli_query($con, $sql);
-
-}
 /*
 include 'DatenbankConnect.inc.php';
 if (isset($_GET['beaconId'])) {
@@ -59,6 +39,7 @@ echo $data['name']." ".$data['beaconId'].'<br />';
     <title>Karte Bearbeiten</title>
   </head>
   <body>
+    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
     <?php include 'EditorFiles/EditorHeader.php'; ?>
     <div class="content">
       <?php
@@ -66,6 +47,12 @@ echo $data['name']." ".$data['beaconId'].'<br />';
       include 'EditorFiles/KartenContainer.php';
       include 'EditorFiles/Formfeld.php';
       ?>
+      <div class="publishMap">
+        <button type="button" name="publishMap"><i class="material-icons miPublish">publish</i></button>
+        <div class="textPublishMap">
+          &nbspKarte hochladen und veröffentlichen&nbsp
+        </div>
+      </div>
     </div>
   </body>
   <script src="../../JS/JsKarteBearbeiten.js"></script>

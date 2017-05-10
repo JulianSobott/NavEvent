@@ -53,6 +53,7 @@ $(document).ready( function(){
           'fk_map_id': map_id,
           'fk_special': "NULL",
           'fk_ordinary': "NULL",
+          'action': "insert"
         }
       }).done(function() {
         $('.seite-rechts').css('filter', 'contrast(100%)');
@@ -65,15 +66,12 @@ $(document).ready( function(){
 
   //-------Beacon clicked-------------
   container.addEventListener("click", function (e) {
-
     $('.beacon').click(function() {
+      showData();
       $('.actualBeacon').removeClass('actualBeacon')
       $(this).addClass('actualBeacon');
       freierOrt = false;
     });
-    $('.btnDelete').click(function() {
-      $('.actualBeacon').remove();
-    })
   });
   //----------Beacon Bearbeiten----------
   $('.dropDown').click(function() {
@@ -102,9 +100,8 @@ $(document).ready( function(){
     $('.listSpecialPlaces').removeClass('open');
   });
 
-  $('.deleteBeacon').click(function() {
-    $('.actualBeacon').remove();
-    closeWindow();
+  $('.btnDelete').click(function() {
+    deleteBeacon();
   })
 
 //--------------Beacon Informationen zu entsprechendem Beacon hinzufuegen-------
@@ -175,6 +172,28 @@ function beaconHinzufuegen (pX, pY){
   $('#beaconContainer-'+ anzBeacons).css('top', pY+'%');
 }
 
+function deleteBeacon(){
+  $('.progress-bar').addClass('active');
+  $('.progress').css('filter', 'brightness(100%)');
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+  var map_id = $('#bild').attr('alt');
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'minor_id': id,
+      'map_id': map_id,
+      'action': "delete"
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+  $('.actualBeacon').remove();
+}
+
 function rotateArrow() {
   $('.dropDown').toggleClass('rotateArrow');
 }
@@ -186,6 +205,25 @@ function saveData(field, value) {
   var map_id = $('#bild').attr('alt');
   var position = $('.actualBeacon').parent().attr('style');
   console.log(position);
+
+  if(field == "rdbSpecialPlace"){
+    field = "fk_special";
+    if(value == "Toiletten")
+      value = 1;
+    else if(value == "Cafeteria")
+      value = 2;
+    else if(value == "Notausgang")
+      value = 3;
+    else if(value == "Infopoint")
+      value = 4;
+    else
+      value = 5;
+  }
+  if(field == "rdbBesonders" && value =="kein_Besonderer_Ort"){
+    field = "fk_special";
+    value = "NULL";
+  }
+
   $.ajax({
     type: "POST",
     url: "../includes/datenbank.inc.php",
@@ -194,7 +232,8 @@ function saveData(field, value) {
       'map_id': map_id,
       'field': field,
       'value': value,
-      'position': position
+      'position': position,
+      'action': "update"
     }
   }).done(function() {
     $('.progress-bar').removeClass('active');
@@ -202,7 +241,21 @@ function saveData(field, value) {
   }).fail(function() {
     $('.progress-bar').addClass('progress-bar-danger')
   });
+}
 
+function showData() {
+  $.ajax({
+    type: "POST",
+    url: "EditorFiles/Formfeld.php",
+    data: {
+      'name': "Günther"
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
 }
 //x = x *(100/$('#bild').width());
 //$('.beacon-'+ anzBeacons).css('margin-top', y+'px');

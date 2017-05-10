@@ -11,6 +11,34 @@ html, body
 
   .content
     height: auto
+
+    .publishMap
+      position: absolute
+      right: 8%
+      bottom: 3%
+      z-index: 1000
+
+      .textPublishMap
+        float: left
+        font-size: 1.5em
+        font-weight: bold
+        line-height: 5.5em
+        background: rgba(#0EE22F, 0.77)
+        border: 2px solid #666
+        border-radius: 10px
+        //display: none
+
+      button
+        background: rgba(#FFFFFF, 0)
+        &:hover
+          background: rgba(#0EE22f, 70)
+        .miPublish
+          font-size: 8em
+          border: 1px solid #000
+          border-radius: 50%
+          background: rgba(#FFFFFF, 70)
+          &:hover
+            background: rgba(#0EE22f, 70)
     .seite
       position: absolute
       bottom: 0

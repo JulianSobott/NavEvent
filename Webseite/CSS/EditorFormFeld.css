@@ -186,6 +186,8 @@ label {
           .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li {
             display: block;
             opacity: 1; }
+            .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:hover {
+              cursor: default; }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(1) {
               animation-name: menu-out;
               animation-duration: 400ms;
@@ -194,9 +196,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(2) {
               animation-name: menu-out;
@@ -206,9 +210,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(3) {
               animation-name: menu-out;
@@ -218,9 +224,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(4) {
               animation-name: menu-out;
@@ -230,9 +238,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(5) {
               animation-name: menu-out;
@@ -242,9 +252,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
             .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset ul.dropDownList li:nth-child(6) {
               animation-name: menu-out;
@@ -254,9 +266,11 @@ label {
 @keyframes menu-out {
   0% {
     opacity: 1;
+    height: 10px;
     transform: translateX(-30px) rotateX(180deg); }
   100% {
     opacity: 0;
+    height: 0px;
     transform: translateX(0) rotateX(0deg); } }
         .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces fieldset.dlFieldset {
           border: none;

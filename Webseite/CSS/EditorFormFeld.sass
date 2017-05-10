@@ -144,6 +144,9 @@ label
                 display: block
                 opacity: 1
 
+                &:hover
+                  cursor: default 
+
                 @for $i from 1 through 6
                   &:nth-child(#{$i})
                     animation-name: menu-out
@@ -154,9 +157,11 @@ label
                     @keyframes menu-out
                       0%
                         opacity: 1
+                        height: 10px
                         transform: translateX(-30px) rotateX(180deg)
                       100%
                         opacity: 0
+                        height: 0px
                         transform: translateX(0) rotateX(0deg)
 
         fieldset.dlFieldset
