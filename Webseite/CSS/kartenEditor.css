@@ -456,20 +456,35 @@ html, body {
         font-size: 1.5em;
         font-weight: bold;
         line-height: 5.5em;
-        background: rgba(14, 226, 47, 0.77);
+        background: rgba(14, 226, 47, 0.33);
         border: 2px solid #666;
-        border-radius: 10px; }
+        border-radius: 10px;
+        display: none;
+        z-index: 500; }
+        html .content .publishMap .textPublishMap.in, body .content .publishMap .textPublishMap.in {
+          display: block;
+          transform-origin: right;
+          animation: in 200ms ease-in forwards; }
+@keyframes in {
+  0% {
+    opacity: 0;
+    transform: translateX(-200px) rotate(30deg); }
+  100% {
+    opacity: 1;
+    transform: translateX(0px) rotate(0deg); } }
+        html .content .publishMap .textPublishMap .out, body .content .publishMap .textPublishMap .out {
+          display: none; }
       html .content .publishMap button, body .content .publishMap button {
-        background: rgba(255, 255, 255, 0); }
+        background: rgba(255, 255, 255, 0);
+        z-index: 700; }
         html .content .publishMap button:hover, body .content .publishMap button:hover {
           background: #0ee22f; }
         html .content .publishMap button .miPublish, body .content .publishMap button .miPublish {
           font-size: 8em;
           border: 1px solid #000;
           border-radius: 50%;
-          background: white; }
-          html .content .publishMap button .miPublish:hover, body .content .publishMap button .miPublish:hover {
-            background: #0ee22f; }
+          background: white;
+          z-index: 700; }
     html .content .seite, body .content .seite {
       position: absolute;
       bottom: 0;
@@ -496,5 +511,15 @@ html, body {
     transform: translate(100%); }
   100% {
     transform: translate(-100%); } }
+      html .content .seite-rechts .mask, body .content .seite-rechts .mask {
+        position: absolute;
+        background: rgba(184, 184, 184, 0.9);
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        font-size: 4em;
+        font-family: fantasy;
+        color: #61757a;
+        padding: 30% 1% 1% 10%; }
 
 /*# sourceMappingURL=kartenEditor.css.map */

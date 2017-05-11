@@ -21,6 +21,7 @@ require 'php/includes/DatenbankConnect.inc.php';
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   </head>
   <body>
+
     <?php
     include 'php/includes/header.php';
 
@@ -81,4 +82,6 @@ require 'php/includes/DatenbankConnect.inc.php';
   </body>
   <script src="JS/bootstrap.min.js"></script>
   <script src="JS/JavaScriptMain.js"></script>
+
+  </script>
 </html>

@@ -1,4 +1,29 @@
-<div class="seite seite-rechts <?php if(isset($_GET['status']))if($_GET['status']==edit)echo "animate-in"?>">
+<?php
+function showData($field)
+{
+  $minor_id = $_POST['id'];
+  $fk_map_id = $_POST['fk_map_id'];
+  $sql = "SELECT * FROM beacons WHERE minor_id = '$minor_id' AND fk_map_id = '$fk_map_id'";
+  $res = mysqli_query($con, $sql);
+  while($result = mysqli_fetch_assoc($res)){
+    $name = $result['name'];
+    $fk_special = $result['fk_special'];
+    $description = $result['description'];
+  }
+  if($field == "name")
+    return $name;
+  elseif ($field == "description")
+    return $description;
+}
+if (isset($_POST['action'])) {
+  var_dump($_POST);
+}
+ ?>
+
+<div class="seite seite-rechts <?php if(isset($_GET['status']))if($_GET['status']=="edit")echo "animate-in"?>">
+  <div class="mask">
+    Click on the Map to add a Beacon
+  </div>
   <!--
   <form class="beaconBearbeiten" action="" method="post">
     <div class="form-group">
@@ -19,11 +44,6 @@
     </div>
 
   </form>-->
-  <?php  if(isset($_POST['name'])){
-    echo $_POST['name'];
-  }else {
-    echo "empty space";
-  }?>
   <div class="beaconBearbeiten">
     <div class="progress">
       <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
@@ -41,12 +61,13 @@
     <form id="daten" action="datenbank.inc.php" method="post">
       <div class="name">
         <label for="tfName">Name: </label>
-        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value=<?php
-        if(isset($_POST['name'])){
-          echo $_POST['name'];
-        }else {
-          echo "";
-        }?>>
+        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value="<?php
+        if(isset($_POST['action'])){
+          echo "Günther3";
+          showData("name");
+          echo "Günther2";
+        }
+        echo "Günther";?>">
       </div>
       <div class="besonders feld">
         <div class="specialPlace">
@@ -89,7 +110,10 @@
       </div>
       <div class="form-group feld">
         <label for="tfInfos">Informationen: </label>
-        <textarea class="form-control" onchange="saveData(this.name, this.value)" type="text" name="description" rows="5" value=""></textarea>
+        <textarea class="form-control" onchange="saveData(this.name, this.value)" type="text" name="description" rows="5" value="<?php
+        if($_POST['action'] == 'show'){
+          showData("name");}
+        ?>"></textarea>
       </div>
       <input class="submit" type="button" name="submit" value="Daten Speichern">
     </form>

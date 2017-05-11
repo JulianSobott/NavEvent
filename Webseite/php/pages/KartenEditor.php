@@ -39,7 +39,6 @@ echo $data['name']." ".$data['beaconId'].'<br />';
     <title>Karte Bearbeiten</title>
   </head>
   <body>
-    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
     <?php include 'EditorFiles/EditorHeader.php'; ?>
     <div class="content">
       <?php
@@ -47,8 +46,9 @@ echo $data['name']." ".$data['beaconId'].'<br />';
       include 'EditorFiles/KartenContainer.php';
       include 'EditorFiles/Formfeld.php';
       ?>
-      <div class="publishMap">
-        <button type="button" name="publishMap"><i class="material-icons miPublish">publish</i></button>
+
+      <div class="publishMap" <?php if(!isset($_GET['status'])) echo 'style = "display: none;"' ?>>
+        <button type="button" name="publishMap" class="btnPublish"><i class="material-icons miPublish">publish</i></button>
         <div class="textPublishMap">
           &nbspKarte hochladen und veröffentlichen&nbsp
         </div>
@@ -56,4 +56,6 @@ echo $data['name']." ".$data['beaconId'].'<br />';
     </div>
   </body>
   <script src="../../JS/JsKarteBearbeiten.js"></script>
+  <script src="../../JS/kartenEditor.js"></script>
+  <script src="../../JS/qrcode.min.js"></script>
 </html>

@@ -19,7 +19,8 @@ $(document).ready( function(){
   //Beacon auf Karte hinzufügen
   container.addEventListener("click", function (e) {
     //alert("Clicked");
-    $('.beacon').click(function() {
+    $('.mask').remove();
+    $('.beaconContainer').click(function() {
       freierOrt = false;
     });
     if (freierOrt) {
@@ -66,10 +67,10 @@ $(document).ready( function(){
 
   //-------Beacon clicked-------------
   container.addEventListener("click", function (e) {
-    $('.beacon').click(function() {
+    $('.beaconContainer').click(function() {
+      $('.actualBeacon').removeClass('actualBeacon');
+      $(this).children().addClass('actualBeacon');
       showData();
-      $('.actualBeacon').removeClass('actualBeacon')
-      $(this).addClass('actualBeacon');
       freierOrt = false;
     });
   });
@@ -244,15 +245,21 @@ function saveData(field, value) {
 }
 
 function showData() {
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+  console.log(id);
+  var map_id = $('#bild').attr('alt');
   $.ajax({
     type: "POST",
     url: "EditorFiles/Formfeld.php",
     data: {
-      'name': "Günther"
+      'minor_id': id,
+      'fk_map_id': map_id,
+      'action': "show"
     }
   }).done(function() {
     $('.progress-bar').removeClass('active');
     $('.progress').css('filter', 'brightness(60%)');
+    console.log("succesfull");
   }).fail(function() {
     $('.progress-bar').addClass('progress-bar-danger')
   });
