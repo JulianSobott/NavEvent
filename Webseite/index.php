@@ -1,5 +1,5 @@
 <?php
-session_name("session");
+//session_name("session");
 session_start();
 
 require 'php/includes/DatenbankConnect.inc.php';

@@ -33,6 +33,7 @@ if (isset($_POST['anmelden']))
         }
       }
       header("Location: http://localhost/NavEvent/index.php?action=profil");
+      exit;
     }else {
       $error['passwordLI'] = "Falsches Passwort";
     }

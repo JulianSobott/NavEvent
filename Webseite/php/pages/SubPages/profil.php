@@ -28,10 +28,22 @@
 
       </div>
     </div>
-    <div class="button btnNeueKarteHinzufuegen">
+    <div class="button map btnNeueKarteHinzufuegen">
       <div class="material-icons add">add</div>
       <p>Neue Karte hinzufügen</p>
     </div>
-
+    <?php
+    if(isset($_SESSSION['accountId'])){
+      print_r($_SESSSION);
+      $account_id = $_SESSSION['accountId'];
+      $sql = "SELECT * FROM maps WHERE fk_account_id = '$account_id'";
+      $res = mysqli_query($con, $sql);
+      while ($result = mysql_fetch_assoc($res)) {
+        echo result['id'];
+      }
+    }else {
+      echo "unset";
+    }
+     ?>
   </div>
 </div>
