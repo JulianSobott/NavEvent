@@ -1,6 +1,10 @@
 <?php
+if(!isset($_SESSION))
+  session_start();
+$sessionName = session_name();
+$sessionId = session_id();
 //session_name("session");
-session_start();
+
 
 require 'php/includes/DatenbankConnect.inc.php';
  ?>

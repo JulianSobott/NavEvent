@@ -20,6 +20,7 @@ if (isset($_POST['anmelden']))
     {
       $_SESSION['loggedIn'] = true;
       $_SESSION['accountId'] = $result['id'];
+      $GLOBALS['$accountId'] = $_SESSION['accountId'];
       $_SESSION['nutzername'] = $result['nutzername'];
       if(isset($_POST['angemeldetBleiben'])){
         $identifier = randomString();
@@ -32,9 +33,10 @@ if (isset($_POST['anmelden']))
           setcookie("securitytoken",$securitytoken,time()+(3600*24*365));
         }
       }
-      header("Location: http://localhost/NavEvent/index.php?action=profil");
-      exit;
-    }else {
+      session_write_close();
+      header("Location: index.php?action=profil&$sessionName=$sessionId");
+      exit();
+    }else{
       $error['passwordLI'] = "Falsches Passwort";
     }
   }else {

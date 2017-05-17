@@ -1,5 +1,5 @@
 <?php
-session_name("session");
+//session_name("session");
 //session_start();?>
 <nav class="navbar navbar-inverse navbar-static-top">
   <div class="container">

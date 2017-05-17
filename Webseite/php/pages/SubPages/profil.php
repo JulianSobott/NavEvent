@@ -1,4 +1,7 @@
-<input type="checkbox" id="toggleSidebar" name="" value="">
+<?php
+//session_id($_GET['PHPSESSID']);
+
+?><input type="checkbox" id="toggleSidebar" name="" value="">
 <div class="body">
   <label class="toggleSidebar" for="toggleSidebar">☰</label>
   <div class="seitenmenue">
@@ -28,22 +31,63 @@
 
       </div>
     </div>
-    <div class="button map btnNeueKarteHinzufuegen">
+    <div class="col-md-1 button btnMap btnNeueKarteHinzufuegen">
       <div class="material-icons add">add</div>
       <p>Neue Karte hinzufügen</p>
     </div>
     <?php
+    $_SESSSION['accountId'] = 2;
+    if(isset($_SESSSION['loggedIn'])){
+      //echo "Logged in: ";
+    }else{
+      //echo "NOT Logged in: ";
+    }
     if(isset($_SESSSION['accountId'])){
-      print_r($_SESSSION);
+      //print_r($_SESSSION);
       $account_id = $_SESSSION['accountId'];
       $sql = "SELECT * FROM maps WHERE fk_account_id = '$account_id'";
       $res = mysqli_query($con, $sql);
-      while ($result = mysql_fetch_assoc($res)) {
-        echo result['id'];
+      //echo mysqli_num_rows($res);
+      while ($result = mysqli_fetch_assoc($res)) {
+        //echo $result['id']."\n";
+        $map_id = $result['id'];
+        $img = $result['img_file'];
+        $mime = explode('/', $result['mime']);
+        $mime = $mime[1];
+        $map_name = $result['name'];
+        //echo $mime;
+        ?>
+        <div class=" col-md-1 button btnMap">
+          <img id="bild" alt="<?php echo $map_id ?>" src="http://localhost/NavEvent/uploads/<?php echo $img.'.'.$mime?>"/>
+          <div class="map_name">
+            <?php echo $map_name?>
+          </div>
+          <div class="option_field">
+            <div class="o_field delete">
+              <i class="material-icons miDelete btnDelete">delete</i>
+            </div>
+            <div class="o_field edit">
+              <i class="material-icons miEdit btnEdit">mode edit</i>
+            </div>
+          </div>
+        </div>
+        <?php
+
       }
     }else {
-      echo "unset";
-    }
+      //echo "unset";
+    } ?>
+
+  </div>
+
+  <div class="phpOutput">
+    <?php
+    //echo $testvar;
+    unset($_SESSSION);
+    //echo $accountId;
+    var_dump ($_SESSSION);
+    echo "---------------------------------";
+    //var_dump($GLOBALS);// $GLOBALS['$accountId'];
      ?>
   </div>
 </div>
