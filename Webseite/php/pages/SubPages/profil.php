@@ -9,7 +9,7 @@
     <ul class="navigation">
       <li>Meine Karten</li>
       <li>Profil bearbeiten</li>
-      <li>Abmelden</li>
+      <li><a href="http://localhost/NavEvent/php/includes/logout.inc.php?action=logout">Logout</a></li>
     </ul>
     <h3>Anhang</h3>
     <ul class="anhang">
@@ -27,67 +27,63 @@
   <div class="content">
     <div class="meineKarten">
       <h2>Meine Karten</h2>
-      <div class="kartenBilder">
-
-      </div>
-    </div>
-    <div class="col-md-1 button btnMap btnNeueKarteHinzufuegen">
-      <div class="material-icons add">add</div>
-      <p>Neue Karte hinzufügen</p>
-    </div>
-    <?php
-    $_SESSSION['accountId'] = 2;
-    if(isset($_SESSSION['loggedIn'])){
-      //echo "Logged in: ";
-    }else{
-      //echo "NOT Logged in: ";
-    }
-    if(isset($_SESSSION['accountId'])){
-      //print_r($_SESSSION);
-      $account_id = $_SESSSION['accountId'];
-      $sql = "SELECT * FROM maps WHERE fk_account_id = '$account_id'";
-      $res = mysqli_query($con, $sql);
-      //echo mysqli_num_rows($res);
-      while ($result = mysqli_fetch_assoc($res)) {
-        //echo $result['id']."\n";
-        $map_id = $result['id'];
-        $img = $result['img_file'];
-        $mime = explode('/', $result['mime']);
-        $mime = $mime[1];
-        $map_name = $result['name'];
-        //echo $mime;
-        ?>
-        <div class=" col-md-1 button btnMap">
-          <img id="bild" alt="<?php echo $map_id ?>" src="http://localhost/NavEvent/uploads/<?php echo $img.'.'.$mime?>"/>
-          <div class="map_name">
-            <?php echo $map_name?>
-          </div>
-          <div class="option_field">
-            <div class="o_field delete">
-              <i class="material-icons miDelete btnDelete">delete</i>
-            </div>
-            <div class="o_field edit">
-              <i class="material-icons miEdit btnEdit">mode edit</i>
-            </div>
-          </div>
+      <div class="row kartenBilder">
+        <div class="col-md-1 button btnMap btnNeueKarteHinzufuegen" onclick="mapEditor(<?php if(isset($_SESSION["nutzername"]))echo $_SESSION["accountId"]?>)">
+          <div class="material-icons add">add</div>
+          <p>Neue Karte hinzufügen</p>
         </div>
         <?php
+        $_SESSSION['accountId'] = 2;
+        if(isset($_SESSSION['loggedIn'])){
+          //echo "Logged in: ";
+        }else{
+          //echo "NOT Logged in: ";
+        }
+        if(isset($_SESSSION['accountId'])){
+          //print_r($_SESSSION);
+          $account_id = $_SESSSION['accountId'];
+          $sql = "SELECT * FROM maps WHERE fk_account_id = '$account_id'";
+          $res = mysqli_query($con, $sql);
+          //echo mysqli_num_rows($res);
+          while ($result = mysqli_fetch_assoc($res)) {
+            //echo $result['id']."\n";
+            $map_id = $result['id'];
+            $img = $result['img_file'];
+            $mime = explode('/', $result['mime']);
+            $mime = $mime[0];
+            $map_name = $result['name'];
+            //echo $mime;
+            ?>
+            <div class=" col-md-1 button btnMap">
+              <img id="bild" alt="<?php echo $map_id ?>" src="http://localhost/NavEvent/uploads/<?php echo $img.'.'.$mime?>"/>
+              <div class="map_name">
+                <?php echo $map_name?>
+              </div>
+              <div class="option_field">
+                <div class="o_field delete">
+                  <i class="material-icons miDelete btnDelete">delete</i>
+                </div>
+                <div class="o_field edit">
+                  <i class="material-icons miEdit btnEdit">mode edit</i>
+                </div>
+              </div>
+            </div>
+            <?php
 
-      }
-    }else {
-      //echo "unset";
-    } ?>
+          }
+        }else {
+          //echo "unset";
+        } ?>
 
-  </div>
+      </div>
+      </div>
+    </div>
+
 
   <div class="phpOutput">
     <?php
-    //echo $testvar;
-    unset($_SESSSION);
-    //echo $accountId;
-    var_dump ($_SESSSION);
-    echo "---------------------------------";
-    //var_dump($GLOBALS);// $GLOBALS['$accountId'];
+    $pictures = scandir("http://localhost/NavEvent/uploads");
+    echo var_dump($pictures);
      ?>
   </div>
 </div>

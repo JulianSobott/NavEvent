@@ -6,14 +6,12 @@ if(isset($_GET['user'])){
 }else if(isset($_SESSION['accountId'])){
   $accountId = $_SESSION['accountId'];
 }
-// löscht alle Bilder aus den Verzeichnis
-//array_map('unlink', glob("../../uploads/*"));
 
 if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filepath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/';
+      $filepath = 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/';
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
@@ -22,26 +20,24 @@ if (isset($_FILES['uploaddatei']))
         $data = addslashes(file_get_contents($image));
         $meta = getimagesize($image);
         $mime = $meta['mime'];
+        $mime = $endung;
         $updated_at = time();
-        $mapName = "Karte03"; //TODO anpassen
+        $mapName = "default"; //TODO anpassen
 
-        //$_SESSION['timestamp'] = $updated_at;
-        //echo $_SESSION['timestamp'];
         $path = $filepath.$default_imageName.'.'.$endung;
         $id = 1;
-        do{
-          $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
-          $imageName = $default_imageName.'_'.$id;
-          $id++;
-        }while(file_exists($path));
+        $imageName = $default_imageName.'_'.$id;
         $major_id = 1;//TODO major_implementieren
         $fk_account_id = $accountId;
         $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES('$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
         $res = mysqli_query($con, $statement);
-
+        $id = mysqli_insert_id($con);
+        $imageName = $default_imageName.'_'.$id;
+        $sql = "UPDATE maps SET img_file = '$imageName' WHERE id = '$id'";
+        mysqli_query($con, $sql);
+        $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
         move_uploaded_file($image, $path); //TODO Ordner name anpassen
-        //$_SESSION['kartenId'] = $pdo->lastInsertId();
-        header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$updated_at");
+        header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$id");
       }else{
         $error['datei']="Keine passende Datei ausgewählt";
       }
@@ -74,13 +70,13 @@ if (isset($_FILES['uploaddatei']))
   <div id="bildContainer"<?php if(!isset($_GET['status']))echo "style='display: none'"; ?>>
     <?php
     if (isset($_GET['status'])) {
-      $updated_at = $_GET['id'];
-      $sql = "SELECT id, img_file, mime FROM maps WHERE updated_at='$updated_at'";
+      $id = $_GET['id'];
+      $sql = "SELECT id, img_file, mime FROM maps WHERE id='$id'";
       $res = mysqli_query($con, $sql);
       while($result = mysqli_fetch_assoc($res)){
         $img = $result['img_file'];
         $mime = explode('/', $result['mime']);
-        $mime = $mime[1];
+        $mime = $mime[0];
         $map_id = $result['id'];
         $_SESSION['map_id'] = $map_id;
 

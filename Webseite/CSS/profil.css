@@ -14,14 +14,16 @@
     padding: 5%;
     padding-left: 1%;
     z-index: 0;
-    height: 90%; }
+    height: 100%;
+    overflow-y: auto; }
     .body .seitenmenue ul {
       list-style: none; }
-      .body .seitenmenue ul li {
+      .body .seitenmenue ul li, .body .seitenmenue ul a {
         color: rgba(17, 17, 17, 0.8);
         font-size: 1.5em;
-        padding: 1rem; }
-        .body .seitenmenue ul li:hover {
+        padding: 1rem;
+        text-decoration: none; }
+        .body .seitenmenue ul li:hover, .body .seitenmenue ul a:hover {
           color: black;
           cursor: pointer; }
   .body .phpOutput {
@@ -40,8 +42,12 @@
     padding-left: 4rem;
     margin-right: auto;
     background: #7E807F;
-    height: 100%;
+    border: 1px solid red;
+    height: auto;
+    overflow: scroll;
     z-index: 1; }
+    .body .content h2 {
+      margin-left: 50px; }
     .body .content .btnMap {
       width: 16rem;
       height: 16rem;

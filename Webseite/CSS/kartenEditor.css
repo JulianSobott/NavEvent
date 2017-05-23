@@ -1,3 +1,22 @@
+.seitenmenue {
+  height: 100%;
+  overflow-y: auto; }
+  .seitenmenue .beaconInfoContainer {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-bottom: 4px double #333;
+    background: #777; }
+    .seitenmenue .beaconInfoContainer .beaconInfo {
+      font-size: 1.5em;
+      padding: 2%; }
+    .seitenmenue .beaconInfoContainer .biName {
+      display: block;
+      background: rgba(33, 48, 152, 0.79); }
+    .seitenmenue .beaconInfoContainer .biDescription {
+      display: block;
+      background: rgba(10, 30, 150, 0.5); }
+
 .mitte {
   display: inline-block;
   margin-left: 20%;
@@ -446,6 +465,57 @@ html, body {
     margin-bottom: 0; }
   html .content, body .content {
     height: auto; }
+    html .content .mask, body .content .mask {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: rgba(106, 106, 106, 0.67);
+      top: 0;
+      z-index: 150; }
+    html .content .map_name, body .content .map_name {
+      display: none;
+      position: absolute;
+      top: 20%;
+      width: 70%;
+      border: 1px solid #3e8a15;
+      border-radius: 5px;
+      background: rgba(22, 21, 23, 0.91);
+      box-shadow: 10px 10px 10px #443F33;
+      padding: 5%;
+      opacity: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 200; }
+      html .content .map_name.map_name_in, body .content .map_name.map_name_in {
+        display: block;
+        transform-origin: top;
+        animation: map_name_in 150ms ease-in forwards; }
+@keyframes map_name_in {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0; }
+  100% {
+    transform: scaleX(0deg);
+    opacity: 1; } }
+      html .content .map_name .fKartenKonfiguration label, body .content .map_name .fKartenKonfiguration label {
+        font-size: 2em;
+        color: #fff; }
+      html .content .map_name .fKartenKonfiguration input[type="text"], body .content .map_name .fKartenKonfiguration input[type="text"] {
+        border: 2px solid #545554;
+        border-radius: 4px;
+        font-size: 2em;
+        width: 50%;
+        min-width: 40%; }
+      html .content .map_name .fKartenKonfiguration #btnWeiter, body .content .map_name .fKartenKonfiguration #btnWeiter {
+        font-size: 2em;
+        margin-left: 5%;
+        transition: all 100ms;
+        text-decoration: none;
+        background: #A19F8A;
+        border-radius: 5px; }
+        html .content .map_name .fKartenKonfiguration #btnWeiter:hover, body .content .map_name .fKartenKonfiguration #btnWeiter:hover {
+          box-shadow: 0px 0px 0px 2px #A6AB86, 0px 0px 0px 4px #A19F8A; }
     html .content .publishMap, body .content .publishMap {
       position: absolute;
       right: 8%;

@@ -34,7 +34,7 @@ if (isset($_POST['anmelden']))
         }
       }
       session_write_close();
-      header("Location: index.php?action=profil&$sessionName=$sessionId");
+      header("Location: index.php?action=profil");
       exit();
     }else{
       $error['passwordLI'] = "Falsches Passwort";

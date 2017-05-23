@@ -53,6 +53,14 @@ echo $data['name']." ".$data['beaconId'].'<br />';
           &nbspKarte hochladen und veröffentlichen&nbsp
         </div>
       </div>
+      <div class="map_name">
+        <div class="fKartenKonfiguration" id="fKartenKonfiguration">
+          <label for="kartenName">Name der Karte: </label>
+          <input type="text" id="tf_map_name" class="kartenName" name="kartenName" value="" placeholder="Beispiel Karte">
+          <input type="button" id="btnWeiter" name="submit" value="Weiter">
+        </div>
+      </div>
+      <div class="mask"></div>
     </div>
   </body>
   <script src="../../JS/JsKarteBearbeiten.js"></script>

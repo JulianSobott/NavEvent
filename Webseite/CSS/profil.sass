@@ -18,14 +18,16 @@ $widthSMenu: 30%
     padding: 5%
     padding-left: 1%
     z-index: 0
-    height: 90%
+    height: 100%
+    overflow-y: auto
 
     ul
       list-style: none
-      li
+      li, a
         color: rgba(#111, 0.8)
         font-size: 1.5em
         padding: 1rem
+        text-decoration: none
 
         &:hover
           color: rgba(#000, 1)
@@ -47,10 +49,15 @@ $widthSMenu: 30%
     padding-left: 4rem
     margin-right: auto
     background: #7E807F
-    height: 100%
+    border: 1px solid red
+    //Smin-height: 100%
+    height: auto
     //width: 90%
-    //overflow: scroll
+    overflow: scroll
     z-index: 1
+
+    h2
+      margin-left: 50px
     // TODO: Pixelwert anpassen
 
     .btnMap

@@ -86,6 +86,6 @@ require 'php/includes/DatenbankConnect.inc.php';
   </body>
   <script src="JS/bootstrap.min.js"></script>
   <script src="JS/JavaScriptMain.js"></script>
-
+  <script src="JS/JsProfil.js"></script>
   </script>
 </html>

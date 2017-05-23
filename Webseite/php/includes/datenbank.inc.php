@@ -76,23 +76,11 @@ if($_POST['action'] === "delete"){
 }
 //----------Karten Name in Db schreiben-----------
 
-if (isset($_POST['kartenName'])) {
-  $kartenName = $_POST['kartenName'];
-  $sql = mysql_query("SELECT `kartenId` FROM `karten` WHERE `kartenName` = '".$kartenName."' ");
-  $kartenId = mysql_fetch_array($sql);
-  $_SESSION['kartenId'] = $kartenId['kartenId'];
-  echo $_SESSION['kartenId'];
-  $sql = "INSERT INTO `karten`
-  (
-    `id`,
-    `name`,
-  )
-  VALUES
-  (
-    NULL,
-    '$kartenName',
-  );";
-
-  $insert = mysqli_query($sql);
+if ($_POST['action'] === "map_name") {
+  $map_name = $_POST['map_name'];
+  $map_id = $_POST['map_id'];
+  $sql = "UPDATE maps SET name = '$map_name' WHERE id = '$map_id'";
+  $res = mysqli_query($con, $sql);
 }
+
 ?>

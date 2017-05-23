@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "",
-"sources": [],
+"mappings": "AACA,YAAY;EACV,MAAM,EAAE,IAAI;EACZ,UAAU,EAAE,IAAI;EAChB,iCAAoB;IAClB,OAAO,EAAE,KAAK;IACd,KAAK,EAAE,IAAI;IACX,MAAM,EAAE,IAAI;IACZ,aAAa,EAAE,eAAe;IAC9B,UAAU,EAAE,IAAI;IAEhB,6CAAW;MACT,SAAS,EAAE,KAAK;IAElB,yCAAO;MACL,OAAO,EAAE,KAAK;MACd,UAAU,EAAE,uBAAuB;IAErC,gDAAc;MACZ,OAAO,EAAE,KAAK;MACd,UAAU,EAAE,sBAAsB",
+"sources": ["EditorSeitenmenue.sass"],
 "names": [],
 "file": "EditorSeitenmenue.css"
 }
