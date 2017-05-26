@@ -12,12 +12,14 @@ public interface MapSelectActivityUI
 
 	//Map-download failed. \p errorcode contains a human-readable descrition of the problem.
 	void downloadFailed(String errorcode);
-	//Network-action failed. Cannot connect to server.
-	void isOffline();
 
 	//Map-download finished. \p name is the map-name.
 	void downloadFinished(MapData map);
 
 	//Is called when a beacon and a corresponding map could be found.
 	void foundLocalMap(MapData map);//todo del
+
+	//Will be called, when no beacon and no local map was found.
+	void switchToMainActivity();
+
 }

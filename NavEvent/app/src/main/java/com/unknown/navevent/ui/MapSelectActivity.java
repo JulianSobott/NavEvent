@@ -44,25 +44,33 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         List<String> tmpList = new ArrayList<>();//convert to string list
         for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
 
+	    //todo change so that it will not override local maps-list
         ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mIfc.downloadMap(maps.get(i).getName());
-                //TODO: Add intent to switch to main activity if not handled through the logic
-
-                //todo remove debug code
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+                mIfc.downloadMap(maps.get(i).getID());
             }
         });
     }
 
     @Override
-    public void localMapsLoaded(List<MapData> maps) {
+    public void localMapsLoaded(final List<MapData> maps) {
+	    final ListView list=(ListView) findViewById(R.id.onlineMapList);
 
+	    List<String> tmpList = new ArrayList<>();//convert to string list
+	    for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+
+	    ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
+	    list.setAdapter(adapter);
+	    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    @Override
+		    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+			    mIfc.setActiveMap(maps.get(i).getID());
+
+		    }
+	    });
     }
 
     @Override
@@ -71,14 +79,14 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
     @Override
-    public void isOffline() {
-        Toast.makeText(this, R.string.NoInternetAccess, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void downloadFinished(MapData map) {
         Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
-        mIfc.setActiveMap(map.getName());
+
+        mIfc.setActiveMap(map.getID());
+	    //Switch to MainActivity
+	    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+	    startActivity(intent);
+	    finish();
     }
 
     @Override
@@ -109,4 +117,11 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         // show it
         alertDialog.show();
     }
+
+	@Override
+	public void switchToMainActivity() {
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
 }

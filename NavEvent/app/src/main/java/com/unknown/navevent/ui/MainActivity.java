@@ -74,10 +74,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         }
 
         setContentView(R.layout.activity_main);
-		
-		//Creating background-logic for this activity
-		mIfc = new MainActivityLogic(this);
-		mIfc.onCreate(this);
 
 
         bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
@@ -94,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 showFragment(bar);
             }
         });
+
+
+	    //Creating background-logic for this activity
+	    mIfc = new MainActivityLogic(this);
+	    mIfc.onCreate(this);
+
     }
 	
 	@Override

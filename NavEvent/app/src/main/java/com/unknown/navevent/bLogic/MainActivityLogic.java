@@ -21,7 +21,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 	private MainActivityUI mResponder = null;
 
-	private ServiceInterface serviceInterface = new ServiceInterface();
+	private ServiceInterface serviceInterface = ServiceInterface.getInstance();
 
 
 	public MainActivityLogic(MainActivityUI responder) {
@@ -39,6 +39,8 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 		serviceInterface.onCreate(context);
 
+		if( serviceInterface.currentMap != null )
+			mResponder.updateMap(serviceInterface.currentMap);
 	}
 	@Override
 	public void onDestroy() {

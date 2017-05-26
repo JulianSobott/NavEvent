@@ -27,7 +27,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 	private MapSelectActivityUI mResponder = null;
 
-	private ServiceInterface serviceInterface = new ServiceInterface();
+	private ServiceInterface serviceInterface = ServiceInterface.getInstance();
 
 
 	public MapSelectActivityLogic(MapSelectActivityUI responder) {
@@ -72,6 +72,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 	@Override
 	public boolean setActiveMap(int mapID) {
+		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, mapID));
 		return false;//todo
 	}
 
@@ -84,9 +85,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 	public void onMessageEvent(ServiceToActivityEvent event) {
 		if( event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_NEW_MAP_LOADED");
-
-			//todo
-			//mResponder.updateMap(serviceInterface.currentMap);
+			mResponder.switchToMainActivity();
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");

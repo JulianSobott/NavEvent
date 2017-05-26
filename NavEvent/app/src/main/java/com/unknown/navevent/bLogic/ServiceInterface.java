@@ -41,6 +41,17 @@ public class ServiceInterface {
 
 
 	/////////////////////////////////////////////////////////
+	// Singleton stuff
+	/////////////////////////////////////////////////////////
+
+	private static ServiceInterface mSingleton = new ServiceInterface();
+	private int instanceCount;
+
+	public static ServiceInterface getInstance() {
+		return mSingleton;
+	}
+
+	/////////////////////////////////////////////////////////
 	// Data & constants
 	/////////////////////////////////////////////////////////
 
@@ -79,7 +90,7 @@ public class ServiceInterface {
 	MapIR availableNearbyMap = null;//Map which was chosen by nearby beacons.
 	boolean nearbyMapChosen = false;//If nearbyMap was chosen. Stop further attempts to select a nearby map.
 
-	Context mContext;
+	Context mContext = null;
 
 
 	/////////////////////////////////////////////////////////
@@ -88,10 +99,15 @@ public class ServiceInterface {
 
 	public void onCreate(Context context) {
 		mContext = context;
-		EventBus.getDefault().register(this);
 
-		//Register for broadcast on bluetooth-events
-		mContext.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+		instanceCount++;
+		if( instanceCount == 1 ) {
+			EventBus.getDefault().register(this);
+
+			//Register for broadcast on bluetooth-events
+			mContext.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+		}
+
 
 		beaconServiceBindCount++;
 		if( beaconServiceBindCount == 1) mContext.startService(new Intent(mContext, BeaconService.class));
@@ -149,8 +165,12 @@ public class ServiceInterface {
 			mContext.stopService(new Intent(mContext, MapService.class));
 		}
 
-		EventBus.getDefault().unregister(this);
-		mContext.unregisterReceiver(btReceive);
+		instanceCount--;
+		if( instanceCount == 0 ) {
+			EventBus.getDefault().unregister(this);
+			mContext.unregisterReceiver(btReceive);
+		}
+
 	}
 
 
@@ -158,7 +178,7 @@ public class ServiceInterface {
 	// Event handling
 	/////////////////////////////////////////////////////////
 
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(ServiceInterfaceEvent event) {
 		if (event.message == ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BEACON_SERVICE_STARTED");
@@ -174,7 +194,7 @@ public class ServiceInterface {
 
 		}
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(MapUpdateEvent event) {
 		if (event.message == MapUpdateEvent.EVENT_MAP_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_LOADED");
@@ -235,10 +255,10 @@ public class ServiceInterface {
 			if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 		}
 	}
-	@Subscribe(threadMode = ThreadMode.MAIN)
+	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(BeaconUpdateEvent event) {
 		if( event.message == BeaconUpdateEvent.EVENT_BEACON_UPDATE) {
-			Log.i("ServiceInterface", "onMessageEvent: EVENT_BEACON_UPDATE");
+			//Log.i("ServiceInterface", "onMessageEvent: EVENT_BEACON_UPDATE");
 
 			if (mapAvailabilityState == MapAvailabilityState.notLoaded)//If first beacon call => set timed delay for no corresponding map -event
 				mTimedDelayHandler.sendEmptyMessageDelayed(HANDLER_NO_CORRESPONDING_BEACON_DELAY, NO_CORRESPONDING_BEACON_DELAY_TIME);
