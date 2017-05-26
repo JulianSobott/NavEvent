@@ -6,7 +6,7 @@ import java.util.List;
 public interface MainActivityUI
 {
 	//Respond to MainActivityLogicInterface.init().
-	void initCompleted();
+	void initCompleted();//todo del
 	//Will be called, if bluetooth or beacons are not supported. \p errorcode contains a human-readable description of the problem.
 	void notSupported(String errorcode);
 	//Will be called, if bluetooth is deactivated, but should be activated to detect beacons.

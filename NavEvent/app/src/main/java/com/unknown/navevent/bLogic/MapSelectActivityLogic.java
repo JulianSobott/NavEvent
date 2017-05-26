@@ -45,7 +45,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 		serviceInterface.onCreate(context);
 
-		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));//todo debug-code
+		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
 	}
 
 	@Override
@@ -62,17 +62,17 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 	@Override
 	public void findOnlineMap(String name) {
-
+		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_QUERY, name));
 	}
 
 	@Override
-	public void downloadMap(String name) {
-
+	public void downloadMap(int mapID) {
+		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, mapID));
 	}
 
 	@Override
-	public boolean setActiveMap(String name) {
-		return false;
+	public boolean setActiveMap(int mapID) {
+		return false;//todo
 	}
 
 
@@ -101,8 +101,11 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
 
-			//todo
-			//mResponder.onlineMapsRespond(serviceInterface.foundOnlineMaps);
+			List<MapData> newList = new ArrayList<>();
+			for( MapIR map : serviceInterface.foundOnlineMaps ){
+				newList.add(map);
+			}
+			mResponder.onlineMapQueryRespond(newList);
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");

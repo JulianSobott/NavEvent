@@ -99,7 +99,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
-			mResponder.notSupported("");
+			mResponder.notSupported("");//todo change to error-string
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");

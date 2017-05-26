@@ -22,8 +22,8 @@ public interface MapSelectActivityLogicInterface
 	void findOnlineMap(String query);
 
 	//Download the map sepecified by \p name. Responses in MapSelectActivityUI.downloadFinished(), MapSelectActivityUI.downloadFailed() or MapSelectActivityUI.isOffline()
-	void downloadMap(String name);
+	void downloadMap(int mapID);
 
 	//Set active map to a map specified by \p name. Returns false if map is not available offline.
-	boolean setActiveMap(String name);
+	boolean setActiveMap(int mapID);
 }
