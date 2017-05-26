@@ -1,12 +1,21 @@
 package com.unknown.navevent.ui;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.MapData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI {
 
@@ -18,7 +27,35 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 
     @Override
     public void updateMap(MapData map) {
+        List<String> mapList=new ArrayList();
+        for(int i=0;i>map.getBeacons().size();i++){
+            mapList.add(map.getBeacons().get(i).getName());
+        }
+        final ListView BeaconList = (ListView) findViewById(R.id.ListViewConfiguration);
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(AdminAreaActivity.this,android.R.layout.simple_list_item_1,mapList);
 
+        BeaconList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminAreaActivity.this);
+
+                alertDialogBuilder.setTitle("Beacon Konfigurieren");
+
+                alertDialogBuilder
+                        .setMessage("Do you want to configure this Beacon?")
+                        .setCancelable(false)
+                        .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                //// TODO: 25.05.2017 Implement The logic to link the nearest Beacon to this
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.String_No),new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+            }
+        });
     }
 
     @Override

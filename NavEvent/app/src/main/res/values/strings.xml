@@ -25,6 +25,7 @@
     <string name="Download_Finished">Download Finished</string>
     <string name="String_No">No</string>
     <string name="String_Yes">Yes</string>
+    <string name="PLSSelectBeaconString">Please select the beacon you wish to configure</string>
 
 
 </resources>
