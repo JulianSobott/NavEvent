@@ -26,7 +26,7 @@ public class MapSelectActivityLogicDefault implements MapSelectActivityLogicInte
 	}
 
 	public boolean isOnline() { return true; }
-	public void loadOnlineMaps(String name) {
+	public void findOnlineMap(String name) {
 
 		List<String> m = new ArrayList<String>();
 		m.add("DefaultMap");

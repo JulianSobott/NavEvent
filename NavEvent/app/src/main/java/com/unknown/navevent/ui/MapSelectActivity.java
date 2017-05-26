@@ -38,11 +38,8 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
 
-
-
-
     @Override
-    public void onlineMapsRespond(final List<MapData> maps) {
+    public void onlineMapQueryRespond(final List<MapData> maps) {
         final ListView list=(ListView) findViewById(R.id.onlineMapList);
 
         List<String> tmpList = new ArrayList<>();//convert to string list
@@ -65,6 +62,11 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
     @Override
+    public void localMapsLoaded(List<MapData> maps) {
+
+    }
+
+    @Override
     public void downloadFailed(String errorcode) {
         Toast.makeText(this, getString(R.string.Download_failed)+ errorcode, Toast.LENGTH_SHORT).show();
     }
@@ -75,13 +77,13 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
     @Override
-    public void downloadFinished(String name) {
+    public void downloadFinished(MapData map) {
         Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
-        mIfc.setActiveMap(name);
+        mIfc.setActiveMap(map.getName());
     }
 
     @Override
-    public void foundLocalMap(String name) {
+    public void foundLocalMap(MapData map) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
 
         // set title
@@ -89,7 +91,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
         // set dialog message
         alertDialogBuilder
-                .setMessage("Local Map "+ name+ "found, do you want to load it?")
+                .setMessage("Local Map "+ map.getName()+ "found, do you want to load it?")
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {

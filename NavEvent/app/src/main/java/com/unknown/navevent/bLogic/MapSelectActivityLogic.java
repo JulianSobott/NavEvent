@@ -61,17 +61,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public List<String> loadAvailableMaps() {
-		return null;
-	}
-
-	@Override
-	public boolean isOnline() {
-		return true;
-	}
-
-	@Override
-	public void loadOnlineMaps(String name) {
+	public void findOnlineMap(String name) {
 
 	}
 
@@ -101,7 +91,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
-			mResponder.downloadFinished(serviceInterface.lastDownloadedMap.getName());//todo change to name + id
+			mResponder.downloadFinished(serviceInterface.lastDownloadedMap);
 			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
@@ -119,7 +109,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 
 			List<MapData> tmpList = new ArrayList<>();//Todo: remove this debug code
 			for( int i = 0 ; i < serviceInterface.availableLocalMaps.size() ; i++ ) tmpList.add(serviceInterface.availableLocalMaps.get(i));
-			mResponder.onlineMapsRespond(tmpList);
+			mResponder.localMapsLoaded(tmpList);
 			//todo
 		}
 	}
