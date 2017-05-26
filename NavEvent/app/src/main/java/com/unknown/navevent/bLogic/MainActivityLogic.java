@@ -132,22 +132,10 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
 		}
-		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
-			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			//todo move to mapSelectActivity
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
-			Log.i(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
-			//todo move to mapSelectActivity
-		}
 		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_CORRESPONDING_MAP) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
 			//todo
 			Toast.makeText(serviceInterface.mContext, "Found map. Download?", Toast.LENGTH_SHORT).show();
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
-			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");
-			//todo move to mapSelectActivity
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_BEACON_UPDATE) {
 			//Log.i(TAG, "onMessageEvent: EVENT_BEACON_UPDATE");
