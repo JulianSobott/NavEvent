@@ -37,7 +37,14 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
 
-    @Override
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		mIfc.onDestroy();
+	}
+
+	@Override
     public void onlineMapQueryRespond(final List<MapData> maps) {
         final ListView list=(ListView) findViewById(R.id.onlineMapList);
 
@@ -68,7 +75,6 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		    @Override
 		    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 			    mIfc.setActiveMap(maps.get(i).getID());
-
 		    }
 	    });
     }
@@ -83,10 +89,6 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
 
         mIfc.setActiveMap(map.getID());
-	    //Switch to MainActivity
-	    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-	    startActivity(intent);
-	    finish();
     }
 
     @Override
