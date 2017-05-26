@@ -9,8 +9,6 @@ public interface AdminAreaUI
 	void invalidMapID();
 	//Respond to AdminAreaLogicInterface.loadMap(). Download failed. \p errorcode contains a human-readable descrition of the problem.
 	void downloadFailed(String errorcode);
-	//Respond to AdminAreaLogicInterface.loadMap(). No connection to the server.
-	void isOffline();
 
 	//Positive respond to AdminAreaLogicInterface.configureBeacon().
 	void beaconSuccessfullyConfigured();

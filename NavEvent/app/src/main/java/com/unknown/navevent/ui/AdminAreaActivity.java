@@ -11,21 +11,37 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.bLogic.AdminAreaLogic;
+import com.unknown.navevent.bLogic.MapSelectActivityLogic;
+import com.unknown.navevent.interfaces.AdminAreaLogicInterface;
 import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.MapData;
+import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI {
+	private AdminAreaLogicInterface mIfc = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_area);
+
+        //Creating the mapSelectLogic // TODO uncomment when changed to the right class
+        mIfc = new AdminAreaLogic(this);
+        mIfc.onCreate(this);
     }
 
-    @Override
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		mIfc.onDestroy();
+	}
+
+	@Override
     public void updateMap(MapData map) {
         List<String> mapList=new ArrayList();
         for(int i=0;i>map.getBeacons().size();i++){
@@ -66,11 +82,6 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
     @Override
     public void downloadFailed(String errorcode) {
         Toast.makeText(this, getString(R.string.Download_failed)+ errorcode, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void isOffline() {
-        Toast.makeText(this, R.string.NoInternetAccess, Toast.LENGTH_SHORT).show();
     }
 
     @Override
