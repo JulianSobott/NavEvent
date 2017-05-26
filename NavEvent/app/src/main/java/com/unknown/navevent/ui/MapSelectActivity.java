@@ -18,7 +18,6 @@ import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapData;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
-import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault;
 
 import java.util.ArrayList;
 import java.util.List;
