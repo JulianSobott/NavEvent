@@ -59,8 +59,8 @@ label {
       .seite-rechts .beaconBearbeiten .besonders .specialPlace {
         border-bottom: 1px solid #bbb; }
         .seite-rechts .beaconBearbeiten .besonders .specialPlace fieldset {
+          min-width: 100% !important;
           font-size: 1em;
-          width: 50%;
           border: none;
           display: inline; }
         .seite-rechts .beaconBearbeiten .besonders .specialPlace label {
@@ -81,6 +81,7 @@ label {
         .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open {
           display: block; }
           .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.open fieldset.dlFieldset {
+            min-width: 100% !important;
             display: block;
             animation: fieldsetFadeIn 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
 @keyframes fieldsetFadeIn {
@@ -175,6 +176,7 @@ label {
     transform: translateX(0) rotateX(0deg); } }
         .seite-rechts .beaconBearbeiten .besonders .listSpecialPlaces.closeMenu fieldset.dlFieldset {
           display: block;
+          min-width: 100% !important;
           animation: fieldsetFadeOut 1000ms cubic-bezier(0.41, 0.82, 0.57, 1.42) forwards; }
 @keyframes fieldsetFadeOut {
   0% {

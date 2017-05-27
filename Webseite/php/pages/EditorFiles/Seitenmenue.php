@@ -1,7 +1,7 @@
 <div class="seite seite-links <?php if(isset($_GET['status']))if($_GET['status']==edit)echo "animate-in"?>">
   <div class="seitenmenue">
     <?php
-    if (isset($_SESSION['map_id'])){
+    if (isset($_POST['action']) || $_POST['action'] == "updateSidebar"){
       $map_id = $_SESSION['map_id'];
       $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
       $res = mysqli_query($con, $sql);

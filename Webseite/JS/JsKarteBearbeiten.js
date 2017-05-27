@@ -2,8 +2,8 @@ var anzBeacons = 0;
 var freierOrt = true;
 var ready = false; //TODO Remove this
 $('#bildContainer').removeClass('beacon');
-
 $(document).ready( function(){
+  updateSidebar();
   var container = document.querySelector('#bildContainer');
 
   //Bild Container Grösse anpassen
@@ -18,6 +18,7 @@ $(document).ready( function(){
   });
   //Beacon auf Karte hinzufügen
   container.addEventListener("click", function (e) {
+    updateSidebar();
     //alert("Clicked");
     $('.mask').remove();
     $('.beaconContainer').click(function() {
@@ -171,6 +172,7 @@ function beaconHinzufuegen (pX, pY){
   $('.beacon').last().addClass('actualBeacon');
   $('#beaconContainer-'+ anzBeacons).css('left', pX+'%');
   $('#beaconContainer-'+ anzBeacons).css('top', pY+'%');
+  updateSidebar();
 }
 
 function deleteBeacon(){
@@ -193,6 +195,7 @@ function deleteBeacon(){
     $('.progress-bar').addClass('progress-bar-danger')
   });
   $('.actualBeacon').remove();
+  updateSidebar();
 }
 
 function rotateArrow() {
@@ -242,6 +245,7 @@ function saveData(field, value) {
   }).fail(function() {
     $('.progress-bar').addClass('progress-bar-danger')
   });
+  updateSidebar();
 }
 
 function showData() {
@@ -255,6 +259,26 @@ function showData() {
       'minor_id': id,
       'fk_map_id': map_id,
       'action': "show"
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+    console.log("succesfull");
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+}
+
+function updateSidebar() {
+  var map_id = $('#bild').attr('alt');
+  $('.seitenmenue').css('background', 'blue');
+  console.log("updateSidebar");
+  $.ajax({
+    type: "POST",
+    url: "EditorFiles/Seitenmenue.php",
+    data: {
+      'map_id': map_id,
+      'action': "updateSidebar",
     }
   }).done(function() {
     $('.progress-bar').removeClass('active');

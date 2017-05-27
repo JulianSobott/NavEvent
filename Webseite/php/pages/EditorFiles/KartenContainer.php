@@ -48,6 +48,7 @@ if (isset($_FILES['uploaddatei']))
 
 
 
+
 ?>
 <div class="mitte">
   <div class="kartenContainer">
@@ -81,6 +82,19 @@ if (isset($_FILES['uploaddatei']))
         $_SESSION['map_id'] = $map_id;
 
         echo '<img id="bild" alt="'.$map_id.'" src="http://localhost/NavEvent/uploads/'.$img.'.'.$mime.'"/>';
+      }
+
+      $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
+      $res = mysqli_query($con, $sql);
+      while($result = mysqli_fetch_assoc($res)){
+        $pos_x = $result['pos_x'];
+        $pos_y = $result['pos_y'];
+        $minor_id = $result['minor_id'];
+        ?>
+        <div class="beaconContainer" id="beaconContainer-<?php echo $minor_id; ?>" style="left: <?php echo $pos_y; ?>%; top: <?php echo $pos_x; ?>%;">
+          <span class="beacon beacon-<?php echo $minor_id; ?>"></span>
+        </div>
+        <?php
       }
     }
 

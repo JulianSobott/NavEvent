@@ -42,7 +42,7 @@
     padding-left: 4rem;
     margin-right: auto;
     background: #7E807F;
-    border: 1px solid red;
+    min-height: 100%;
     height: auto;
     overflow: scroll;
     z-index: 1; }

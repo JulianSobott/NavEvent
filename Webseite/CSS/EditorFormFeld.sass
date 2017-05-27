@@ -69,8 +69,9 @@ label
       .specialPlace
         border-bottom: 1px solid #bbb
         fieldset
+          min-width: 100% !important
           font-size: 1em
-          width: 50%
+          //width: 50%
           border: none
           display: inline
 
@@ -95,6 +96,7 @@ label
         &.open
           display: block
           fieldset.dlFieldset
+            min-width: 100% !important
             display: block
             animation: fieldsetFadeIn 1000ms cubic-bezier(.41,.82,.57,1.42) forwards
 
@@ -130,6 +132,7 @@ label
         &.closeMenu
           fieldset.dlFieldset
             display: block
+            min-width: 100% !important
             animation: fieldsetFadeOut 1000ms cubic-bezier(.41,.82,.57,1.42) forwards
 
             @keyframes fieldsetFadeOut
@@ -145,7 +148,7 @@ label
                 opacity: 1
 
                 &:hover
-                  cursor: default 
+                  cursor: default
 
                 @for $i from 1 through 6
                   &:nth-child(#{$i})

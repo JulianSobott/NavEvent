@@ -20,7 +20,7 @@ if (isset($_POST['anmelden']))
     {
       $_SESSION['loggedIn'] = true;
       $_SESSION['accountId'] = $result['id'];
-      $GLOBALS['$accountId'] = $_SESSION['accountId'];
+      $accountId = $result['id'];
       $_SESSION['nutzername'] = $result['nutzername'];
       if(isset($_POST['angemeldetBleiben'])){
         $identifier = randomString();
@@ -34,7 +34,7 @@ if (isset($_POST['anmelden']))
         }
       }
       session_write_close();
-      header("Location: index.php?action=profil");
+      header("Location: index.php?action=profil&accountId=$accountId");
       exit();
     }else{
       $error['passwordLI'] = "Falsches Passwort";
