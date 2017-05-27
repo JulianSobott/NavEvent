@@ -29,7 +29,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_area);
 
-        //Creating the mapSelectLogic // TODO uncomment when changed to the right class
+        //Creating the AdminAreaLogic
         mIfc = new AdminAreaLogic(this);
         mIfc.onCreate(this);
     }

@@ -4,30 +4,28 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
-import com.unknown.navevent.bLogic.services.MapIR;
-import com.unknown.navevent.interfaces.AdminAreaLogicInterface;
 import com.unknown.navevent.interfaces.AdminAreaUI;
-import com.unknown.navevent.interfaces.MapData;
-import com.unknown.navevent.interfaces.MapSelectActivityUI;
+import com.unknown.navevent.interfaces.BeaconData;
+import com.unknown.navevent.interfaces.NavigationDrawerLogicInterface;
+import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class AdminAreaLogic implements AdminAreaLogicInterface {
-	private static final String TAG = "AdminAreaLogic";
+
+public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
+	private static final String TAG = "NavigationDrawerLogic";
 
 
-	private AdminAreaUI mResponder = null;
+	private NavigationDrawerUI mResponder = null;
 	private ServiceInterface serviceInterface = ServiceInterface.getInstance();
 
 
-	public AdminAreaLogic(AdminAreaUI responder) {
+	public NavigationDrawerLogic(NavigationDrawerUI responder) {
 		mResponder = responder;
 	}
 
@@ -37,10 +35,9 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public void onCreate(Context context) {
+	public void onCreate() {
 		EventBus.getDefault().register(this);
 
-		serviceInterface.onCreate(context);
 
 	}
 
@@ -48,7 +45,6 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 	public void onDestroy() {
 		serviceInterface.onDestroy();
 
-		EventBus.getDefault().unregister(this);
 	}
 
 
@@ -57,13 +53,28 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public void loadMap(int mapID) {
-		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, mapID));
+	public List<String> getSpecialBeacons() {
+		return null;
 	}
 
 	@Override
-	public void configureBeacon(int beaconID) {
-		//todo
+	public void findSpecialBeacon(String name) {
+
+	}
+
+	@Override
+	public void findAllSpecialBeacon(String name) {
+
+	}
+
+	@Override
+	public void searchFor(String name) {
+
+	}
+
+	@Override
+	public List<BeaconData> getImportantPlaces() {
+		return null;
 	}
 
 
@@ -73,7 +84,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		if( event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) {
+		/*if( event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) { todo change
 			Log.i(TAG, "onMessageEvent: EVENT_NEW_MAP_LOADED");
 
 			mResponder.updateMap(serviceInterface.currentMap);
@@ -87,6 +98,6 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
 			mResponder.downloadFailed("Failed to download map!");//todo change string
-		}
+		}*/
 	}
 }
