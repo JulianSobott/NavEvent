@@ -96,7 +96,7 @@ public class ServiceInterface {
 	List<Integer> markableBeacons = null;//List of beacons which should be marked (e. g. from search query)
 
 	Context mContext = null;
-	Context btReceiverContext = null;//Context to which btReceive is bound
+	private Context btReceiverContext = null;//Context to which btReceive is bound
 
 
 	/////////////////////////////////////////////////////////
@@ -104,15 +104,17 @@ public class ServiceInterface {
 	/////////////////////////////////////////////////////////
 
 	public void onCreate(Context context) {
+		//Register for broadcast on bluetooth-events
+		if( btReceiverContext != null ) {
+			btReceiverContext.unregisterReceiver(btReceive);
+			btReceiverContext = null;
+		}
+		context.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+		btReceiverContext = context;
 
 		instanceCount++;
 		if( instanceCount == 1 ) {
 			EventBus.getDefault().register(this);
-
-			//Register for broadcast on bluetooth-events
-			if( btReceiverContext != null ) btReceiverContext.unregisterReceiver(btReceive);
-			context.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
-			btReceiverContext = context;
 		}
 		mContext = context;
 
@@ -176,9 +178,12 @@ public class ServiceInterface {
 		instanceCount--;
 		if( instanceCount == 0 ) {
 			EventBus.getDefault().unregister(this);
-			if( btReceiverContext != null ) btReceiverContext.unregisterReceiver(btReceive);
 		}
 
+		if( btReceiverContext != null ) {
+			btReceiverContext.unregisterReceiver(btReceive);
+			btReceiverContext = null;
+		}
 	}
 
 
