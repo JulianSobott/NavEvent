@@ -43,8 +43,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 
 	@Override
 	public void onDestroy() {
-		serviceInterface.onDestroy();
-
+		EventBus.getDefault().unregister(this);
 	}
 
 

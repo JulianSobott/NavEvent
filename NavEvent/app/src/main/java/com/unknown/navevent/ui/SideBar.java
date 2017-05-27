@@ -61,8 +61,8 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
                              Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_side_bar, container, false);
         closeButton =(Button) v.findViewById(R.id.buttonClose);
-        buttonMapFlur =(Button)v.findViewById(R.id.buttonMapFlur);
-        buttonMapKreuz=(Button)v.findViewById(R.id.buttonMapKreuz);
+        //buttonMapFlur =(Button)v.findViewById(R.id.buttonMapFlur); todo remove obsolete code
+        //buttonMapKreuz=(Button)v.findViewById(R.id.buttonMapKreuz);
         createButtonListeners();
         return v;
     }
