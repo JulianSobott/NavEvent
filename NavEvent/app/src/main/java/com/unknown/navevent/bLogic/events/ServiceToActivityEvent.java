@@ -17,6 +17,7 @@ public class ServiceToActivityEvent {
 	public static final int EVENT_BEACON_UPDATE = 14;
 	public static final int EVENT_NO_BEACON_FOUND = 15;
 	public static final int EVENT_NO_CORRESPONDING_MAPS_AVAILABLE = 16;
+	public static final int EVENT_MARK_BEACONS = 17;
 
 	public final int message;
 

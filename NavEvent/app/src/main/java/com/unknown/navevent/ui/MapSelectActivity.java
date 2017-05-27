@@ -2,6 +2,7 @@ package com.unknown.navevent.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,40 +13,70 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.bLogic.MapSelectActivityLogic;
+import com.unknown.navevent.interfaces.MainActivityLogicInterface;
+import com.unknown.navevent.interfaces.MapData;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
-import com.unknown.navevent.interfaces.defaultImpl.MapSelectActivityLogicDefault;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapSelectActivity extends AppCompatActivity implements MapSelectActivityUI {
-    private MapSelectActivityLogicInterface msif = null;
+    private MapSelectActivityLogicInterface mIfc = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_select);
 
+
         //Creating the mapSelectLogic // TODO uncomment when changed to the right class
-        //msif=new MapSelectActivityLogicDefault(this);
-        msif.onCreate(this);
+        mIfc = new MapSelectActivityLogic(this);
+        mIfc.onCreate(this);
     }
 
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 
+		mIfc.onDestroy();
+	}
 
-
-    @Override
-    public void onlineMapsRespond(final List<String> maps) {
+	@Override
+    public void onlineMapQueryRespond(final List<MapData> maps) {
         final ListView list=(ListView) findViewById(R.id.onlineMapList);
-        ArrayAdapter <String> adapter =new ArrayAdapter<String>(MapSelectActivity.this,android.R.layout.simple_list_item_1,maps);
+
+        List<String> tmpList = new ArrayList<>();//convert to string list
+        for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+
+	    //todo change so that it will not override local maps-list
+        ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
         list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                msif.downloadMap(maps.get(i));
-                //TODO: Add intent to switch to main activity if not hanedl through the logic
+                mIfc.downloadMap(maps.get(i).getID());
             }
         });
+    }
+
+    @Override
+    public void localMapsLoaded(final List<MapData> maps) {
+	    final ListView list=(ListView) findViewById(R.id.onlineMapList);
+
+	    List<String> tmpList = new ArrayList<>();//convert to string list
+	    for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+
+	    ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
+	    list.setAdapter(adapter);
+	    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		    @Override
+		    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+			    mIfc.setActiveMap(maps.get(i).getID());
+		    }
+	    });
     }
 
     @Override
@@ -54,18 +85,14 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
     @Override
-    public void isOffline() {
-        Toast.makeText(this, R.string.NoInternetAccess, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void downloadFinished(String name) {
+    public void downloadFinished(MapData map) {
         Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
-        msif.setActiveMap(name);
+
+        mIfc.setActiveMap(map.getID());
     }
 
     @Override
-    public void foundLocalMap(String name) {
+    public void foundLocalMap(final MapData map) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
 
         // set title
@@ -73,11 +100,11 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
         // set dialog message
         alertDialogBuilder
-                .setMessage("Local Map "+ name+ "found, do you want to load it?")
+                .setMessage("Local Map "+ map.getName()+ "found, do you want to load it?")
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        //Load the map current in storage
+                        mIfc.setActiveMap(map.getID());
                     }
                 })
                 .setNegativeButton(getString(R.string.String_No),new DialogInterface.OnClickListener() {
@@ -92,4 +119,11 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
         // show it
         alertDialog.show();
     }
+
+	@Override
+	public void switchToMainActivity() {
+		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+		startActivity(intent);
+		finish();
+	}
 }

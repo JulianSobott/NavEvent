@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//Intern(beacon-logic) representation of a map
+//Intern(background-logic) representation of a map
 public class MapIR implements MapData {
 	String name;//Map name
 	int id;//Map id
@@ -30,7 +30,6 @@ public class MapIR implements MapData {
 
 
 	MapIR() {
-
 	}
 	MapIR( String name, int id, int majorID ) {
 		this.name = name;
@@ -56,6 +55,7 @@ public class MapIR implements MapData {
 	public Bitmap getImage() {
 		return image;
 	}
+
 	@Override
 	public List<BeaconData> getBeacons() {
 		List<BeaconData> newList = new ArrayList<>();
@@ -64,5 +64,15 @@ public class MapIR implements MapData {
 	}
 	public SparseArray<MapBeaconIR> getBeaconsIR() {
 		return beacons;
+	}
+
+	@Override
+	public Map<String, List<Integer>> getOrdinaryPlaces() {
+		return ordinaryPlaces;
+	}
+
+	@Override
+	public Map<String, List<Integer>> getSpecialPlaces() {
+		return specialPlaces;
 	}
 }

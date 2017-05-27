@@ -11,25 +11,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/buttonClose"
-        android:background="@android:drawable/ic_delete"
+        android:background="@android:drawable/ic_menu_close_clear_cancel"
         style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
     <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewPlacesYouMaFindImportant"
+        android:layout_alignParentStart="true"
+        android:id="@+id/OptionButton"
+        android:background="@drawable/ic_menu_manage" />
+
+    <TextView
+        android:text="@string/places_you_may_find_important"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/buttonMapFlur"
         android:layout_below="@+id/buttonClose"
         android:layout_alignParentStart="true"
-        android:text="Flurkarte" />
+        android:id="@+id/textViewPlacesYouMaFindImportant" />
 
-    <Button
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonMapKreuz"
-        android:layout_below="@+id/buttonMapFlur"
+        android:id="@+id/ListViewImportantPlaces"
+        android:layout_below="@+id/textViewPlacesYouMaFindImportant"
         android:layout_alignParentStart="true"
-        android:text="Kreuzkarte" />
+        android:layout_height="220dp" />
+
+    <TextView
+        android:text="@string/places_you_may_need_during_your_visit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewNeededPlaces"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ListViewImportantPlaces" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/ListViewNeededPlaces"
+        android:layout_height="220dp"
+        android:layout_below="@+id/textViewNeededPlaces"
+        android:layout_alignParentStart="true" />
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ListViewNeededPlaces"
+        android:layout_alignParentStart="true"
+        android:id="@+id/SeachViewBeacons" />
 
 </RelativeLayout>

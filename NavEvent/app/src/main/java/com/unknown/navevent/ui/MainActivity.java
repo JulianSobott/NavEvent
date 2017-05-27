@@ -74,17 +74,13 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         }
 
         setContentView(R.layout.activity_main);
-		
-		//Creating background-logic for this activity
-		mIfc = new MainActivityLogic(this);
-		mIfc.onCreate(this);
 
 
         bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
         text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
         sideOpen=(Button)findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
-        bar.getView().setBackgroundColor(Color.BLUE);
+        bar.getView().setBackgroundColor(Color.argb(220,240,240,240));
 
         hideFragment(bar);
 
@@ -94,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 showFragment(bar);
             }
         });
+
+
+	    //Creating background-logic for this activity
+	    mIfc = new MainActivityLogic(this);
+	    mIfc.onCreate(this);
+
     }
 	
 	@Override
@@ -219,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void updateMap(MapData map) {
         activeMap=MapdataAdapter(map);
         mapDisplayFragment.LoadBeacons();
+        bar.loadBeacons();
         Toast.makeText(this, "Map '"+map.getName()+" loaded!", Toast.LENGTH_SHORT).show();
     }
 

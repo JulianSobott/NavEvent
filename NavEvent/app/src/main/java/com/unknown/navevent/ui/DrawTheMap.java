@@ -52,10 +52,16 @@ public class DrawTheMap extends View implements View.OnTouchListener {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
-        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());
-        float scale=(float)(240.0/ testMap.getMap().getDensity());
-        Log.e("TestLog","scale:"+scale);
+        /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
+
+        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());*/
+
+        float scale=1;
+        /*if(true){
+        scale=(float)(240.0/ testMap.getMap().getDensity());}
+
+        Log.e("TestLog","scale:"+scale);*/
+
         canvas.drawBitmap(testMap.getMap(),null,new RectF(0,0,((float)(testMap.getMap().getWidth()*scale)),((float)(testMap.getMap().getHeight()*scale))),new Paint());
 
         for (int i=0;i<BeaconNumber;i++){

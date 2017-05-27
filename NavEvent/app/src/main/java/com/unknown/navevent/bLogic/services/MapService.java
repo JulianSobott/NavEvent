@@ -437,6 +437,7 @@ public class MapService extends Service {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED));
 		}
 	}
 
