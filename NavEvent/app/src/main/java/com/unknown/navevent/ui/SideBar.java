@@ -78,11 +78,8 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
         searchView=(SearchView) v.findViewById(R.id.SeachViewBeacons);
         createButtonListeners();
 
-        List <String> List1=new ArrayList<>();
-        List1.add("this");
-        List1.add("that");
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,List1);
-        importantPlacesList.setAdapter(adapter);
+        //ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,List1);
+        //importantPlacesList.setAdapter(adapter);
         return v;
     }
 
