@@ -3,6 +3,7 @@ package com.unknown.navevent.interfaces;
 import android.graphics.Bitmap;
 
 import java.util.List;
+import java.util.Map;
 
 //General interface to get map-data.
 public interface MapData
@@ -18,4 +19,10 @@ public interface MapData
 
 	//Returns all beacons on the map.
 	List<BeaconData> getBeacons();
+
+	//Returns the lists of beacon-ids mapped to their group-name
+	Map<String, List<Integer>> getOrdinaryPlaces();
+
+	//Returns the lists of beacon-ids mapped to their group-name
+	Map<String, List<Integer>> getSpecialPlaces();
 }

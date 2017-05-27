@@ -66,10 +66,12 @@ public class MapIR implements MapData {
 		return beacons;
 	}
 
+	@Override
 	public Map<String, List<Integer>> getOrdinaryPlaces() {
 		return ordinaryPlaces;
 	}
 
+	@Override
 	public Map<String, List<Integer>> getSpecialPlaces() {
 		return specialPlaces;
 	}
