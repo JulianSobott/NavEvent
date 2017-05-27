@@ -65,14 +65,33 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	}
 
 	@Override
-	public void findSpecialBeacon(String name) {
-		//todo check if needed
+	public List<String> getOrdinaryBeacons() {
+		List<String> retList = new ArrayList<>();
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
+			retList.addAll(beacons.keySet());
+		}
+		return retList;
 	}
 
 	@Override
-	public void findAllSpecialBeacon(String name) {
+	public void findAllSpecialBeacons(String name) {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
+
+			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
+				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
+					//todo mark beacons in main activity
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void findAllOrdinaryBeacons(String name) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
 
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
@@ -95,19 +114,9 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 				}
 			}
 			if( !retBeacons.isEmpty() ) {
-				//todo mark beacons in main activity
+				mResponder.searchResults(retBeacons);
 			}
 		}
-	}
-
-	@Override
-	public List<String> getOrdinaryPlaces() {
-		List<String> retList = new ArrayList<>();
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
-			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
-			retList.addAll(beacons.keySet());
-		}
-		return retList;
 	}
 
 

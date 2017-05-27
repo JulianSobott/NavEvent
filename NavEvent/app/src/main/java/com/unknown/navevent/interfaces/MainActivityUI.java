@@ -23,6 +23,6 @@ public interface MainActivityUI
 	//Will be called, if a new 'nearest' beacon was found. \p beaconID is the id of the new beacon in MapData.
 	void updateBeaconPosition(int beaconID);
 
-	//Respond to NavigationDrawerLogic.findSpecialBeacon() or NavigationDrawerLogik.findAllSpecialBeacon() to mark the results. \p beaconIDs is a list of the beacons which should be marked.
+	//Respond to NavigationDrawerLogic.findSpecialBeacon() or NavigationDrawerLogik.findAllSpecialBeacons() to mark the results. \p beaconIDs is a list of the beacons which should be marked.
 	void markBeacons(List<Integer> beaconIDs);
 }
