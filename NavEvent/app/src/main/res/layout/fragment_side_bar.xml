@@ -34,7 +34,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/textViewPlacesYouMaFindImportant"
         android:id="@+id/ListViewImportantPlaces"
@@ -46,17 +46,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewNeededPlaces"
-        android:layout_marginBottom="239dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/ListViewImportantPlaces"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="253dp" />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/ListViewNeededPlaces"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignBottom="@+id/textViewNeededPlaces"
-        android:layout_below="@+id/textViewNeededPlaces" />
+        android:layout_below="@+id/textViewNeededPlaces"/>
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/searchViewBeacons"
+        android:layout_below="@+id/ListViewNeededPlaces" />
 
 </RelativeLayout>

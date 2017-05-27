@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void updateMap(MapData map) {
         activeMap=MapdataAdapter(map);
         mapDisplayFragment.LoadBeacons();
+        bar.loadBeacons();
         Toast.makeText(this, "Map '"+map.getName()+" loaded!", Toast.LENGTH_SHORT).show();
     }
 

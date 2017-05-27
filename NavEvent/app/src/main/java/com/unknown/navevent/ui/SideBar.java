@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.AdminAreaLogic;
@@ -39,6 +40,8 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
     private Button closeButton;
     private Button buttonMapFlur;
     private Button buttonMapKreuz;
+    private ListView importantPlacesList;
+    private ListView neededPlacesList;
 
     @Override
     public void onAttach(Context context) {
@@ -63,8 +66,14 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
         closeButton =(Button) v.findViewById(R.id.buttonClose);
         //buttonMapFlur =(Button)v.findViewById(R.id.buttonMapFlur); todo remove obsolete code
         //buttonMapKreuz=(Button)v.findViewById(R.id.buttonMapKreuz);
+        importantPlacesList=(ListView) v.findViewById(R.id.ListViewImportantPlaces);
+        neededPlacesList=(ListView) v.findViewById(R.id.ListViewNeededPlaces);
         createButtonListeners();
         return v;
+    }
+
+    public void loadBeacons(){
+
     }
 
 	@Override
