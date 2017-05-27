@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewNeededPlaces"
-        android:layout_marginBottom="243dp"
+        android:layout_marginBottom="239dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
@@ -54,7 +54,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ListViewNeededPlaces"
-        android:layout_below="@+id/textViewNeededPlaces"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/textViewNeededPlaces"
+        android:layout_below="@+id/textViewNeededPlaces" />
 
 </RelativeLayout>
