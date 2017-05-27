@@ -82,7 +82,7 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
             }
         });
 
-        buttonMapFlur.setOnClickListener(new View.OnClickListener() {
+        /*buttonMapFlur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 activityCommander.showMapFlur();
@@ -94,7 +94,7 @@ public class SideBar extends Fragment implements NavigationDrawerUI{
             public void onClick(View view) {
                 activityCommander.showMapKreuz();
             }
-        });
+        });*/
     }
 
 }
