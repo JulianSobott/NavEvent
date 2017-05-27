@@ -14,7 +14,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
@@ -52,28 +55,59 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public List<BeaconData> getSpecialBeacons() {
-		return null;
+	public List<String> getSpecialBeacons() {
+		List<String> retList = new ArrayList<>();
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
+			retList.addAll(beacons.keySet());
+		}
+		return retList;
 	}
 
 	@Override
-	public void findSpecialBeacon(BeaconData name) {
-
+	public void findSpecialBeacon(String name) {
+		//todo check if needed
 	}
 
 	@Override
-	public void findAllSpecialBeacon(BeaconData name) {
+	public void findAllSpecialBeacon(String name) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
 
+			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
+				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
+					//todo mark beacons in main activity
+					break;
+				}
+			}
+		}
 	}
 
 	@Override
 	public void searchFor(String name) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			List<BeaconData> beacons = serviceInterface.currentMap.getBeacons();
+			List<BeaconData> retBeacons = new LinkedList<>();
 
+			for( BeaconData beacon : beacons ) {
+				if( beacon.getName().contains(name) ) { //Found beacon by name
+					retBeacons.add(beacon);
+				}
+			}
+			if( !retBeacons.isEmpty() ) {
+				//todo mark beacons in main activity
+			}
+		}
 	}
 
 	@Override
-	public List<BeaconData> getImportantPlaces() {
-		return null;
+	public List<String> getOrdinaryPlaces() {
+		List<String> retList = new ArrayList<>();
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
+			retList.addAll(beacons.keySet());
+		}
+		return retList;
 	}
 
 
