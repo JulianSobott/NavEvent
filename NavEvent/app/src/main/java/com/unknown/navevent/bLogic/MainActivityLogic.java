@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
+import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
@@ -14,6 +15,9 @@ import com.unknown.navevent.interfaces.MainActivityUI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //Background-logic of the MainActivity
 public class MainActivityLogic  implements MainActivityLogicInterface {
@@ -152,8 +156,9 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_CORRESPONDING_MAPS_AVAILABLE");
 			mResponder.switchToMapSelectActivity();
 		}
+		else if( event.message == ServiceToActivityEvent.EVENT_MARK_BEACONS) {
+			Log.i(TAG, "onMessageEvent: EVENT_NO_CORRESPONDING_MAPS_AVAILABLE");
+			mResponder.markBeacons(serviceInterface.markableBeacons);
+		}
 	}
-
-
-
 }

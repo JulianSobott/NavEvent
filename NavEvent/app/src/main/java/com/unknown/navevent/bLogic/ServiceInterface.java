@@ -19,14 +19,18 @@ import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconIR;
 import com.unknown.navevent.bLogic.services.BeaconService;
+import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
 import com.unknown.navevent.bLogic.services.MapService;
+import com.unknown.navevent.interfaces.BeaconData;
 
+import org.altbeacon.beacon.Beacon;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 //Enables interaction with the BeaconService & MapService (including startup, etc.)
@@ -89,8 +93,10 @@ public class ServiceInterface {
 	List<MapIR> foundOnlineMaps = new ArrayList<>();//Maps which were found after online search.
 	MapIR availableNearbyMap = null;//Map which was chosen by nearby beacons.
 	boolean nearbyMapChosen = false;//If nearbyMap was chosen. Stop further attempts to select a nearby map.
+	List<Integer> markableBeacons = null;//List of beacons which should be marked (e. g. from search query)
 
 	Context mContext = null;
+	Context btReceiverContext = null;//Context to which btReceive is bound
 
 
 	/////////////////////////////////////////////////////////
@@ -98,15 +104,17 @@ public class ServiceInterface {
 	/////////////////////////////////////////////////////////
 
 	public void onCreate(Context context) {
-		mContext = context;
 
 		instanceCount++;
 		if( instanceCount == 1 ) {
 			EventBus.getDefault().register(this);
 
 			//Register for broadcast on bluetooth-events
-			mContext.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+			if( btReceiverContext != null ) btReceiverContext.unregisterReceiver(btReceive);
+			context.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+			btReceiverContext = context;
 		}
+		mContext = context;
 
 
 		beaconServiceBindCount++;
@@ -168,7 +176,7 @@ public class ServiceInterface {
 		instanceCount--;
 		if( instanceCount == 0 ) {
 			EventBus.getDefault().unregister(this);
-			mContext.unregisterReceiver(btReceive);
+			if( btReceiverContext != null ) btReceiverContext.unregisterReceiver(btReceive);
 		}
 
 	}

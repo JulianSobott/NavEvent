@@ -81,7 +81,8 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
-					//todo mark beacons in main activity
+					serviceInterface.markableBeacons = beacon.getValue();
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MARK_BEACONS));
 					break;
 				}
 			}
@@ -95,7 +96,8 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
-					//todo mark beacons in main activity
+					serviceInterface.markableBeacons = beacon.getValue();
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MARK_BEACONS));
 					break;
 				}
 			}
