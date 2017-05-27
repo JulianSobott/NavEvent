@@ -9,13 +9,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.interfaces.BeaconData;
+import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
 import java.util.List;
 
 
-public class SideBar extends Fragment {
+public class SideBar extends Fragment implements NavigationDrawerUI{
 
     public SideBarInterface activityCommander;
+
+    @Override
+    public void searchResults(List<BeaconData> results) {
+
+    }
 
     public interface SideBarInterface{
         void hideSideBar();

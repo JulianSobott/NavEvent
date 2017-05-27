@@ -92,7 +92,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
     }
 
     @Override
-    public void foundLocalMap(MapData map) {
+    public void foundLocalMap(final MapData map) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
 
         // set title
@@ -104,7 +104,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int id) {
-                        //Load the map current in storage
+                        mIfc.setActiveMap(map.getID());
                     }
                 })
                 .setNegativeButton(getString(R.string.String_No),new DialogInterface.OnClickListener() {

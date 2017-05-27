@@ -26,6 +26,9 @@
     <string name="String_No">No</string>
     <string name="String_Yes">Yes</string>
     <string name="PLSSelectBeaconString">Please select the beacon you wish to configure</string>
+    <string name="places_you_might_find_important">Places you might find important</string>
+    <string name="places_you_may_find_important">Places you may find important:</string>
+    <string name="places_you_may_need_during_your_visit">Places you may need during your Visit</string>
 
 
 </resources>
