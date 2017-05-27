@@ -13,12 +13,12 @@ public interface NavigationDrawerLogicInterface
 	void onDestroy();
 
 	//Will return a list of special beacon-names on the active map (e. g. exit)
-	List<String> getSpecialBeacons();
+	List<BeaconData> getSpecialBeacons();
 
 	//Will respond with MainActivityUI.markBeacons() with the best/nearest beacon which matches to \p name.
-	void findSpecialBeacon(String name);
+	void findSpecialBeacon(BeaconData name);
 	//Will respond with MainActivityUI.markBeacons() with all beacon which match to \p name.
-	void findAllSpecialBeacon(String name);
+	void findAllSpecialBeacon(BeaconData name);
 
 	//Search for all beacons which contain \p name in their name and/or information. Will respond in NavigationDrawerUI.searchResults().
 	void searchFor(String name);

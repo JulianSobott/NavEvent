@@ -52,17 +52,17 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public List<String> getSpecialBeacons() {
+	public List<BeaconData> getSpecialBeacons() {
 		return null;
 	}
 
 	@Override
-	public void findSpecialBeacon(String name) {
+	public void findSpecialBeacon(BeaconData name) {
 
 	}
 
 	@Override
-	public void findAllSpecialBeacon(String name) {
+	public void findAllSpecialBeacon(BeaconData name) {
 
 	}
 
