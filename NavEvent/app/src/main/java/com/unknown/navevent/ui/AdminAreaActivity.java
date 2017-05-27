@@ -49,7 +49,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
         }
         final ListView BeaconList = (ListView) findViewById(R.id.ListViewConfiguration);
         ArrayAdapter<String> adapter =new ArrayAdapter<String>(AdminAreaActivity.this,android.R.layout.simple_list_item_1,mapList);
-
+        BeaconList.setAdapter(adapter);
         BeaconList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

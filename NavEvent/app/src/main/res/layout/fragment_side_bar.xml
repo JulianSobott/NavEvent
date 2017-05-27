@@ -34,37 +34,31 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/textViewPlacesYouMaFindImportant"
         android:id="@+id/ListViewImportantPlaces"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/textViewPlacesYouMaFindImportant" />
+        android:layout_below="@+id/textViewPlacesYouMaFindImportant"
+        android:layout_alignParentStart="true"
+        android:layout_height="220dp" />
 
     <TextView
         android:text="@string/places_you_may_need_during_your_visit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewNeededPlaces"
-        android:layout_below="@+id/ListViewImportantPlaces"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="253dp" />
+        android:layout_below="@+id/ListViewImportantPlaces" />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/ListViewNeededPlaces"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/textViewNeededPlaces"
-        android:layout_below="@+id/textViewNeededPlaces"/>
+        android:layout_height="220dp"
+        android:layout_below="@+id/textViewNeededPlaces"
+        android:layout_alignParentStart="true" />
 
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/searchViewBeacons"
-        android:layout_below="@+id/ListViewNeededPlaces" />
+        android:layout_below="@+id/ListViewNeededPlaces"
+        android:layout_alignParentStart="true"
+        android:id="@+id/SeachViewBeacons" />
 
 </RelativeLayout>
