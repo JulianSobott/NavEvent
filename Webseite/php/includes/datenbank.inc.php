@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 error_reporting(E_ALL);
 require 'DatenbankConnect.inc.php';
 
@@ -83,4 +83,43 @@ if ($_POST['action'] === "map_name") {
   $res = mysqli_query($con, $sql);
 }
 
+if($_POST['action'] === "updateSidebar" && isset($_POST['map_id'])){
+  if (isset($_POST['action'])){
+    if ($_POST['action'] == "updateSidebar") {
+      $map_id = $_SESSION['map_id'];
+      $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
+      $res = mysqli_query($con, $sql);
+      while($result = mysqli_fetch_assoc($res)){
+        $name = $result['name'];
+        $description = $result['description'];
+        ?>
+        <div class="beaconInfoContainer">
+          <div class="beaconInfo biName">
+            <?php echo $name; ?>
+          </div>
+          <div class="beaconInfo biDescription">
+            <?php echo $description; ?>
+          </div>
+          <div class="beaconInfo biSpecial">
+
+          </div>
+        </div>
+        <?php
+      }
+    }
+  }
+}
+
+if ($_POST['action'] === "show") {
+  $minor_id = $_POST['minor_id'];
+  $fk_map_id = $_POST['fk_map_id'];
+  $sql = "SELECT * FROM beacons WHERE minor_id = '$minor_id' AND fk_map_id = '$fk_map_id'";
+  $res = mysqli_query($con, $sql);
+  while($result = mysqli_fetch_assoc($res)){
+    $name = $result['name'];
+    $fk_special = $result['fk_special'];
+    $description = $result['description'];
+    echo json_encode($result);
+  }
+}
 ?>

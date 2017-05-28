@@ -1,4 +1,5 @@
-var anzBeacons = 0;
+var anzBeacons = ($('#bildContainer').children().length)-1;
+console.log(anzBeacons);
 var freierOrt = true;
 var ready = false; //TODO Remove this
 $('#bildContainer').removeClass('beacon');
@@ -18,52 +19,29 @@ $(document).ready( function(){
   });
   //Beacon auf Karte hinzufügen
   container.addEventListener("click", function (e) {
-    updateSidebar();
     //alert("Clicked");
-    $('.mask').remove();
+    $('.mask_form').remove();
     $('.beaconContainer').click(function() {
       freierOrt = false;
     });
     if (freierOrt) {
       var x = e.clientX - container.getBoundingClientRect().left;
       x = Math.round(x);
-      x = x - 10 ; //TODO an beacon größe anpassen
+      x = x - 5 ; //TODO an beacon größe anpassen
       x = x *(100/$('#bild').width());
       //alert(x);
       var y = e.clientY - container.getBoundingClientRect().top;
       y = Math.round(y);
-      y = y - 10; //TODO an beacon größe anpassen
+      y = y - 5; //TODO an beacon größe anpassen
       y = y *(100/$('#bild').height());
       //alert(y);
       anzBeacons++;
       beaconHinzufuegen(x, y);
-      var minor_id = $('.beaconContainer').last().attr('id').split('-')[1];
-      //alert(minor_id);
-      var map_id = $('#bild').attr('alt');
-      //alert(map_id);
-      //----Beacon in DB anlegen (standard Werte)--------
-      $.ajax({
-        type: "POST",
-        url: "../includes/datenbank.inc.php",
-        data: {
-          'id': "0",
-          'name': "NULL",
-          'minor_id': minor_id,
-          'pos_x': x,
-          'pos_y': y,
-          'description': "NULL",
-          'fk_map_id': map_id,
-          'fk_special': "NULL",
-          'fk_ordinary': "NULL",
-          'action': "insert"
-        }
-      }).done(function() {
-        $('.seite-rechts').css('filter', 'contrast(100%)');
-      }).fail(function() {
-        $('.seite-rechts').css('filter', 'contrast(10%)');
-      });
+      addDefaultBeacon(x, y);
+      collapsePlaces();
     }
     freierOrt = true;
+    updateSidebar();
   });
 
   //-------Beacon clicked-------------
@@ -78,17 +56,9 @@ $(document).ready( function(){
   //----------Beacon Bearbeiten----------
   $('.dropDown').click(function() {
     if ($('.listSpecialPlaces').hasClass('open')) {
-      $('.listSpecialPlaces').addClass('closeMenu');
-      $('.listSpecialPlaces').removeClass('open');
-      setTimeout(function() {
-        $('.listSpecialPlaces').css('display', 'none');
-      }, 450);
-      rotateArrow();
+      collapsePlaces();
     }else {
-      $('.listSpecialPlaces').css('display', 'block');
-      $('.listSpecialPlaces').addClass('open');
-      $('.listSpecialPlaces').removeClass('closeMenu');
-      rotateArrow();
+      openPlaces();
     }
   });
 
@@ -175,6 +145,33 @@ function beaconHinzufuegen (pX, pY){
   updateSidebar();
 }
 
+function addDefaultBeacon(x, y) {
+  var minor_id = $('.beaconContainer').last().attr('id').split('-')[1];
+  //alert(minor_id);
+  var map_id = $('#bild').attr('alt');
+  //alert(map_id);
+  //----Beacon in DB anlegen (standard Werte)--------
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'id': "0",
+      'name': "",
+      'minor_id': minor_id,
+      'pos_x': x,
+      'pos_y': y,
+      'description': "",
+      'fk_map_id': map_id,
+      'fk_special': "NULL",
+      'fk_ordinary': "NULL",
+      'action': "insert"
+    }
+  }).done(function() {
+    $('.seite-rechts').css('filter', 'contrast(100%)');
+  }).fail(function() {
+    $('.seite-rechts').css('filter', 'contrast(10%)');
+  });
+}
 function deleteBeacon(){
   $('.progress-bar').addClass('active');
   $('.progress').css('filter', 'brightness(100%)');
@@ -254,13 +251,24 @@ function showData() {
   var map_id = $('#bild').attr('alt');
   $.ajax({
     type: "POST",
-    url: "EditorFiles/Formfeld.php",
+    url: "../includes/datenbank.inc.php",
     data: {
       'minor_id': id,
       'fk_map_id': map_id,
       'action': "show"
     }
-  }).done(function() {
+  }).success(function(data) {
+    var data_obj = JSON.parse(data);
+    $('#tfName').val(data_obj['name']);
+    $('#tfDescription').val(data_obj['description']);
+    if (data_obj['fk_special'] != "0" || data_obj['fk_ordinary'] != "0" ) {
+      $('.rdbBesondersJa').prop("checked", true);
+      openPlaces();
+    }else {
+      $('.rdbBesondersNein').prop("checked", true);
+      collapsePlaces();
+    }
+    console.log(data_obj);
     $('.progress-bar').removeClass('active');
     $('.progress').css('filter', 'brightness(60%)');
     console.log("succesfull");
@@ -271,22 +279,40 @@ function showData() {
 
 function updateSidebar() {
   var map_id = $('#bild').attr('alt');
-  $('.seitenmenue').css('background', 'blue');
+  //$('.seitenmenue').css('background', 'blue');
   console.log("updateSidebar");
   $.ajax({
     type: "POST",
-    url: "EditorFiles/Seitenmenue.php",
+    url: "../includes/datenbank.inc.php",
     data: {
       'map_id': map_id,
       'action': "updateSidebar",
     }
-  }).done(function() {
-    $('.progress-bar').removeClass('active');
-    $('.progress').css('filter', 'brightness(60%)');
-    console.log("succesfull");
+  }).success(function(data) {
+    $('.seitenmenue').html(data);
   }).fail(function() {
     $('.progress-bar').addClass('progress-bar-danger')
   });
+}
+
+function collapsePlaces() {
+  $('.rdbBesondersNein').prop("checked", true);
+  if ($('.listSpecialPlaces').hasClass('open')) {
+    $('.listSpecialPlaces').addClass('closeMenu');
+    $('.listSpecialPlaces').removeClass('open');
+    setTimeout(function() {
+      $('.listSpecialPlaces').css('display', 'none');
+    }, 450);
+    rotateArrow();
+  }
+}
+
+function openPlaces() {
+  $('.rdbBesondersJa').prop("checked", true);
+  $('.listSpecialPlaces').css('display', 'block');
+  $('.listSpecialPlaces').addClass('open');
+  $('.listSpecialPlaces').removeClass('closeMenu');
+  rotateArrow();
 }
 //x = x *(100/$('#bild').width());
 //$('.beacon-'+ anzBeacons).css('margin-top', y+'px');

@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 require '../includes/DatenbankConnect.inc.php';
 
 /*
@@ -66,4 +66,5 @@ echo $data['name']." ".$data['beaconId'].'<br />';
   <script src="../../JS/JsKarteBearbeiten.js"></script>
   <script src="../../JS/kartenEditor.js"></script>
   <script src="../../JS/qrcode.min.js"></script>
+
 </html>

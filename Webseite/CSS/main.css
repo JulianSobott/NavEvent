@@ -139,7 +139,7 @@ html {
   height: 100%; }
 
 body {
-  background: linear-gradient(80deg, #aab3ee, white, #d5d9f7);
+  background: linear-gradient(80deg, #aab3ee, white, #d4d9f7);
   font-size: 16px;
   font-family: fantasy;
   overflow-x: hidden;
@@ -344,7 +344,7 @@ a {
   margin-right: auto;
   background: #2233AA;
   font-size: 1.7em;
-  border: 2px solid #1a2680;
+  border: 2px solid #192680;
   text-align: center;
   padding: 1%;
   line-height: 1.7em; }

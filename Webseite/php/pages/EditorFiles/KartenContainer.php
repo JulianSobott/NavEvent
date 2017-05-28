@@ -11,7 +11,7 @@ if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filepath = 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/';
+      $filepath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/'; //Laptop 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
@@ -36,6 +36,7 @@ if (isset($_FILES['uploaddatei']))
         $sql = "UPDATE maps SET img_file = '$imageName' WHERE id = '$id'";
         mysqli_query($con, $sql);
         $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
+        echo $path;
         move_uploaded_file($image, $path); //TODO Ordner name anpassen
         header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$id");
       }else{
@@ -91,7 +92,7 @@ if (isset($_FILES['uploaddatei']))
         $pos_y = $result['pos_y'];
         $minor_id = $result['minor_id'];
         ?>
-        <div class="beaconContainer" id="beaconContainer-<?php echo $minor_id; ?>" style="left: <?php echo $pos_y; ?>%; top: <?php echo $pos_x; ?>%;">
+        <div class="beaconContainer" id="beaconContainer-<?php echo $minor_id; ?>" style="left: <?php echo $pos_x; ?>%; top: <?php echo $pos_y; ?>%;">
           <span class="beacon beacon-<?php echo $minor_id; ?>"></span>
         </div>
         <?php
