@@ -1,5 +1,5 @@
 <?php
-$account_id = $_GET['accountId'];
+$account_id = $_SESSION['accountId'];
 ?><input type="checkbox" id="toggleSidebar" name="" value="">
 <div class="body">
   <label class="toggleSidebar" for="toggleSidebar">☰</label>
@@ -32,11 +32,8 @@ $account_id = $_GET['accountId'];
           <p>Neue Karte hinzufügen</p>
         </div>
         <?php
-        //$_SESSSION['accountId'] = 2;
 
         if(isset($account_id)){
-          //print_r($_SESSSION);
-          //$account_id = $_SESSSION['accountId'];
           $sql = "SELECT * FROM maps WHERE fk_account_id = '$account_id'";
           $res = mysqli_query($con, $sql);
           //echo mysqli_num_rows($res);
@@ -56,10 +53,10 @@ $account_id = $_GET['accountId'];
               </div>
               <div class="option_field">
                 <div class="o_field delete">
-                  <i class="material-icons miDelete btnDelete">delete</i>
+                  <i class="material-icons miDelete btnDelete" onclick="delete_map(<?php echo $map_id; ?>)">delete</i>
                 </div>
                 <div class="o_field edit">
-                  <i class="material-icons miEdit btnEdit" onclick="edit(<?php echo $map_id; ?>)">mode edit</i>
+                  <i class="material-icons miEdit btnEdit" onclick="edit(<?php echo $map_id; ?>)">edit</i>
                 </div>
               </div>
             </div>
@@ -67,7 +64,7 @@ $account_id = $_GET['accountId'];
 
           }
         }else {
-          //echo "unset";
+          include 'anmelden.php';
         } ?>
 
       </div>

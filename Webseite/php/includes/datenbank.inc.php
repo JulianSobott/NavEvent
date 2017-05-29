@@ -122,4 +122,11 @@ if ($_POST['action'] === "show") {
     echo json_encode($result);
   }
 }
+
+if ($_POST['action'] === "delete_map") {
+  $map_id = $_POST['map_id'];
+  $sql = "DELETE FROM maps WHERE id='$map_id'";
+  $result = mysqli_query($con, $sql);
+  echo "ready";
+}
 ?>
