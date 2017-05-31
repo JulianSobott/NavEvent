@@ -24,9 +24,6 @@ Allgemeine Todos
 ----------------
 
 * App-UI
-* Background-Services
-* Beacon-Signale verarbeiten
-* Kartenverwaltung
 * Server-Backend
   * Server-Kommunikation mit App
 * Administration
