@@ -1,17 +1,17 @@
-<?php require '../includes/DatenbankConnect.inc.php'; ?>
+<?php //require '../includes/DatenbankConnect.inc.php'; ?>
 <?php
-session_start();
-if(!isset($_SESSION['accountId'])){
-  $_SESSION['accountId'] = 1;
+if(isset($_GET['user'])){
+  $accountId = $_GET['user'];
+  $_SESSION['accountId'] = $accountId;
+}else if(isset($_SESSION['accountId'])){
+  $accountId = $_SESSION['accountId'];
 }
-// löscht alle Bilder aus den Verzeichnis
-//array_map('unlink', glob("../../uploads/*"));
 
 if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filePath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/';
+      $filepath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/'; //Laptop 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
@@ -20,27 +20,25 @@ if (isset($_FILES['uploaddatei']))
         $data = addslashes(file_get_contents($image));
         $meta = getimagesize($image);
         $mime = $meta['mime'];
+        $mime = $endung;
         $updated_at = time();
-        $kartenName = "Karte02"; //TODO anpassen
-        $accountId = $_SESSION['accountId'];
-        //$_SESSION['timestamp'] = $updated_at;
-        //echo $_SESSION['timestamp'];
-        $path = $filepath.$default_imageName.'.'.$endung;
-        if(file_exists($path)){
-          $id = 1;
-          do{
-            $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
-            $id++;
-          }while(file_exists($path));
-          $imageName = $default_imageName.'_'.$id;
-        }
+        $mapName = "default"; //TODO anpassen
 
-        $statement = "INSERT INTO karten (kartenName, bild, mime, updated_at, fk_accountId) VALUES('$kartenName', '$imageName', '$endung', '$updated_at', '$accountId')";
+        $path = $filepath.$default_imageName.'.'.$endung;
+        $id = 1;
+        $imageName = $default_imageName.'_'.$id;
+        $major_id = 1;//TODO major_implementieren
+        $fk_account_id = $accountId;
+        $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES('$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
         $res = mysqli_query($con, $statement);
-        $sql = "SELECT * FROM karten WHERE bild like %'$id'";
+        $id = mysqli_insert_id($con);
+        $imageName = $default_imageName.'_'.$id;
+        $sql = "UPDATE maps SET img_file = '$imageName' WHERE id = '$id'";
+        mysqli_query($con, $sql);
+        $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
+        echo $path;
         move_uploaded_file($image, $path); //TODO Ordner name anpassen
-        //$_SESSION['kartenId'] = $pdo->lastInsertId();
-        header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$updated_at");
+        header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$id");
       }else{
         $error['datei']="Keine passende Datei ausgewählt";
       }
@@ -48,6 +46,7 @@ if (isset($_FILES['uploaddatei']))
       $error['datei']="Keine passende Datei ausgewählt";
     }
 }
+
 
 
 
@@ -73,14 +72,30 @@ if (isset($_FILES['uploaddatei']))
   <div id="bildContainer"<?php if(!isset($_GET['status']))echo "style='display: none'"; ?>>
     <?php
     if (isset($_GET['status'])) {
-      $updated_at = $_GET['id'];
-      $sql = "SELECT bild, mime FROM karten WHERE updated_at='$updated_at'";
+      $id = $_GET['id'];
+      $sql = "SELECT id, img_file, mime FROM maps WHERE id='$id'";
       $res = mysqli_query($con, $sql);
       while($result = mysqli_fetch_assoc($res)){
-        $bild = $result['bild'];
-        $endung = $result['mime'];
+        $img = $result['img_file'];
+        $mime = explode('/', $result['mime']);
+        $mime = $mime[0];
+        $map_id = $result['id'];
+        $_SESSION['map_id'] = $map_id;
 
-        echo '<img id="bild" alt="" src="http://localhost/NavEvent/uploads/'.$bild.'.'.$endung.'"/>';
+        echo '<img id="bild" alt="'.$map_id.'" src="http://localhost/NavEvent/uploads/'.$img.'.'.$mime.'"/>';
+      }
+
+      $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
+      $res = mysqli_query($con, $sql);
+      while($result = mysqli_fetch_assoc($res)){
+        $pos_x = $result['pos_x'];
+        $pos_y = $result['pos_y'];
+        $minor_id = $result['minor_id'];
+        ?>
+        <div class="beaconContainer" id="beaconContainer-<?php echo $minor_id; ?>" style="left: <?php echo $pos_x; ?>%; top: <?php echo $pos_y; ?>%;">
+          <span class="beacon beacon-<?php echo $minor_id; ?>"></span>
+        </div>
+        <?php
       }
     }
 

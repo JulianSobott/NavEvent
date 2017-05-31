@@ -1,6 +1,10 @@
 <?php
-session_name("session");
-session_start();
+if(!isset($_SESSION))
+  session_start();
+$sessionName = session_name();
+$sessionId = session_id();
+//session_name("session");
+
 
 require 'php/includes/DatenbankConnect.inc.php';
  ?>
@@ -21,17 +25,23 @@ require 'php/includes/DatenbankConnect.inc.php';
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   </head>
   <body>
+
     <?php
     include 'php/includes/header.php';
 
     /*if(!isset($_SESSION['accountId']) && isset($_COOKIE['identifier']) && isset($_COOKIE['securitytoken'])){
       $identifier = $_COOKIE['identifier'];
+      echo $identifier." ";
       $securitytoken = $_COOKIE['securitytoken'];
+      echo $securitytoken;
 
 
-      $statement = "SELECT * FROM securitytokens WHERE identifier =".$identifier;
+
+      $statement = "SELECT * FROM securitytokens WHERE identifier ='$identifier'";
       $res = mysqli_query($con, $statement);
       $result = mysqli_fetch_assoc($res);
+      echo "</br>".sha1($securitytoken);
+      echo "</br>".$result['securitytoken'];
 
       if(sha1($securitytoken) !== $result['securitytoken']){
         echo('Ein vermutlich gestohlener Security Token wurde identifiziert');
@@ -53,6 +63,7 @@ require 'php/includes/DatenbankConnect.inc.php';
         $_SESSION['nutzername'] = $result['nutzername'];
       }
     }*/
+
     if(!isset($_SESSION['loggedIn']))
     {
       $_SESSION['loggedIn'] = false;
@@ -75,4 +86,6 @@ require 'php/includes/DatenbankConnect.inc.php';
   </body>
   <script src="JS/bootstrap.min.js"></script>
   <script src="JS/JavaScriptMain.js"></script>
+  <script src="JS/JsProfil.js"></script>
+  </script>
 </html>

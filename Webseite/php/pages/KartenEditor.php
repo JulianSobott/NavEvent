@@ -1,4 +1,7 @@
 <?php
+//session_start();
+require '../includes/DatenbankConnect.inc.php';
+
 /*
 include 'DatenbankConnect.inc.php';
 if (isset($_GET['beaconId'])) {
@@ -43,7 +46,25 @@ echo $data['name']." ".$data['beaconId'].'<br />';
       include 'EditorFiles/KartenContainer.php';
       include 'EditorFiles/Formfeld.php';
       ?>
+
+      <div class="publishMap" <?php if(!isset($_GET['status'])) echo 'style = "display: none;"' ?>>
+        <button type="button" name="publishMap" class="btnPublish"><i class="material-icons miPublish">publish</i></button>
+        <div class="textPublishMap">
+          &nbspKarte hochladen und veröffentlichen&nbsp
+        </div>
+      </div>
+      <div class="map_name">
+        <div class="fKartenKonfiguration" id="fKartenKonfiguration">
+          <label for="kartenName">Name der Karte: </label>
+          <input type="text" id="tf_map_name" class="kartenName" name="kartenName" value="" placeholder="Beispiel Karte">
+          <input type="button" id="btnWeiter" name="submit" value="Weiter">
+        </div>
+      </div>
+      <div class="mask"></div>
     </div>
   </body>
   <script src="../../JS/JsKarteBearbeiten.js"></script>
+  <script src="../../JS/kartenEditor.js"></script>
+  <script src="../../JS/qrcode.min.js"></script>
+
 </html>

@@ -3,9 +3,9 @@ error_reporting(E_ALL);
 include 'DatenbankConnect.inc.php';
 if (isset($_GET['beaconId'])) {
   $beaconId = $_GET['beaconId'];
-  $sql = mysql_query("SELECT * FROM `beacons` WHERE `beaconId` = '".$beaconId."'");
-  $data = mysql_fetch_array($sql);
-  echo $data['name']." ".$data['beaconId'].'<br />';
+  $sql = mysqli_query("SELECT * FROM `beacons` WHERE `id` = '".$beaconId."'");
+  $data = mysqli_fetch_array($sql);
+  echo $data['name']." ".$data['id'].'<br />';
 }
 
 /*$actualBeacon = 1;

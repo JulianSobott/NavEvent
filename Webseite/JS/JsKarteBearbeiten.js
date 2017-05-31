@@ -1,10 +1,11 @@
-var anzBeacons = 0;
+var anzBeacons = ($('#bildContainer').children().length)-1;
+console.log(anzBeacons);
 var freierOrt = true;
 var ready = false; //TODO Remove this
 $('#bildContainer').removeClass('beacon');
 $(document).ready( function(){
+  updateSidebar();
   var container = document.querySelector('#bildContainer');
-
 
   //Bild Container Grösse anpassen
   var widthBild = $('#bild').css('width');
@@ -19,70 +20,45 @@ $(document).ready( function(){
   //Beacon auf Karte hinzufügen
   container.addEventListener("click", function (e) {
     //alert("Clicked");
-    $('.beacon').click(function() {
+    $('.mask_form').remove();
+    $('.beaconContainer').click(function() {
       freierOrt = false;
     });
     if (freierOrt) {
       var x = e.clientX - container.getBoundingClientRect().left;
       x = Math.round(x);
-      x = x - 10 ; //TODO an beacon größe anpassen
+      x = x - 5 ; //TODO an beacon größe anpassen
       x = x *(100/$('#bild').width());
       //alert(x);
       var y = e.clientY - container.getBoundingClientRect().top;
       y = Math.round(y);
-      y = y - 10; //TODO an beacon größe anpassen
+      y = y - 5; //TODO an beacon größe anpassen
       y = y *(100/$('#bild').height());
       //alert(y);
       anzBeacons++;
       beaconHinzufuegen(x, y);
-
-
-      //----Beacon in DB anlegen (standard Werte)--------
-      $.ajax({
-        type: "POST",
-        url: $('#daten').attr('action'),
-        data: {
-          'beaconId': 0,
-          'name': "NULL",
-          'besonders': false,
-          'besondersName': "NULL",
-          'informationen': "NULL",
-          'posX': x,
-          'posY': y
-        }
-      }).done(function() {
-        $('.sumbit').css('background', '#122');
-      }).fail(function() {
-        $('.sumbit').css('background', '#f00');
-      });
+      addDefaultBeacon(x, y);
+      collapsePlaces();
     }
     freierOrt = true;
+    updateSidebar();
   });
-  container.addEventListener("click", function (e) {
 
-    $('.beacon').click(function() {
-      $('.actualBeacon').removeClass('actualBeacon')
-      $(this).addClass('actualBeacon');
+  //-------Beacon clicked-------------
+  container.addEventListener("click", function (e) {
+    $('.beaconContainer').click(function() {
+      $('.actualBeacon').removeClass('actualBeacon');
+      $(this).children().addClass('actualBeacon');
+      showData();
       freierOrt = false;
     });
-    $('.btnDelete').click(function() {
-      $('.actualBeacon').remove();
-    })
   });
   //----------Beacon Bearbeiten----------
   $('.dropDown').click(function() {
     if ($('.listSpecialPlaces').hasClass('open')) {
-      $('.listSpecialPlaces').addClass('closeMenu');
-      $('.listSpecialPlaces').removeClass('open');
-      setTimeout(function() {
-        $('.listSpecialPlaces').css('display', 'none');
-      }, 450);
-      rotateArrow();
+      collapsePlaces();
     }else {
-      $('.listSpecialPlaces').css('display', 'block');
-      $('.listSpecialPlaces').addClass('open');
-      $('.listSpecialPlaces').removeClass('closeMenu');
-      rotateArrow();
+      openPlaces();
     }
   });
 
@@ -96,32 +72,16 @@ $(document).ready( function(){
     $('.listSpecialPlaces').removeClass('open');
   });
 
-  $('.deleteBeacon').click(function() {
-    $('.actualBeacon').remove();
-    closeWindow();
+  $('.btnDelete').click(function() {
+    deleteBeacon();
   })
 
 //--------------Beacon Informationen zu entsprechendem Beacon hinzufuegen-------
-  container.addEventListener("click", function (e) {
+/* container.addEventListener("click", function (e) {
 
     $('.beacon').click(function() {
       var beaconId = $('.actualBeacon').attr('class').split('-')[1];
       beaconId = beaconId.split(' ')[0];
-
-      if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-        //alert("Step 1");
-      }else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      xmlhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("databaseStuff").innerHTML = this.responseText;
-        }
-      };
-      xmlhttp.open("GET","http://localhost/NavEvent/php/includes/FormFeld.inc.php?beaconId="+beaconId, true);
-      xmlhttp.send();
-
 
       $.ajax({
         type: "POST",
@@ -133,9 +93,11 @@ $(document).ready( function(){
         $('body').css('background', 'red');
       });
     });
-  });
+  });*/
 
 });
+
+
 
 //Drag n´Drop beaconBearbeiten
 
@@ -176,13 +138,181 @@ function beaconHinzufuegen (pX, pY){
   document.getElementById("beaconContainer-"+anzBeacons).appendChild(beacon);
   $('#beaconContainer-'+ anzBeacons).children('span').addClass('beacon');
   $('.beacon').last().addClass(' beacon-' + anzBeacons);
+  $('.actualBeacon').removeClass('actualBeacon');
+  $('.beacon').last().addClass('actualBeacon');
   $('#beaconContainer-'+ anzBeacons).css('left', pX+'%');
   $('#beaconContainer-'+ anzBeacons).css('top', pY+'%');
+  updateSidebar();
+}
+
+function addDefaultBeacon(x, y) {
+  var minor_id = $('.beaconContainer').last().attr('id').split('-')[1];
+  //alert(minor_id);
+  var map_id = $('#bild').attr('alt');
+  //alert(map_id);
+  //----Beacon in DB anlegen (standard Werte)--------
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'id': "0",
+      'name': "",
+      'minor_id': minor_id,
+      'pos_x': x,
+      'pos_y': y,
+      'description': "",
+      'fk_map_id': map_id,
+      'fk_special': "NULL",
+      'fk_ordinary': "NULL",
+      'action': "insert"
+    }
+  }).done(function() {
+    $('.seite-rechts').css('filter', 'contrast(100%)');
+  }).fail(function() {
+    $('.seite-rechts').css('filter', 'contrast(10%)');
+  });
+}
+function deleteBeacon(){
+  $('.progress-bar').addClass('active');
+  $('.progress').css('filter', 'brightness(100%)');
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+  var map_id = $('#bild').attr('alt');
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'minor_id': id,
+      'map_id': map_id,
+      'action': "delete"
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+  $('.actualBeacon').remove();
+  updateSidebar();
 }
 
 function rotateArrow() {
   $('.dropDown').toggleClass('rotateArrow');
 }
 
+function saveData(field, value) {
+  $('.progress-bar').addClass('active');
+  $('.progress').css('filter', 'brightness(100%)');
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+  var map_id = $('#bild').attr('alt');
+  var position = $('.actualBeacon').parent().attr('style');
+  console.log(position);
+
+  if(field == "rdbSpecialPlace"){
+    field = "fk_special";
+    if(value == "Toiletten")
+      value = 1;
+    else if(value == "Cafeteria")
+      value = 2;
+    else if(value == "Notausgang")
+      value = 3;
+    else if(value == "Infopoint")
+      value = 4;
+    else
+      value = 5;
+  }
+  if(field == "rdbBesonders" && value =="kein_Besonderer_Ort"){
+    field = "fk_special";
+    value = "NULL";
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'minor_id': id,
+      'map_id': map_id,
+      'field': field,
+      'value': value,
+      'position': position,
+      'action': "update"
+    }
+  }).done(function() {
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+  updateSidebar();
+}
+
+function showData() {
+  var id = $('.actualBeacon').parent().attr('id').split('-')[1];
+  console.log(id);
+  var map_id = $('#bild').attr('alt');
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'minor_id': id,
+      'fk_map_id': map_id,
+      'action': "show"
+    }
+  }).success(function(data) {
+    var data_obj = JSON.parse(data);
+    $('#tfName').val(data_obj['name']);
+    $('#tfDescription').val(data_obj['description']);
+    if (data_obj['fk_special'] != "0" || data_obj['fk_ordinary'] != "0" ) {
+      $('.rdbBesondersJa').prop("checked", true);
+      openPlaces();
+    }else {
+      $('.rdbBesondersNein').prop("checked", true);
+      collapsePlaces();
+    }
+    console.log(data_obj);
+    $('.progress-bar').removeClass('active');
+    $('.progress').css('filter', 'brightness(60%)');
+    console.log("succesfull");
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+}
+
+function updateSidebar() {
+  var map_id = $('#bild').attr('alt');
+  //$('.seitenmenue').css('background', 'blue');
+  console.log("updateSidebar");
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'map_id': map_id,
+      'action': "updateSidebar",
+    }
+  }).success(function(data) {
+    $('.seitenmenue').html(data);
+  }).fail(function() {
+    $('.progress-bar').addClass('progress-bar-danger')
+  });
+}
+
+function collapsePlaces() {
+  $('.rdbBesondersNein').prop("checked", true);
+  if ($('.listSpecialPlaces').hasClass('open')) {
+    $('.listSpecialPlaces').addClass('closeMenu');
+    $('.listSpecialPlaces').removeClass('open');
+    setTimeout(function() {
+      $('.listSpecialPlaces').css('display', 'none');
+    }, 450);
+    rotateArrow();
+  }
+}
+
+function openPlaces() {
+  $('.rdbBesondersJa').prop("checked", true);
+  $('.listSpecialPlaces').css('display', 'block');
+  $('.listSpecialPlaces').addClass('open');
+  $('.listSpecialPlaces').removeClass('closeMenu');
+  rotateArrow();
+}
 //x = x *(100/$('#bild').width());
 //$('.beacon-'+ anzBeacons).css('margin-top', y+'px');

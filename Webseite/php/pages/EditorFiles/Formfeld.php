@@ -1,4 +1,7 @@
-<div class="seite seite-rechts <?php if(isset($_GET['status']))if($_GET['status']==edit)echo "animate-in"?>">
+<div class="seite seite-rechts <?php if(isset($_GET['status']))if($_GET['status']=="edit")echo "animate-in"?>">
+  <div class="mask_form">
+    Click on the Map to add a Beacon
+  </div>
   <!--
   <form class="beaconBearbeiten" action="" method="post">
     <div class="form-group">
@@ -20,9 +23,14 @@
 
   </form>-->
   <div class="beaconBearbeiten">
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped <?php if(isset($_POST['action'])) echo 'progress-bar-danger';?>" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">45% Complete</span>
+      </div>
+    </div>
     <div class="feld header">
       <div class="delete">
-        <i class="material-icons miDelete">delete</i>
+        <i class="material-icons miDelete btnDelete">delete</i>
       </div>
       <div class="h3left">
         <h3>Eigenschaften</h3>
@@ -31,12 +39,7 @@
     <form id="daten" action="datenbank.inc.php" method="post">
       <div class="name">
         <label for="tfName">Name: </label>
-        <input id="tfName" class="eingabe tfName" type="text" name="tfName" placeholder="z.B. Labor" value=<?php
-        if (isset($_GET['beaconId'])) {
-           echo $data['name'];
-        }else {
-          echo "";
-        }?>>
+        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value="">
       </div>
       <div class="besonders feld">
         <div class="specialPlace">
@@ -45,7 +48,7 @@
             <label for="rdbBesondersJa">Ja</label>
             <input class="rdbBesondersJa" type="radio" name="rdbBesonders" value="Besonderer_Ort" <?php //if($data['besonders']==1) echo 'checked = "checked"'?>>
             <label for="rdbBesondersNein">Nein</label>
-            <input class="rdbBesondersNein" type="radio" name="rdbBesonders" value="kein_Besonderer_Ort" <?php //if($data['besonders']==2 || $data['besonders']==0) echo 'checked = "checked"'?>>
+            <input class="rdbBesondersNein" checked="checked" onclick="saveData(this.name, this.value)" type="radio" name="rdbBesonders" value="kein_Besonderer_Ort" <?php //if($data['besonders']==2 || $data['besonders']==0) echo 'checked = "checked"'?>>
           </fieldset>
           <i class="material-icons dropDown">arrow_drop_down</i>
         </div>
@@ -53,23 +56,23 @@
           <fieldset class="dropDownList dlFieldset">
             <ul class="dropDownList">
               <li>
-                <input type="radio" name="rdbSpecialPlace" class="specialPlace toilet" value="Toiletten">
-                <label for="rdbSpecialPlace">Toiletten</label>
+                <input type="radio" id="spToilets" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace toilet" value="Toiletten">
+                <label for="spToilets">Toiletten</label>
               </li>
               <li>
-                <input type="radio" name="rdbSpecialPlace" class="specialPlace cafeteria" value="Cafeteria">
-                <label for="rdbSpecialPlace">Cafeteria</label>
+                <input type="radio" id="spCafeteria" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace cafeteria" value="Cafeteria">
+                <label for="spCafeteria">Cafeteria</label>
               </li>
               <li>
-                <input type="radio" name="rdbSpecialPlace" class="specialPlace notausgang" value="Notausgang">
-                <label for="rdbSpecialPlace">Notausgang</label>
+                <input type="radio" id="spEmegencyExit" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace notausgang" value="Notausgang">
+                <label for="spEmegencyExit">Notausgang</label>
               </li>
               <li>
-                <input type="radio" name="rdbSpecialPlace" class="specialPlace infopoint" value="Infopoint">
-                <label for="rdbSpecialPlace">Infopoint</label>
+                <input type="radio" id="spInfopoint" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace infopoint" value="Infopoint">
+                <label for="spInfopoint">Infopoint</label>
               </li>
               <li>
-                <input type="radio" name="rdbSpecialPlace" class="specialPlace sonstiges" value="sonstiges">
+                <input type="radio" id="spOther" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace sonstiges" value="sonstiges">
                 <input type="text" name="tfSpecialPlace" class="specialPlace tfSonstiges" placeholder="Sonstiges">
               </li>
             </ul>
@@ -79,10 +82,9 @@
       </div>
       <div class="form-group feld">
         <label for="tfInfos">Informationen: </label>
-        <textarea class="form-control" type="text" name="tfInfos" rows="5" value="">
-        </textarea>
+        <textarea id="tfDescription" class="form-control" onchange="saveData(this.name, this.value)" type="text" name="description" rows="5" value=""></textarea>
       </div>
-      <input class="submit" type="submit" name="submit" value="Daten Speichern">
+      <input class="submit" type="button" name="submit" value="Daten Speichern">
     </form>
   </div>
 
