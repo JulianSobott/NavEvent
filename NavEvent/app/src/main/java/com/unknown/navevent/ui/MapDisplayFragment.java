@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.view.ViewGroup.*;
+
 import com.unknown.navevent.R;
 
 import java.util.ArrayList;
@@ -19,31 +20,33 @@ import java.util.List;
 
 public class MapDisplayFragment extends Fragment {
 
-    View v;
-    DrawTheMap theMap;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+	View v;
+	DrawTheMap theMap;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.fragment_map_display, container, false);
-        //if(theMap!=null){
-        theMap = new DrawTheMap(getActivity(),MainActivity.getMap());
-        return theMap;
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
-    public void LoadBeacons() {
-        theMap.loadMap(MainActivity.getMap());
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		v = inflater.inflate(R.layout.fragment_map_display, container, false);
+		//if(theMap!=null){
+		theMap = new DrawTheMap(getActivity(), MainActivity.getMap());
+		return theMap;
+	}
 
-    }
-    static public int getBeaconToDisplay(MapForTests map){
-        // // TODO Add a method to return the Beacon that is closest to you because it is always seleced an dits massage is displayed at the bottom by default
+	public void LoadBeacons() {
+		theMap.loadMap(MainActivity.getMap());
 
-        return 0;
-    }
+	}
+
+	static public int getBeaconToDisplay(MapForTests map) {
+		// // TODO Add a method to return the Beacon that is closest to you because it is always seleced an dits massage is displayed at the bottom by default
+
+		return 0;
+	}
 
     /*public int getParentsViewID(){
         return ((ViewGroup) getView().getParent()).getId();
