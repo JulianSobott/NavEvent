@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 	@Override
 	public void updateMap(MapData map) {
-		activeMap = MapdataAdapter(map);
+		activeMap = mapDataAdapter(map);
 		mapDisplayFragment.LoadBeacons();
 		bar.loadBeacons();
 		Toast.makeText(this, "Map '" + map.getName() + " loaded!", Toast.LENGTH_SHORT).show();
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		activeMap.selectBeacons(beaconIDs);
 	}
 
-	private MapForTests MapdataAdapter(MapData in) {
+	private MapForTests mapDataAdapter(MapData in) {
 		List<BeaconForTests> newBeaconList = new ArrayList<BeaconForTests>();
 		BeaconData[] oldBeacons;
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);

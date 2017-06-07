@@ -16,20 +16,20 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	Bitmap beaconTexture[];
 	float[] x;
 	float[] y;
-	private int BeaconNumber = 3;
+	private int beaconNumber = 3;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
 	MapForTests testMap;
 
 	public DrawTheMap(Context context, MapForTests MapInput) {
 		super(context);
 		testMap = MapInput;
-		BeaconNumber = testMap.getBeaconNumber();
-		x = new float[BeaconNumber];
-		y = new float[BeaconNumber];
-		beacon_isSelected = new boolean[BeaconNumber];
-		beaconTexture = new Bitmap[BeaconNumber];
+		beaconNumber = testMap.getBeaconNumber();
+		x = new float[beaconNumber];
+		y = new float[beaconNumber];
+		beacon_isSelected = new boolean[beaconNumber];
+		beaconTexture = new Bitmap[beaconNumber];
 
-		for (int i = 0; i < BeaconNumber; i++) {
+		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 			x[i] = (float) this.testMap.Beacons[i].getxCord();
 			y[i] = (float) this.testMap.Beacons[i].getyCord();
@@ -53,7 +53,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 		canvas.drawBitmap(testMap.getMap(), null, new RectF(0, 0, ((float) (testMap.getMap().getWidth() * scale)), ((float) (testMap.getMap().getHeight() * scale))), new Paint());
 
-		for (int i = 0; i < BeaconNumber; i++) {
+		for (int i = 0; i < beaconNumber; i++) {
 			canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint());
 
 		}
@@ -69,7 +69,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
 				beacon_isSelected[selectedBeacon] = true;
 				testMap.Beacons[selectedBeacon].select(true);
-				for (int i = 0; i < BeaconNumber; i++) {
+				for (int i = 0; i < beaconNumber; i++) {
 					if (beacon_isSelected[i] && i != selectedBeacon) {
 						beacon_isSelected[selectedBeacon] = false;
 						testMap.Beacons[selectedBeacon].select(false);
@@ -87,7 +87,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 	private int getClickedBeacon(int x, int y) {
 		int returnBeaconID = theMagicNumberThatNeverShouldBeUsed;
-		for (int i = 0; i < BeaconNumber; i++) {
+		for (int i = 0; i < beaconNumber; i++) {
 			if (Math.abs((this.x[i] + 25) - x) <= 50 && Math.abs((this.y[i] + 25) - y) <= 50) {
 				returnBeaconID = i;
 			}
@@ -97,13 +97,13 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 	public void loadMap(MapForTests newMap) {
 		testMap = newMap;
-		BeaconNumber = testMap.getBeaconNumber();
-		x = new float[BeaconNumber];
-		y = new float[BeaconNumber];
-		beacon_isSelected = new boolean[BeaconNumber];
-		beaconTexture = new Bitmap[BeaconNumber];
+		beaconNumber = testMap.getBeaconNumber();
+		x = new float[beaconNumber];
+		y = new float[beaconNumber];
+		beacon_isSelected = new boolean[beaconNumber];
+		beaconTexture = new Bitmap[beaconNumber];
 
-		for (int i = 0; i < BeaconNumber; i++) {
+		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 			x[i] = (float) this.testMap.Beacons[i].getxCord();
 			y[i] = (float) this.testMap.Beacons[i].getyCord();

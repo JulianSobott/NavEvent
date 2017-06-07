@@ -1,6 +1,7 @@
 package com.unknown.navevent.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -80,6 +81,15 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 		neededPlacesList = (ListView) v.findViewById(R.id.ListViewNeededPlaces);
 		searchView = (SearchView) v.findViewById(R.id.SeachViewBeacons);
 		createButtonListeners();
+
+
+		optionsbutton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), AdminAreaActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		//ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,List1);
 		//importantPlacesList.setAdapter(adapter);

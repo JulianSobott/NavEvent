@@ -32,6 +32,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 		//Creating the AdminAreaLogic
 		mIfc = new AdminAreaLogic(this);
 		mIfc.onCreate(this);
+
 	}
 
 	@Override
@@ -62,7 +63,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 						.setCancelable(false)
 						.setPositiveButton(getString(R.string.String_Yes), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								//// TODO: 25.05.2017 Implement The logic to link the nearest Beacon to this
+								// TODO: 25.05.2017 Implement The logic to link the nearest Beacon to this
 							}
 						})
 						.setNegativeButton(getString(R.string.String_No), new DialogInterface.OnClickListener() {
