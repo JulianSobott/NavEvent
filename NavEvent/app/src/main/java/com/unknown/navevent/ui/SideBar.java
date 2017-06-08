@@ -86,7 +86,7 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 		optionsbutton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), AdminAreaActivity.class);
+				Intent intent = new Intent(getActivity(), QrActivity.class);
 				startActivity(intent);
 			}
 		});

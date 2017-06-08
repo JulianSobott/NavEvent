@@ -29,6 +29,9 @@
     <string name="places_you_might_find_important">Places you might find important</string>
     <string name="places_you_may_find_interesting">Places you may find interesting:</string>
     <string name="places_you_may_need_during_your_visit">Places you may need during your visit:</string>
-    <string name="care_Adviser_for_Admin_Area">This Area is for Staff only \nPlease comply to our terms of service</string>
+    <string name="care_Adviser_for_Admin_Area">This Area is only for Admins. \nPlease read instructions at\nwww.[insertNaveventPage].com \nbefore continuing to the next step. \nIf you
+    are not supposed to be here please return to the last screen by using the back-button on your phone. \n\nSincerely your Navevent Team</string>
+    <string name="i_acknowledged_and_want_to_proceed">I acknowledged and want to proceed</string>
+
 
 </resources>
