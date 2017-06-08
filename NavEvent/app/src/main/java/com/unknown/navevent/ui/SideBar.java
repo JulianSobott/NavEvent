@@ -91,8 +91,10 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 			}
 		});
 
-		//ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,List1);
-		//importantPlacesList.setAdapter(adapter);
+		ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getSpecialBeacons());
+		importantPlacesList.setAdapter(adapter);
+		adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getOrdinaryBeacons());
+		neededPlacesList.setAdapter(adapter);
 		return v;
 	}
 
