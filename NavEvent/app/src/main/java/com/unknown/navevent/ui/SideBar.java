@@ -38,9 +38,9 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 	public interface SideBarInterface {
 		void hideSideBar();
 
-		void showMapFlur();
+		/*void showMapFlur(); todo del
 
-		void showMapKreuz();
+		void showMapKreuz();*/
 	}
 
 	private View v;
@@ -112,6 +112,12 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 			@Override
 			public void onClick(View view) {
 				activityCommander.hideSideBar();
+			}
+		});
+		optionsbutton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				//Todo insert code for Admin actvity
 			}
 		});
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
