@@ -29,7 +29,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
             }
         });
     }

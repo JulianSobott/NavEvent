@@ -50,23 +50,23 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		super.onCreate(savedInstanceState);
 
 		//Generating 2 Maps for testing purposes				todo del
-		/*List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
+		List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
 
 		List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
-		list1.add(new BeaconDataForUI(200, 100));
-		list1.add(new BeaconDataForUI(200, 600));
+		list1.add(new BeaconDataForUI(0,225, 75));
+		list1.add(new BeaconDataForUI(1,225, 575));
 
-		list2.add(new BeaconDataForUI(200, 100));
-		list2.add(new BeaconDataForUI(200, 600));
-		list2.add(new BeaconDataForUI(430, 300));*/
+		list2.add(new BeaconDataForUI(0,200, 100));
+		list2.add(new BeaconDataForUI(1,200, 600));
+		list2.add(new BeaconDataForUI(2,430, 300));
 
-		/*mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
 		mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));
 		if (activeMap == null) {
 			activeMap = mapFlur;
-		}*/
+		}
 
 		setContentView(R.layout.activity_main);
 
@@ -112,9 +112,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		Tr.commit();
 	}
 
-	public static void updateDisplayedText() {
+	/*public static void updateDisplayedText() {
 
-	}
+	}*/
 
 	public static MapDataForUI getMap() {
 		return activeMap;
@@ -233,18 +233,26 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	@Override
 	public void markBeacons(List<Integer> beaconIDs) {				//Marks a list of Beacons on the map for example as a search result
 		activeMap.selectBeacons(beaconIDs);
+		mapDisplayFragment.LoadBeacons();
 	}
 
 	private MapDataForUI mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a usable format.
 		List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
 		BeaconData[] oldBeacons;
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
-		for (int i = 0; i < in.getBeacons().size(); i++) {
-			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+		boolean[] isSpecial=new boolean[in.getBeacons().size()];
+
+        for (int i = 0; i < in.getBeacons().size(); i++) {
+			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(),oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+            for(int j=0;j<in.getBeacons().size();i++){
+                if(in.getSpecialPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setSpecial(true);
+                else if(!in.getOrdinaryPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setVisibility(false);
+            }
 		}
 		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
 		return out;
 	}
+
 
 
 	/*public static boolean mapIsSelected() { todo check if needed del if not

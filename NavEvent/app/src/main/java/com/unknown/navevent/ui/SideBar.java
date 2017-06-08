@@ -1,10 +1,12 @@
 package com.unknown.navevent.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.view.LayoutInflater;
@@ -31,16 +33,26 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 	public SideBarInterface activityCommander;
 
 	@Override
-	public void searchResults(List<BeaconData> results) {
-
+	public void searchResults(final List<BeaconData> results) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Searchresults");
+        String[] beaconNames=new String[results.size()];
+        for(int i=0;i<results.size();i++){
+            beaconNames[i]=results.get(i).getName();
+        }
+        builder.setItems(beaconNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                List<Integer> b = new ArrayList<Integer>();
+                b.add(results.get(i).getId());
+                activityCommander.markBeacons(b);
+            }
+        });
 	}
 
 	public interface SideBarInterface {
-		void hideSideBar();
-
-		/*void showMapFlur(); todo del
-
-		void showMapKreuz();*/
+        void hideSideBar();
+        void markBeacons(List<Integer> beaconIDs);
 	}
 
 	private View v;

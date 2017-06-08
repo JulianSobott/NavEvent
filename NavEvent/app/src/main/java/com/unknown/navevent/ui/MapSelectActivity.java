@@ -92,7 +92,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 	}
 
 	@Override
-	public void foundLocalMap(final MapData map) {
+	public void foundLocalMap(final MapData map) {					//notifies when a map is already located on the device
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
 
 		// set title
