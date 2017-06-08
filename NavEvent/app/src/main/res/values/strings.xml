@@ -29,6 +29,6 @@
     <string name="places_you_might_find_important">Places you might find important</string>
     <string name="places_you_may_find_interesting">Places you may find interesting:</string>
     <string name="places_you_may_need_during_your_visit">Places you may need during your visit:</string>
-
+    <string name="care_Adviser_for_Admin_Area">This Area is for Staff only \nPlease comply to our terms of service</string>
 
 </resources>
