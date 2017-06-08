@@ -16,14 +16,14 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	Bitmap beaconTexture[];
 	float[] x;
 	float[] y;
-	private int beaconNumber = 3;
+	private int beaconNumber;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
-	MapDataForUI testMap;
+	MapDataForUI displayedMap;
 
 	public DrawTheMap(Context context, MapDataForUI MapInput) {
 		super(context);
-		testMap = MapInput;
-		beaconNumber = testMap.getBeaconNumber();
+		displayedMap = MapInput;
+		beaconNumber = displayedMap.getBeaconNumber();
 		x = new float[beaconNumber];
 		y = new float[beaconNumber];
 		beacon_isSelected = new boolean[beaconNumber];
@@ -31,8 +31,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-			x[i] = (float) this.testMap.Beacons[i].getxCord();
-			y[i] = (float) this.testMap.Beacons[i].getyCord();
+			x[i] = (float) this.displayedMap.Beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.Beacons[i].getyCord();
 		}
 		setOnTouchListener(this);
 
@@ -43,15 +43,15 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		super.onDraw(canvas);
 	    /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
 
-        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());*/
+        Log.e("TestLog","Bitmapstats:"+displayedMap.getMap().getDensity()+" "+displayedMap.getMap().getHeight()+" "+displayedMap.getMap().getWidth());*/
 
 		float scale = 1;
         /*if(true){
-        scale=(float)(240.0/ testMap.getMap().getDensity());}
+        scale=(float)(240.0/ displayedMap.getMap().getDensity());}
 
         Log.e("TestLog","scale:"+scale);*/
 
-		canvas.drawBitmap(testMap.getMap(), null, new RectF(0, 0, ((float) (testMap.getMap().getWidth() * scale)), ((float) (testMap.getMap().getHeight() * scale))), new Paint());
+		canvas.drawBitmap( displayedMap.getMap(), null, new RectF(0, 0, ((float) ( displayedMap.getMap().getWidth() * scale)), ((float) ( displayedMap.getMap().getHeight() * scale))), new Paint());
 
 		for (int i = 0; i < beaconNumber; i++) {
 			canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint());
@@ -68,11 +68,11 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			if (!beacon_isSelected[selectedBeacon]) {
 				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
 				beacon_isSelected[selectedBeacon] = true;
-				testMap.Beacons[selectedBeacon].select(true);
+				 displayedMap.Beacons[selectedBeacon].select(true);
 				for (int i = 0; i < beaconNumber; i++) {
 					if (beacon_isSelected[i] && i != selectedBeacon) {
 						beacon_isSelected[selectedBeacon] = false;
-						testMap.Beacons[selectedBeacon].select(false);
+						 displayedMap.Beacons[selectedBeacon].select(false);
 
 					}
 				}
@@ -80,7 +80,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			} else {
 				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 				beacon_isSelected[selectedBeacon] = false;
-				testMap.Beacons[selectedBeacon].select(false);
+				displayedMap.Beacons[selectedBeacon].select(false);
 			}
 		return true;
 	}
@@ -96,8 +96,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	}
 
 	public void loadMap(MapDataForUI newMap) {
-		testMap = newMap;
-		beaconNumber = testMap.getBeaconNumber();
+		displayedMap = newMap;
+		beaconNumber = displayedMap.getBeaconNumber();
 		x = new float[beaconNumber];
 		y = new float[beaconNumber];
 		beacon_isSelected = new boolean[beaconNumber];
@@ -105,8 +105,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-			x[i] = (float) this.testMap.Beacons[i].getxCord();
-			y[i] = (float) this.testMap.Beacons[i].getyCord();
+			x[i] = (float) this.displayedMap.Beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.Beacons[i].getyCord();
 		}
 	}
 

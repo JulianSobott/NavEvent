@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Generating 2 Maps for testing purposes
-		List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
+		//Generating 2 Maps for testing purposes				todo del
+		/*List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
 
 		List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
@@ -59,14 +59,14 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 		list2.add(new BeaconDataForUI(200, 100));
 		list2.add(new BeaconDataForUI(200, 600));
-		list2.add(new BeaconDataForUI(430, 300));
+		list2.add(new BeaconDataForUI(430, 300));*/
 
-		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+		/*mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
 		mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));
 		if (activeMap == null) {
 			activeMap = mapFlur;
-		}
+		}*/
 
 		setContentView(R.layout.activity_main);
 
@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 		super.onDestroy();
 	}
-
+	//Display a hidden fragment
 	private void showFragment(Fragment f) {
 		FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
 		Tr.show(f);
 		Tr.commit();
 	}
-
+	//Hide a displayed fragment
 	public void hideFragment(Fragment f) {
 		FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
 		Tr.hide(f);
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
 		else outputView.setText("Beacon id: " + beaconID);*/
-		beaconInfo.changeText(activeMap.getStringOfDisplayedBeacon(beaconID));
+		beaconInfo.updateBeaconText(beaconID);
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 
-	/*public static boolean mapIsSelected() { todo check if needed
+	/*public static boolean mapIsSelected() { todo check if needed del if not
 		if (activeMap == null)
 			return false;
 		else return true;
