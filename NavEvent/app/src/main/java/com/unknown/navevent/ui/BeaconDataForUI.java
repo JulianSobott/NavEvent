@@ -1,6 +1,5 @@
 package com.unknown.navevent.ui;
 
-//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\well its not
 public class BeaconDataForUI {//// TODO: 27.05.2017 Rename The File to not test
 	private double xCord;
 	private double yCord;

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	MapDataForUI mapFlur;
 	MapDataForUI mapFlurKreuzung;
 	private static MapDataForUI activeMap;
-	private float displayDensity;
+	//private float displayDensity; // TODO: 08.06.2017 check if needed del if not 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		list2.add(new BeaconDataForUI(200, 600));
 		list2.add(new BeaconDataForUI(430, 300));
 
-		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur), 2);
+		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
-		mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung), 3);
+		mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));
 		if (activeMap == null) {
 			activeMap = mapFlur;
 		}
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		for (int i = 0; i < in.getBeacons().size(); i++) {
 			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
 		}
-		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage(), in.getBeacons().size());
+		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
 		return out;
 	}
 

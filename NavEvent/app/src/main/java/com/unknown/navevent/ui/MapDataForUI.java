@@ -7,18 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-//This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\ well it isnt so this name is wrong but im too lazy to change ^^
 public class MapDataForUI {
 	private int beaconNumber;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
 	Bitmap Map;
 	BeaconDataForUI[] Beacons;
 
-	MapDataForUI(List<BeaconDataForUI> bList, Bitmap map, int NR) {
+	MapDataForUI(List<BeaconDataForUI> bList, Bitmap map) {
 		Map = map;
+		beaconNumber=bList.size();
 		//Map.setDensity(Bitmap.DENSITY_NONE);
-		Beacons = bList.toArray(new BeaconDataForUI[NR]);
-		beaconNumber = NR;
+		Beacons = bList.toArray(new BeaconDataForUI[bList.size()]);
 
 	}
 
