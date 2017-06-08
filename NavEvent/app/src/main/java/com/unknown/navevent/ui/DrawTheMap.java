@@ -18,9 +18,9 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	float[] y;
 	private int beaconNumber = 3;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
-	MapForTests testMap;
+	MapDataForUI testMap;
 
-	public DrawTheMap(Context context, MapForTests MapInput) {
+	public DrawTheMap(Context context, MapDataForUI MapInput) {
 		super(context);
 		testMap = MapInput;
 		beaconNumber = testMap.getBeaconNumber();
@@ -95,7 +95,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		return returnBeaconID;
 	}
 
-	public void loadMap(MapForTests newMap) {
+	public void loadMap(MapDataForUI newMap) {
 		testMap = newMap;
 		beaconNumber = testMap.getBeaconNumber();
 		x = new float[beaconNumber];

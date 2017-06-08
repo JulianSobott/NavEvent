@@ -2,23 +2,22 @@ package com.unknown.navevent.ui;
 
 
 import android.graphics.Bitmap;
-import android.util.DisplayMetrics;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 //This class wll be obsolete in the final Version and only is for testing purposes, should not be used due to that /\ well it isnt so this name is wrong but im too lazy to change ^^
-public class MapForTests {
+public class MapDataForUI {
 	private int beaconNumber;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
 	Bitmap Map;
-	BeaconForTests[] Beacons;
+	BeaconDataForUI[] Beacons;
 
-	MapForTests(List<BeaconForTests> bList, Bitmap map, int NR) {
+	MapDataForUI(List<BeaconDataForUI> bList, Bitmap map, int NR) {
 		Map = map;
 		//Map.setDensity(Bitmap.DENSITY_NONE);
-		Beacons = bList.toArray(new BeaconForTests[NR]);
+		Beacons = bList.toArray(new BeaconDataForUI[NR]);
 		beaconNumber = NR;
 
 	}

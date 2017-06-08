@@ -16,9 +16,10 @@ import android.widget.TextView;
 import android.widget.EditText;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.interfaces.BottomSheetUI;
 
-public class BeaconInfo extends Fragment {
-	private static TextView infoText;
+public class BeaconInfo extends Fragment implements BottomSheetUI{
+	private TextView infoText;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,5 +31,10 @@ public class BeaconInfo extends Fragment {
 
 	public void changeText(String text) {
 		infoText.setText(text);
+	}
+
+	@Override
+	public void beaconInfoRespond(String info) {
+		changeText(info);
 	}
 }

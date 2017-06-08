@@ -1,21 +1,12 @@
 package com.unknown.navevent.ui;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.view.ViewGroup.*;
 
 import com.unknown.navevent.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MapDisplayFragment extends Fragment {
@@ -42,7 +33,7 @@ public class MapDisplayFragment extends Fragment {
 
 	}
 
-	static public int getBeaconToDisplay(MapForTests map) {
+	static public int getBeaconToDisplay(MapDataForUI map) {
 		// // TODO Add a method to return the Beacon that is closest to you because it is always seleced an dits massage is displayed at the bottom by default
 
 		return 0;

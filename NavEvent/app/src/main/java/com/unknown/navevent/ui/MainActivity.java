@@ -36,13 +36,13 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	private static final int PERMISSION_REQUEST_COARSE_LOCATION = 0;
 
 
-	private static BeaconInfo text;
+	private static BeaconInfo beaconInfo;
 	private SideBar bar;
 	private Button sideOpen;
 	private MapDisplayFragment mapDisplayFragment;
-	MapForTests mapFlur;
-	MapForTests mapFlurKreuzung;
-	private static MapForTests activeMap;
+	MapDataForUI mapFlur;
+	MapDataForUI mapFlurKreuzung;
+	private static MapDataForUI activeMap;
 	private float displayDensity;
 
 	@Override
@@ -50,20 +50,20 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		super.onCreate(savedInstanceState);
 
 		//Generating 2 Maps for testing purposes
-		List<BeaconForTests> list1 = new ArrayList<BeaconForTests>();
+		List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
 
-		List<BeaconForTests> list2 = new ArrayList<BeaconForTests>();
+		List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
-		list1.add(new BeaconForTests(200, 100));
-		list1.add(new BeaconForTests(200, 600));
+		list1.add(new BeaconDataForUI(200, 100));
+		list1.add(new BeaconDataForUI(200, 600));
 
-		list2.add(new BeaconForTests(200, 100));
-		list2.add(new BeaconForTests(200, 600));
-		list2.add(new BeaconForTests(430, 300));
+		list2.add(new BeaconDataForUI(200, 100));
+		list2.add(new BeaconDataForUI(200, 600));
+		list2.add(new BeaconDataForUI(430, 300));
 
-		mapFlur = new MapForTests(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur), 2);
+		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur), 2);
 
-		mapFlurKreuzung = new MapForTests(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung), 3);
+		mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung), 3);
 		if (activeMap == null) {
 			activeMap = mapFlur;
 		}
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 
 		bar = (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
-		text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
+		beaconInfo = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
 		sideOpen = (Button) findViewById(R.id.SideBarBtn);
 		mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
 		bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 	}
 
-	public static MapForTests getMap() {
+	public static MapDataForUI getMap() {
 		return activeMap;
 	}
 
@@ -227,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
 		else outputView.setText("Beacon id: " + beaconID);*/
+		beaconInfo.changeText(activeMap.getStringOfDisplayedBeacon(beaconID));
 	}
 
 	@Override
@@ -234,14 +235,14 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		activeMap.selectBeacons(beaconIDs);
 	}
 
-	private MapForTests mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a usable format.
-		List<BeaconForTests> newBeaconList = new ArrayList<BeaconForTests>();
+	private MapDataForUI mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a usable format.
+		List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
 		BeaconData[] oldBeacons;
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
 		for (int i = 0; i < in.getBeacons().size(); i++) {
-			newBeaconList.add(new BeaconForTests(oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
 		}
-		MapForTests out = new MapForTests(newBeaconList, in.getImage(), in.getBeacons().size());
+		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage(), in.getBeacons().size());
 		return out;
 	}
 
