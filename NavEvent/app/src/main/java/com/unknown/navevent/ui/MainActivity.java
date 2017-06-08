@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		hideFragment(bar);
 	}
 
-	@Override
+	/*@Override		todo del
 	public void showMapFlur() {
 		activeMap = mapFlur;
 		mapDisplayFragment.LoadBeacons();
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		activeMap = mapFlurKreuzung;
 		mapDisplayFragment.LoadBeacons();
 
-	}
+	}*/
 
 
 	@Override
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void notSupported(String errorcode) {
+	public void notSupported(String errorcode) {			//Checks if the Device is supported and kills the App if not
 		//todo debug: uncomment this block to enable the app only for supported devices
 		//Notify user and shutdown the app
 		/*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void bluetoothDeactivated() {
+	public void bluetoothDeactivated() {		//Is called if bluetooth is offline, requests to enable it
 		//Notify user to enable bluetooth
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotEnabled);
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void askForPermissions() {
+	public void askForPermissions() {			//Is called if device-location is offline, asks for permission to enable it
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			//Android M+ Permission check
 			if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode,
+	public void onRequestPermissionsResult(int requestCode,		//Is called to tell the user if the app can eable the things it needs
 	                                       String permissions[], int[] grantResults) {
 		if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void switchToMapSelectActivity() {
+	public void switchToMapSelectActivity() {						//Switches to the Activity to select a Map if none is Loaded
 		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
 		startActivity(intent);
 		finish();
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void updateMap(MapData map) {
+	public void updateMap(MapData map) {							//Loads a Map if one is selected in the MapSelectActivity
 		activeMap = mapDataAdapter(map);
 		mapDisplayFragment.LoadBeacons();
 		bar.loadBeacons();
@@ -222,8 +222,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void updateBeaconPosition(int beaconID) {
-		//this method gives the beacon where the usern is standing at right now
+	public void updateBeaconPosition(int beaconID) {				//this method gives the beacon where the usern is standing at right now and shows it on the map
 		//example implementation
 		/*if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
@@ -231,11 +230,11 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 	@Override
-	public void markBeacons(List<Integer> beaconIDs) {
+	public void markBeacons(List<Integer> beaconIDs) {				//Marks a list of Beacons on the map for example as a search result
 		activeMap.selectBeacons(beaconIDs);
 	}
 
-	private MapForTests mapDataAdapter(MapData in) {
+	private MapForTests mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a usable format.
 		List<BeaconForTests> newBeaconList = new ArrayList<BeaconForTests>();
 		BeaconData[] oldBeacons;
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
@@ -247,11 +246,11 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}
 
 
-	public static boolean mapIsSelected() {
+	/*public static boolean mapIsSelected() { todo check if needed
 		if (activeMap == null)
 			return false;
 		else return true;
-	}
+	}*/
 
 
 }
