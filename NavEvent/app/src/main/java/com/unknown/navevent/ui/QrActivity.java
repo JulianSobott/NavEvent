@@ -44,7 +44,8 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {      //asks user for permission to use the cam
+                    //ActivityCompat.requestPermissions(QrActivity.this,new String[]{Manifest.permission.CAMERA},);
 
                 } else {
                     qrCodeReaderView.setVisibility(View.VISIBLE);
