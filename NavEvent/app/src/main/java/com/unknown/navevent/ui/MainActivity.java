@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     private SideBar bar;
     private Button sideOpen;
     private MapDisplayFragment mapDisplayFragment;
-    MapDataForUI mapFlur;
-    MapDataForUI mapFlurKreuzung;
+    MapDataForUI mapDefault;
+    //MapDataForUI mapFlurKreuzung; todo del
     private static MapDataForUI activeMap;
     //private float displayDensity; // TODO: 08.06.2017 check if needed del if not
 
@@ -59,18 +59,17 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         list1.get(0).setOrdinary(true);
         list1.get(1).setOrdinary(true);
 
-        mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+        mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
         /*list2.add(new BeaconDataForUI(1, 200, 100));      todo del
         list2.add(new BeaconDataForUI(2, 200, 600));
         list2.add(new BeaconDataForUI(3, 430, 300));
+        mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));*/
 
 
-
-        mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));
         if (activeMap == null) {
-            activeMap = mapFlur;
-        }*/
+            activeMap = mapDefault;
+        }
 
         setContentView(R.layout.activity_main);
 
