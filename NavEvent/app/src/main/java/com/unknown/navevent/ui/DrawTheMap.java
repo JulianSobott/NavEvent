@@ -19,6 +19,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	private int beaconNumber;
 	int theMagicNumberThatNeverShouldBeUsed = 975667323;
 	MapDataForUI displayedMap;
+	float scale = 1;
 
 	public DrawTheMap(Context context, MapDataForUI MapInput) {
 		super(context);
@@ -30,8 +31,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-			x[i] = (float) this.displayedMap.Beacons[i].getxCord();
-			y[i] = (float) this.displayedMap.Beacons[i].getyCord();
+			x[i] = (float) this.displayedMap.beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
 		setOnTouchListener(this);
 
@@ -44,7 +45,6 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
         Log.e("TestLog","Bitmapstats:"+displayedMap.getMap().getDensity()+" "+displayedMap.getMap().getHeight()+" "+displayedMap.getMap().getWidth());*/
 
-		float scale = 1;
         /*if(true){
         scale=(float)(240.0/ displayedMap.getMap().getDensity());}
 
@@ -67,11 +67,11 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 			//canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint()); todo del
 
-			if(displayedMap.Beacons[i].isVisible()) canvas.drawCircle(x[i],y[i],25,paintBlue);
-			else if(displayedMap.Beacons[i].isClosest()) canvas.drawCircle(x[i],y[i],25,paintRed);
-			else if(displayedMap.Beacons[i].isSpecial()) canvas.drawCircle(x[i],y[i],25,paintGreen);
-			else if(displayedMap.Beacons[i].isSelected()) canvas.drawCircle(x[i],y[i],25,paintYellow);
-			else canvas.drawCircle(x[i],y[i],25,paintNot);
+			if(displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
+			else if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
+			else if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
+			else if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
+			else canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot);
 		}
 		//MainActivity.updateDisplayedText();		// TODO: 08.06.2017  del
 		invalidate();
@@ -84,11 +84,11 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			if (!beacon_isSelected[selectedBeacon]) {
 				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
 				beacon_isSelected[selectedBeacon] = true;
-				 displayedMap.Beacons[selectedBeacon].select(true);
+				 displayedMap.beacons[selectedBeacon].select(true);
 				for (int i = 0; i < beaconNumber; i++) {
 					if (beacon_isSelected[i] && i != selectedBeacon) {
 						beacon_isSelected[selectedBeacon] = false;
-						 displayedMap.Beacons[selectedBeacon].select(false);
+						 displayedMap.beacons[selectedBeacon].select(false);
 
 					}
 				}
@@ -96,7 +96,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			} else {
 				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 				beacon_isSelected[selectedBeacon] = false;
-				displayedMap.Beacons[selectedBeacon].select(false);
+				displayedMap.beacons[selectedBeacon].select(false);
 			}*/
 		return true;
 	}
@@ -104,7 +104,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	private int getClickedBeacon(int x, int y) {					//returns the beacon at the position the user tapped or a magic number if there is no Beacon
 		int returnBeaconID = theMagicNumberThatNeverShouldBeUsed;
 		for (int i = 0; i < beaconNumber; i++) {
-			if (Math.abs((this.x[i]) - x) <= 25 && Math.abs((this.y[i]) - y) <= 25) {
+			if (Math.abs((this.x[i]) - x) <= 50 && Math.abs((this.y[i]) - y) <= 50) {
 				returnBeaconID = i;
 			}
 		}
@@ -120,8 +120,8 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-			x[i] = (float) this.displayedMap.Beacons[i].getxCord();
-			y[i] = (float) this.displayedMap.Beacons[i].getyCord();
+			x[i] = (float) this.displayedMap.beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
 	}
 

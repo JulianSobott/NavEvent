@@ -42,7 +42,7 @@ public class BeaconDataForUI {
 	public void setSpecial(boolean isSpecial){
 		this.isSpecial=isSpecial;
 	}
-	public void setOrdinary(boolean isClosest){
+	public void setClosest(boolean isClosest){
 		this.isClosest=isClosest;
 	}
 	public void setVisibility(boolean isVisible){

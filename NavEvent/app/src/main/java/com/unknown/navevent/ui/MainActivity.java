@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 	@Override
 	public void initCompleted() {
-
+		Toast.makeText(MainActivity.this, "Map has been successfully loaded", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -223,27 +223,29 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 	@Override
 	public void updateBeaconPosition(int beaconID) {				//this method gives the beacon where the usern is standing at right now and shows it on the map
-		//example implementation
-		/*if( beaconID == 0 )
+		if( beaconID == 0 )
 			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
-		else outputView.setText("Beacon id: " + beaconID);*/
+		else {
+			activeMap.setClosestBeacon(beaconID);
+		}
 		beaconInfo.updateBeaconText(beaconID);
 	}
 
 	@Override
-	public void markBeacons(List<Integer> beaconIDs) {				//Marks a list of Beacons on the map for example as a search result
+	public void markBeacons(List<Integer> beaconIDs) {				//Marks a list of beacons on the map for example as a search result
 		activeMap.selectBeacons(beaconIDs);
 		mapDisplayFragment.LoadBeacons();
 	}
 
-	private MapDataForUI mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a usable format.
+	private MapDataForUI mapDataAdapter(MapData in) {				//Converts a list of Data for a Map into a UI-usable format.
 		List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
 		BeaconData[] oldBeacons;
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
-		boolean[] isSpecial=new boolean[in.getBeacons().size()];
+		//boolean[] isSpecial=new boolean[in.getBeacons().size()];  todo del
 
         for (int i = 0; i < in.getBeacons().size(); i++) {
 			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(),oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+			newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
             for(int j=0;j<in.getBeacons().size();i++){
                 if(in.getSpecialPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setSpecial(true);
                 else if(!in.getOrdinaryPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setVisibility(false);

@@ -9,33 +9,35 @@ import java.util.List;
 
 public class MapDataForUI {
 	private int beaconNumber;
-	int theMagicNumberThatNeverShouldBeUsed = 975667323;
-	Bitmap Map;
-	BeaconDataForUI[] Beacons;
+	//private int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
+	private Bitmap Map;
+	BeaconDataForUI[] beacons;
 
 	MapDataForUI(List<BeaconDataForUI> bList, Bitmap map) {
 		Map = map;
 		beaconNumber=bList.size();
-		//Map.setDensity(Bitmap.DENSITY_NONE);
-		Beacons = bList.toArray(new BeaconDataForUI[bList.size()]);
+		//Map.setDensity(Bitmap.DENSITY_NONE);      todo del
+		beacons = bList.toArray(new BeaconDataForUI[bList.size()]);
 
 	}
 
 	public String getStringOfDisplayedBeacon(int beaconToDisplay) {
-		if (beaconToDisplay != theMagicNumberThatNeverShouldBeUsed)
-			return Beacons[beaconToDisplay].getDisplayedText();
-		else return " ";
+		String returnText=" ";
+        for (int i=0;i<beaconNumber;i++) {
+            if (beaconToDisplay==beacons[i].getID()) returnText=beacons[i].getDisplayedText();
+        }
+		return returnText;
 	}
 
-	public List<Integer> getSelectedBeacon() {
+	/*public List<Integer> getSelectedBeacon() {            todo check if needed del if not
 		List<Integer> selectedBeacons = new ArrayList<>();
 		for (int i = 0; i < beaconNumber; i++) {
-			if (Beacons[i].isSelected()) {
+			if (beacons[i].isSelected()) {
 				selectedBeacons.add(i);
 			}
 		}
 		return selectedBeacons;
-	}
+	}*/
 
 	public int getBeaconNumber() {
 		return beaconNumber;
@@ -45,13 +47,23 @@ public class MapDataForUI {
 		return Map;
 	}
 
-	public void selectBeacons(List<Integer> listToSelect) {
+	public void selectBeacons(List<Integer> listToSelect) {		//resets the selectedstate of all beacons and selects the ones given
 		Integer[] toSelect = listToSelect.toArray(new Integer[listToSelect.size()]);
-		for (int i = 0; i < Beacons.length; i++) {
-			Beacons[i].select(false);
+		for (int i = 0; i < beacons.length; i++) {
+			beacons[i].select(false);
 		}
 		for (int i = 0; i < toSelect.length; i++) {
-			Beacons[toSelect[i]].select(true);
+            for (int j = 0; j < toSelect.length; j++) {
+                if (beacons[i].getID() == toSelect[j]) beacons[i].select(true);
+            }
+		}
+	}
+	public void setClosestBeacon(int closestBeaconID){			//resets all beacons to not be the closest than sets the given beacons as closest
+		for (BeaconDataForUI beacon: beacons) {
+			beacon.setClosest(false);
+		}
+		for(int i=0;i<beaconNumber;i++){
+			if(beacons[i].getID()==closestBeaconID) beacons[i].setClosest(true);
 		}
 	}
 
