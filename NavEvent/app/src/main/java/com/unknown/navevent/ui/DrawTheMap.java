@@ -12,12 +12,12 @@ import android.view.View;
 import com.unknown.navevent.R;
 
 public class DrawTheMap extends View implements View.OnTouchListener {
-	//boolean beacon_isSelected[];
+	//boolean beacon_isSelected[]; todo del
 	Bitmap beaconTexture[];
 	float[] x;
 	float[] y;
 	private int beaconNumber;
-	int theMagicNumberThatNeverShouldBeUsed = 975667323;
+	//int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
 	MapDataForUI displayedMap;
 	float scale = 1;
 
@@ -78,7 +78,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	}
 
 	public boolean onTouch(View v, MotionEvent me) {
-		/*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo Add funbktion to display text of a selected Beacon
+		/*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo del when obsolete
 		if (me.ACTION_DOWN == me.getAction() && selectedBeacon != theMagicNumberThatNeverShouldBeUsed)
 
 			if (!beacon_isSelected[selectedBeacon]) {
@@ -98,14 +98,15 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 				beacon_isSelected[selectedBeacon] = false;
 				displayedMap.beacons[selectedBeacon].select(false);
 			}*/
+
 		return true;
 	}
 
 	private int getClickedBeacon(int x, int y) {					//returns the beacon at the position the user tapped or a magic number if there is no Beacon
-		int returnBeaconID = theMagicNumberThatNeverShouldBeUsed;
+		int returnBeaconID = 0;
 		for (int i = 0; i < beaconNumber; i++) {
 			if (Math.abs((this.x[i]) - x) <= 50 && Math.abs((this.y[i]) - y) <= 50) {
-				returnBeaconID = i;
+				returnBeaconID = displayedMap.beacons[i].getID();
 			}
 		}
 		return returnBeaconID;
