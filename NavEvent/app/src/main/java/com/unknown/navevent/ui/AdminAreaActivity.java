@@ -23,7 +23,7 @@ import java.util.List;
 
 public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI {
 	private AdminAreaLogicInterface mIfc = null;
-	private static String mapID;
+	private static int mapID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 		//Creating the AdminAreaLogic
 		mIfc = new AdminAreaLogic(this);
 		mIfc.onCreate(this);
+        mIfc.loadMap(mapID);
 
 	}
 
@@ -74,8 +75,8 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 			}
 		});
 	}
-    public static void setMapID(){
-
+    public static void setMapID(int mapIDin){
+        mapID=mapIDin;
     }
 
 	@Override

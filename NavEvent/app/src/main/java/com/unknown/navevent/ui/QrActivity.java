@@ -17,7 +17,7 @@ import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRCodeReaderView.OnQRCodeReadListener {
 
     Button continueButton;
-    String mapID;
+    int mapID;
     private QRCodeReaderView qrCodeReaderView;
 
     @Override
@@ -50,9 +50,10 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
-        mapID = text;
+        mapID =Integer.parseInt(text);
         qrCodeReaderView.stopCamera();
         Intent intent =new Intent(this,AdminAreaActivity.class);
+        AdminAreaActivity.setMapID(mapID);
         startActivity(intent);
     }
 }
