@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 		List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
+		list1.add(new BeaconDataForUI(1,150, 100));
+		list1.add(new BeaconDataForUI(2,150, 650));
 
 		list2.add(new BeaconDataForUI(1,200, 100));
 		list2.add(new BeaconDataForUI(2,200, 600));
