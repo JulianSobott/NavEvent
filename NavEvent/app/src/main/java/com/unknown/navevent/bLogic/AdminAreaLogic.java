@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.MapIR;
@@ -63,7 +64,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Override
 	public void configureBeacon(int beaconID) {
-		//todo
+		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_CONFIG_DEVICE, new BeaconServiceEvent.WriteBeaconData(1, 2)));//todo change ids
 	}
 
 
@@ -81,6 +82,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
+			mResponder.updateMap(serviceInterface.currentMap);
 			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
 			//todo load map
 		}

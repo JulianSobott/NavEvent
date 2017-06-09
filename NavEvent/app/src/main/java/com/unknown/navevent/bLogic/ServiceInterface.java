@@ -78,7 +78,7 @@ public class ServiceInterface {
 	private BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
 	List<BeaconIR> currentBeacons = new ArrayList<>();//Beacons in region
 	int nearestBeaconID;//ID of nearest beacon
-	int nearestBeaconMajorID = 0;//MajorID of nearest beacon. To find map on server.
+	private int nearestBeaconMajorID = 0;//MajorID of nearest beacon. To find map on server.
 
 	//Map data
 	enum MapAvailabilityState {
