@@ -56,17 +56,21 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
         list1.add(new BeaconDataForUI(1, 150, 100));
         list1.add(new BeaconDataForUI(2, 150, 650));
+        list1.get(0).setOrdinary(true);
+        list1.get(1).setOrdinary(true);
 
-        list2.add(new BeaconDataForUI(1, 200, 100));
+        mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+
+        /*list2.add(new BeaconDataForUI(1, 200, 100));      todo del
         list2.add(new BeaconDataForUI(2, 200, 600));
         list2.add(new BeaconDataForUI(3, 430, 300));
 
-        mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+
 
         mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));
         if (activeMap == null) {
             activeMap = mapFlur;
-        }
+        }*/
 
         setContentView(R.layout.activity_main);
 
@@ -254,8 +258,8 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 }
             }
             for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
-                if (!listOrd.contains(newBeaconList.get(i).getID())){
-                    newBeaconList.get(i).setOrdinary(false);}
+                if (listOrd.contains(newBeaconList.get(i).getID())){
+                    newBeaconList.get(i).setOrdinary(true);}
             }
 
 
