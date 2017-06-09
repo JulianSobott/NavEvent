@@ -12,6 +12,9 @@
     <string name="locationAccessDialogTitle">This app needs location access.</string>
     <string name="locationAccessDialogContent">Please grant location access so this app can detect beacons in the background.</string>
     <string name="locationAccessDeniedWarning">No location access. Functionality limited!</string>
+    <string name="cameraAccessDialogTitle">This app needs camera access.</string>
+    <string name="cameraAccessDialogContent">Please grant camera access so this app can scan qr-codes.</string>
+    <string name="cameraAccessDeniedWarning">No camera access. Can\'t scan qr-code!</string>
     <string name="bluetoothNotEnabled">Bluetooth not enabled! Please enable bluetooth in settings.</string>
     <string name="bluetoothNotAvailable">Sorry, this device does not support required Bluetooth LE.</string>
     <string name="bluetoothTurnedOffWarning">Bluetooth turned off. Functionality limited!</string>
