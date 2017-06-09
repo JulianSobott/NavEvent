@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void notSupported(String errorcode) {            //Checks if the Device is supported and kills the App if not
         //todo debug: uncomment this block to enable the app only for supported devices
         //Notify user and shutdown the app
-		/*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotAvailable);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -243,19 +243,22 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
         BeaconData[] oldBeacons;
         oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
-        //boolean[] isSpecial=new boolean[in.getBeacons().size()];  todo del
+        boolean[] isSpecial=new boolean[in.getBeacons().size()];
 
         for (int i = 0; i < in.getBeacons().size(); i++) {
             newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
             newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
             for (List<Integer> list : in.getSpecialPlaces().values()) {
-                if (list.contains(newBeaconList.get(i).getID()))
+                if (list.contains(newBeaconList.get(i).getID())){
                     newBeaconList.get(i).setSpecial(true);
+                    isSpecial[i]=true;
+                }
             }
-            for (List<Integer> list : in.getOrdinaryPlaces().values()) {
-                if (!list.contains(newBeaconList.get(i).getID()))
+            for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
+                if (!listOrd.contains(newBeaconList.get(i).getID())&&!isSpecial[i])
                     newBeaconList.get(i).setVisibility(false);
             }
+
 
 
             /*for (int j = 0; j < in.getBeacons().size(); j++) {                                todo del
@@ -266,9 +269,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
             }*/
         }
-            MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
-            return out;
-        }
+        MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
+        return out;
+    }
 
 
 
@@ -279,5 +282,5 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 	}*/
 
 
-    }
+}
 
