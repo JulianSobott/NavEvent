@@ -30,4 +30,5 @@ dependencies {
     compile 'org.altbeacon:android-beacon-library:2+'
     compile 'org.greenrobot:eventbus:3.0.0'
     testCompile 'junit:junit:4.12'
+    compile 'me.dm7.barcodescanner:zxing:1.9'
 }

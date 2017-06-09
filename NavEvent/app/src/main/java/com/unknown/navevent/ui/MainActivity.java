@@ -54,12 +54,10 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 		List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
-		list1.add(new BeaconDataForUI(0,225, 75));
-		list1.add(new BeaconDataForUI(1,225, 575));
 
-		list2.add(new BeaconDataForUI(0,200, 100));
-		list2.add(new BeaconDataForUI(1,200, 600));
-		list2.add(new BeaconDataForUI(2,430, 300));
+		list2.add(new BeaconDataForUI(1,200, 100));
+		list2.add(new BeaconDataForUI(2,200, 600));
+		list2.add(new BeaconDataForUI(3,430, 300));
 
 		mapFlur = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
@@ -248,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 			newBeaconList.get(i-1).setDisplayedText(oldBeacons[i].getName());
 			if(in.getSpecialPlaces().containsValue(newBeaconList.get(i-1).getID())) newBeaconList.get(i-1).setSpecial(true);						//-1 because the whole newBeaconList should be used and 0 is excluded because mentioned above
 			else if(!in.getOrdinaryPlaces().containsValue(newBeaconList.get(i-1).getID())) newBeaconList.get(i-1).setVisibility(false);
-			
+
 		}
 		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
 		return out;
