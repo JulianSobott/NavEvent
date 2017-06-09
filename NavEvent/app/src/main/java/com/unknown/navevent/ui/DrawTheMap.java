@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.unknown.navevent.R;
@@ -17,6 +18,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	float[] x;
 	float[] y;
 	private int beaconNumber;
+    private ScaleGestureDetector scaleGestureDetector;
 	//int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
 	MapDataForUI displayedMap;
 	float scale = 1;
@@ -28,13 +30,15 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		x = new float[beaconNumber];
 		y = new float[beaconNumber];
 		beaconTexture = new Bitmap[beaconNumber];
+        scaleGestureDetector = new ScaleGestureDetector(context,new Scalelistener());
 
 		for (int i = 0; i < beaconNumber; i++) {
 			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 			x[i] = (float) this.displayedMap.beacons[i].getxCord();
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
-		setOnTouchListener(this);
+
+        setOnTouchListener(this);
 
 	}
 
@@ -66,12 +70,11 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			paintNot.setARGB(0,0,0,0);
 
 			//canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint()); todo del
-
-			if(displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
-			else if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
-			else if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
-			else if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
-			else canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot);
+            if(displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
+            if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
+			if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
+            if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
+            //if(!displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot); todo del
 		}
 		//MainActivity.updateDisplayedText();		// TODO: 08.06.2017  del
 		invalidate();
@@ -124,6 +127,19 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			x[i] = (float) this.displayedMap.beacons[i].getxCord();
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
+	}
+	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+			scale *= detector.getScaleFactor();
+
+			// Don't let the object get too small or too large.
+			scale = Math.max(0.1f, Math.min(scale, 5.0f));
+
+			invalidate();
+			return true;
+		}
+
 	}
 
 }
