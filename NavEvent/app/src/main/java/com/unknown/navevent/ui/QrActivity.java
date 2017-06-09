@@ -1,8 +1,12 @@
 package com.unknown.navevent.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -40,19 +44,23 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                qrCodeReaderView.setVisibility(View.VISIBLE);
-                qrCodeReaderView.setBackCamera();
-                qrCodeReaderView.setQRDecodingEnabled(true);
-                qrCodeReaderView.startCamera();
+                if (ContextCompat.checkSelfPermission(QrActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    qrCodeReaderView.setVisibility(View.VISIBLE);
+                    qrCodeReaderView.setBackCamera();
+                    qrCodeReaderView.setQRDecodingEnabled(true);
+                    qrCodeReaderView.startCamera();
+                }
             }
         });
     }
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
-        mapID =Integer.parseInt(text);
+        mapID = Integer.parseInt(text);
         qrCodeReaderView.stopCamera();
-        Intent intent =new Intent(this,AdminAreaActivity.class);
+        Intent intent = new Intent(this, AdminAreaActivity.class);
         AdminAreaActivity.setMapID(mapID);
         startActivity(intent);
     }
