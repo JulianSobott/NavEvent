@@ -51,6 +51,5 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
     public void onQRCodeRead(String text, PointF[] points) {
         mapID = text;
         qrCodeReaderView.stopCamera();
-
     }
 }

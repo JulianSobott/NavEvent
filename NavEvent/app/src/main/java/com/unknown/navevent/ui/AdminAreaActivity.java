@@ -43,8 +43,8 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 	}
 
 	@Override
-	public void updateMap(MapData map) {
-		List<String> mapList = new ArrayList();
+	public void updateMap(final MapData map) {										//Loads a new map and Lists the beacons to configure in a Listview
+		final List<String> mapList = new ArrayList();
 		for (int i = 0; i > map.getBeacons().size(); i++) {
 			mapList.add(map.getBeacons().get(i).getName());
 		}
@@ -53,7 +53,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 		BeaconList.setAdapter(adapter);
 		BeaconList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+			public void onItemClick(AdapterView<?> adapterView, View view,final int i, long l) {
 				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AdminAreaActivity.this);
 
 				alertDialogBuilder.setTitle("Beacon Konfigurieren");
@@ -63,7 +63,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 						.setCancelable(false)
 						.setPositiveButton(getString(R.string.String_Yes), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								// TODO: 25.05.2017 Implement The logic to link the nearest Beacon to this
+							mIfc.configureBeacon(map.getBeacons().get(i).getId());
 							}
 						})
 						.setNegativeButton(getString(R.string.String_No), new DialogInterface.OnClickListener() {
