@@ -57,9 +57,9 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-                        @TargetApi(23)
+                        @TargetApi(23)          //this method is only applied to devices with api 23 or higher because they need a new ind of permissions
                         @Override
-                        public void onDismiss(DialogInterface dialog) {
+                        public void onDismiss(DialogInterface dialog) {     //request permission to use camera for higher api levels for lower the manifest is enough
                             requestPermissions(new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
                         }
 
@@ -72,7 +72,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
         });
     }
 
-    private void activateQrCodeScanner() {
+    private void activateQrCodeScanner() {          //Activates the scanner and performs a scan
         qrCodeReaderView.setVisibility(View.VISIBLE);
         qrCodeReaderView.setBackCamera();
         qrCodeReaderView.setQRDecodingEnabled(true);
@@ -80,7 +80,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,        //Is called to tell the user if the app can eable the things it needs
+    public void onRequestPermissionsResult(int requestCode,        //Is called to tell the user if the app can enable the things it needs
                                            String permissions[], int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -93,7 +93,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
     }
 
     @Override
-    public void onQRCodeRead(String text, PointF[] points) {
+    public void onQRCodeRead(String text, PointF[] points) {       //is called when a QRCODE is found by the camera
         mapID = Integer.parseInt(text);
         qrCodeReaderView.stopCamera();
         Intent intent = new Intent(this, AdminAreaActivity.class);
