@@ -1,5 +1,6 @@
 package com.unknown.navevent.ui;
 
+import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -51,5 +52,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
     public void onQRCodeRead(String text, PointF[] points) {
         mapID = text;
         qrCodeReaderView.stopCamera();
+        Intent intent =new Intent(this,AdminAreaActivity.class);
+        startActivity(intent);
     }
 }

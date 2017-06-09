@@ -23,12 +23,12 @@ import java.util.List;
 
 public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI {
 	private AdminAreaLogicInterface mIfc = null;
+	private static String mapID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_admin_area);
-
 		//Creating the AdminAreaLogic
 		mIfc = new AdminAreaLogic(this);
 		mIfc.onCreate(this);
@@ -74,6 +74,9 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 			}
 		});
 	}
+    public static void setMapID(){
+
+    }
 
 	@Override
 	public void invalidMapID() {
@@ -94,4 +97,5 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 	public void beaconConfigurationFailed(String errorcode) {
 		Toast.makeText(this, getString(R.string.BeaconNotConfigured) + errorcode, Toast.LENGTH_SHORT).show();
 	}
+
 }

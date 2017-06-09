@@ -95,14 +95,6 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 		createButtonListeners();
 
 
-		optionsbutton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), QrActivity.class);
-				startActivity(intent);
-			}
-		});
-
 		ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getSpecialBeacons());
 		importantPlacesList.setAdapter(adapter);
 		adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getOrdinaryBeacons());
@@ -131,7 +123,8 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 		optionsbutton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				//Todo insert code for Admin actvity
+				Intent intent = new Intent(getActivity(), QrActivity.class);
+				startActivity(intent);
 			}
 		});
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
