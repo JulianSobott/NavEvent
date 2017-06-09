@@ -17,7 +17,7 @@
         android:layout_alignParentStart="true"
         android:id="@+id/textViewInfoText"
         android:layout_alignParentEnd="true"
-        tools:text="@string/care_Adviser_for_Admin_Area" />
+        android:text="@string/care_Adviser_for_Admin_Area" />
 
     <Button
         android:text="@string/i_acknowledged_and_want_to_proceed"
