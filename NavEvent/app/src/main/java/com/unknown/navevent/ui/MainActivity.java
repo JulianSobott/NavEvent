@@ -243,20 +243,20 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
         BeaconData[] oldBeacons;
         oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
-        boolean[] isSpecial=new boolean[in.getBeacons().size()];
+
 
         for (int i = 0; i < in.getBeacons().size(); i++) {
             newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
             newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
-            for (List<Integer> list : in.getSpecialPlaces().values()) {
-                if (list.contains(newBeaconList.get(i).getID())){
+            for (List<Integer> listSpec : in.getSpecialPlaces().values()) {
+                if (listSpec.contains(newBeaconList.get(i).getID())){
                     newBeaconList.get(i).setSpecial(true);
-                    isSpecial[i]=true;
                 }
             }
             for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
-                if (!listOrd.contains(newBeaconList.get(i).getID())&&!isSpecial[i])
-                    newBeaconList.get(i).setVisibility(false);
+                if (!listOrd.contains(newBeaconList.get(i).getID())&&!newBeaconList.get(i).isSpecial()){
+                    newBeaconList.get(i).setVisibility(false);}
+                else newBeaconList.get(i).setVisibility(true);
             }
 
 
