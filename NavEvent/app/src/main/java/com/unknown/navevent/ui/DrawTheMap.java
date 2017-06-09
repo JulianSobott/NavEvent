@@ -45,7 +45,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-	    /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
+	    /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());                 todo del
 
         Log.e("TestLog","Bitmapstats:"+displayedMap.getMap().getDensity()+" "+displayedMap.getMap().getHeight()+" "+displayedMap.getMap().getWidth());*/
 
@@ -70,11 +70,11 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			paintNot.setARGB(0,0,0,0);
 
 			//canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint()); todo del
-            if(displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
-            if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
-			if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
+            if(displayedMap.beacons[i].isOrdinary()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
+            else if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
+            else canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot);
+            if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
             if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
-            //if(!displayedMap.beacons[i].isVisible()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot); todo del
 		}
 		//MainActivity.updateDisplayedText();		// TODO: 08.06.2017  del
 		invalidate();

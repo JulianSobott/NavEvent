@@ -254,9 +254,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 }
             }
             for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
-                if (!listOrd.contains(newBeaconList.get(i).getID())&&!newBeaconList.get(i).isSpecial()){
-                    newBeaconList.get(i).setVisibility(false);}
-                else newBeaconList.get(i).setVisibility(true);
+                if (listOrd.contains(newBeaconList.get(i).getID())){
+                    newBeaconList.get(i).setOrdinary(true);}
+                else newBeaconList.get(i).setOrdinary(false);
             }
 
 

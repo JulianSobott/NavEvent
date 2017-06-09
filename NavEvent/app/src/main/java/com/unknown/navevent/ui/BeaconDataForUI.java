@@ -7,7 +7,7 @@ public class BeaconDataForUI {
 	private boolean isSelected = false;
 	private boolean isClosest = false;
 	private boolean isSpecial = false;
-	private boolean isVisible = true;
+	private boolean isOrdinary = false;
 	private int ID;
 
 	BeaconDataForUI(int ID,double x, double y) {
@@ -45,8 +45,8 @@ public class BeaconDataForUI {
 	public void setClosest(boolean isClosest){
 		this.isClosest=isClosest;
 	}
-	public void setVisibility(boolean isVisible){
-		this.isVisible=isVisible;
+	public void setOrdinary(boolean isVisible){
+		this.isOrdinary =isVisible;
 	}
 	public boolean isSpecial() {
 		return isSpecial;
@@ -54,8 +54,8 @@ public class BeaconDataForUI {
 	public boolean isClosest() {
 		return isClosest;
 	}
-	public boolean isVisible() {
-		return isVisible;
+	public boolean isOrdinary() {
+		return isOrdinary;
 	}
 	public int getID(){
 		return ID;
