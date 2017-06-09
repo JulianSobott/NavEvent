@@ -81,7 +81,9 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	}
 
 	public boolean onTouch(View v, MotionEvent me) {
-		/*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo del when obsolete
+		scaleGestureDetector.onTouchEvent(me);
+
+        /*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo del when obsolete
 		if (me.ACTION_DOWN == me.getAction() && selectedBeacon != theMagicNumberThatNeverShouldBeUsed)
 
 			if (!beacon_isSelected[selectedBeacon]) {
@@ -128,12 +130,12 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
 	}
-	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{
+	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{      //Androidnative Listenerclass for scaleevents
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
 			scale *= detector.getScaleFactor();
 
-			// Don't let the object get too small or too large.
+
 			scale = Math.max(0.1f, Math.min(scale, 5.0f));
 
 			invalidate();
