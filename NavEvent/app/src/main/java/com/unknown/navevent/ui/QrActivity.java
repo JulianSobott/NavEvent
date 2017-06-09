@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.unknown.navevent.R;
@@ -12,7 +13,7 @@ import com.unknown.navevent.interfaces.QrCodeReaderUI;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 
-public class QrActivity extends AppCompatActivity implements QrCodeReaderUI,QRCodeReaderView.OnQRCodeReadListener {
+public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRCodeReaderView.OnQRCodeReadListener {
 
     Button continueButton;
     String mapID;
@@ -22,25 +23,34 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI,QRCo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-        continueButton =(Button) findViewById(R.id.continueButton);
+        continueButton = (Button) findViewById(R.id.continueButton);
         setOnclickListeners();
-        qrCodeReaderView.
+        qrCodeReaderView = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
+        qrCodeReaderView.setOnQRCodeReadListener(this);
+        qrCodeReaderView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void capturedMapID(int mapID) {
 
     }
-    private void setOnclickListeners(){
+
+    private void setOnclickListeners() {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                qrCodeReaderView.setVisibility(View.VISIBLE);
+                qrCodeReaderView.setBackCamera();
+                qrCodeReaderView.setQRDecodingEnabled(true);
+                qrCodeReaderView.startCamera();
             }
         });
     }
 
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
-        mapID=text;
+        mapID = text;
+        qrCodeReaderView.stopCamera();
+
     }
 }
