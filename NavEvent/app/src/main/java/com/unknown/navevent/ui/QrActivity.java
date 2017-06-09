@@ -1,22 +1,22 @@
 package com.unknown.navevent.ui;
 
-import android.content.Context;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.zxing.Result;
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.unknown.navevent.R;
 import com.unknown.navevent.interfaces.QrCodeReaderUI;
 
-public class QrActivity extends AppCompatActivity implements QrCodeReaderUI {
+import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
+
+public class QrActivity extends AppCompatActivity implements QrCodeReaderUI,QRCodeReaderView.OnQRCodeReadListener {
 
     Button continueButton;
-
-    String MapID;
-
+    String mapID;
+    private QRCodeReaderView qrCodeReaderView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI {
         setContentView(R.layout.activity_qr);
         continueButton =(Button) findViewById(R.id.continueButton);
         setOnclickListeners();
+        qrCodeReaderView.
     }
 
     @Override
@@ -38,4 +39,8 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI {
         });
     }
 
+    @Override
+    public void onQRCodeRead(String text, PointF[] points) {
+        mapID=text;
+    }
 }

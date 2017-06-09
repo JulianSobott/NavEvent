@@ -243,11 +243,11 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 		oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
 		//boolean[] isSpecial=new boolean[in.getBeacons().size()];  todo del
 
-        for (int i = 1; i <= in.getBeacons().size(); i++) {							//excluded 0 here because its not a beacon but the id thath given if no beacon is found
+        for (int i = 0; i < in.getBeacons().size(); i++) {							//excluded 0 here because its not a beacon but the id thath given if no beacon is found
 			newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(),oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
-			newBeaconList.get(i-1).setDisplayedText(oldBeacons[i].getName());
-			if(in.getSpecialPlaces().containsValue(newBeaconList.get(i-1).getID())) newBeaconList.get(i-1).setSpecial(true);						//-1 because the whole newBeaconList should be used and 0 is excluded because mentioned above
-			else if(!in.getOrdinaryPlaces().containsValue(newBeaconList.get(i-1).getID())) newBeaconList.get(i-1).setVisibility(false);
+			newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
+			if(in.getSpecialPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setSpecial(true);						//-1 because the whole newBeaconList should be used and 0 is excluded because mentioned above
+			else if(!in.getOrdinaryPlaces().containsValue(newBeaconList.get(i).getID())) newBeaconList.get(i).setVisibility(false);
 
 		}
 		MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
