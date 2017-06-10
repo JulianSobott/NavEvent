@@ -283,7 +283,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		bb.putShort((short)minorID);
 		bb.putShort((short)0);//Reboot
 
-		bb.flip();//This causes reverse ordering above todo del
+		bb.flip();
 
 		writeBeaconBytes(connector, uuidService, uuidCharacteristic, bb);
 	}

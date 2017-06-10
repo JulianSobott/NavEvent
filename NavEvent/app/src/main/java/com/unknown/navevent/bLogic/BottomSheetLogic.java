@@ -38,10 +38,17 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 	}
 
 
+
 	/////////////////////////////////////////////////////////
 	// UI calls
 	/////////////////////////////////////////////////////////
 
+	@Override
+	public void getBeaconName(int beaconID) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+			mResponder.beaconInfoRespond(serviceInterface.currentMap.getBeaconsIR().get(beaconID).name);
+		}
+	}
 	@Override
 	public void getBeaconInfo(int beaconID) {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
