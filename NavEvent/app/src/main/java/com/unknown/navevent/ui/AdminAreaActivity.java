@@ -46,7 +46,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 	@Override
 	public void updateMap(final MapData map) {										//Loads a new map and Lists the beacons to configure in a Listview
 		final List<String> mapList = new ArrayList();
-		for (int i = 0; i > map.getBeacons().size(); i++) {
+		for (int i = 0; i < map.getBeacons().size(); i++) {
 			mapList.add(map.getBeacons().get(i).getName());
 		}
 		final ListView BeaconList = (ListView) findViewById(R.id.ListViewConfiguration);
@@ -71,7 +71,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 							public void onClick(DialogInterface dialog, int id) {
 								dialog.cancel();
 							}
-						});
+						}).show();
 			}
 		});
 	}

@@ -95,7 +95,7 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			mResponder.downloadFailed("Failed to download map!");//todo change string
+			mResponder.downloadFailed(event.additionalInfo);
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");

@@ -78,7 +78,7 @@ public class ServiceInterface {
 	private BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
 	List<BeaconIR> currentBeacons = new ArrayList<>();//Beacons in region
 	int nearestBeaconID;//ID of nearest beacon
-	int nearestBeaconMajorID = 0;//MajorID of nearest beacon. To find map on server.
+	private int nearestBeaconMajorID = 0;//MajorID of nearest beacon. To find map on server.
 
 	//Map data
 	enum MapAvailabilityState {
@@ -264,7 +264,7 @@ public class ServiceInterface {
 		}
 		else if (event.message == MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED, event.additionalData));
 			if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 		}
 	}

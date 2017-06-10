@@ -431,13 +431,20 @@ public class MapService extends Service {
 				EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOADED, retList));
 
 			}
+			else {
+				//Load the map locally if connection failed
+				loadLocalMap(mapID);
+			}
 				reader.close();
 				inputStream.close();
 				connection.disconnect();
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED, e.getLocalizedMessage()));
+
+			//Load the map locally if connection failed
+			loadLocalMap(mapID);
 		}
 	}
 
