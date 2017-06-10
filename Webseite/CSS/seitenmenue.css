@@ -156,6 +156,9 @@
     .seitenmenue h3:hover {
       cursor: default; }
 
+.hide {
+  display: none; }
+
 @keyframes turn-in {
   0% {
     transform: rotate(90deg) translateY(-90px) translateX(80px); }

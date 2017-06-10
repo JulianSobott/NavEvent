@@ -11,7 +11,8 @@
     height: auto;
     border-bottom: 3px solid #333;
     background: #777;
-    margin: 6px; }
+    margin: 6px;
+    color: #fff; }
     .seitenmenue .beaconInfoContainer .beaconInfo {
       font-size: 1.5em;
       padding: 2%; }

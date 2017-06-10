@@ -1,7 +1,6 @@
 var anzBeacons = ($('#bildContainer').children().length)-1;
-console.log(anzBeacons);
+
 var freierOrt = true;
-var ready = false; //TODO Remove this
 $('#bildContainer').removeClass('beacon');
 $(document).ready( function(){
   updateSidebar();
@@ -17,12 +16,27 @@ $(document).ready( function(){
   $('.btnUpload').click(function(){
     $('.spinner').addClass('animate');
   });
+
+  //Remove mask when there are already Beacons on the map
+  if(anzBeacons != 0){
+    $('.mask_form').remove();
+  }
+  /*$('.beaconContainer').mouseEnter(function() {
+    freierOrt = false;
+    console.log(freierOrt);
+  });
+  $('.beaconContainer').Mouseleave(function() {
+    freierOrt = false;
+    console.log(freierOrt);
+  });
+*/
   //Beacon auf Karte hinzufügen
   container.addEventListener("click", function (e) {
     //alert("Clicked");
     $('.mask_form').remove();
     $('.beaconContainer').click(function() {
       freierOrt = false;
+      console.log("not free");
     });
     if (freierOrt) {
       var x = e.clientX - container.getBoundingClientRect().left;
@@ -63,38 +77,18 @@ $(document).ready( function(){
   });
 
   $('.rdbBesondersJa').click(function() {
-    $('.listSpecialPlaces').addClass('open');
-    $('.listSpecialPlaces').removeClass('closeMenu');
+    $('.actualBeacon').addClass('specialBeacon');
+    openPlaces();
   });
 
   $('.rdbBesondersNein').click(function() {
-    $('.listSpecialPlaces').addClass('closeMenu');
-    $('.listSpecialPlaces').removeClass('open');
+    $('.actualBeacon').removeClass('specialBeacon');
+    collapsePlaces();
   });
 
   $('.btnDelete').click(function() {
     deleteBeacon();
   })
-
-//--------------Beacon Informationen zu entsprechendem Beacon hinzufuegen-------
-/* container.addEventListener("click", function (e) {
-
-    $('.beacon').click(function() {
-      var beaconId = $('.actualBeacon').attr('class').split('-')[1];
-      beaconId = beaconId.split(' ')[0];
-
-      $.ajax({
-        type: "POST",
-        url: "FormFeld.inc.php",
-        data: {'beaconId': beaconId}
-      }).done(function() {
-        $('body').css('background', 'green');
-      }).fail(function() {
-        $('body').css('background', 'red');
-      });
-    });
-  });*/
-
 });
 
 
@@ -104,28 +98,36 @@ $(document).ready( function(){
 $(drag);
 $(drop);
 function drag() {
-  $('.beaconBearbeiten').draggable({
+  $('.beaconContainer').draggable({
     cursor: "move",
     revert: "invalid",
     opacity: 0.7,
-    snap: "body",
+    snap: "#bildContainer",
     snapMode: "inner"
   });
 }
 function drop() {
-  $('body').droppable({
-    accept: ".beaconBearbeiten",
+  $('#bildContainer').droppable({
+    accept: ".beaconContainer",
     hoverClass: 'hovered',
     drop: positioning
   });
 }
 function positioning(event, ui) {
-  position = $(this).position();
+  position = $('.ui-draggable-dragging').position();
+  beacon = $('.ui-draggable-dragging').attr('id').split('-')[1];
+  console.log(beacon);
+  x = position.left;
+  x = x *(100/$('#bild').width()); //From px to %
+  y = position.top;
+  y = y *(100/$('#bild').height()); //From px to %
+  console.log(x + " - " + y);
   ui.draggable.animate({
     opacity: 1,
-    top: position.top,
-    left: position.left
+    top: y+"%",
+    left: x+"%"
   },200);
+  updateBeaconPosition(beacon, x, y);
 }
 
 //-------------Funktionen--------------------
@@ -244,7 +246,21 @@ function saveData(field, value) {
   });
   updateSidebar();
 }
-
+function updateBeaconPosition(beacon, x, y) {
+  var id = beacon;
+  var map_id = $('#bild').attr('alt');
+  $.ajax({
+    type: "POST",
+    url: "../includes/datenbank.inc.php",
+    data: {
+      'minor_id': id,
+      'fk_map_id': map_id,
+      'pos_x': x,
+      'pos_y': y,
+      'action': "updateBeaconPosition"
+    }
+  });
+}
 function showData() {
   var id = $('.actualBeacon').parent().attr('id').split('-')[1];
   console.log(id);

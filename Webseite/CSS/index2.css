@@ -1,0 +1,60 @@
+body, html {
+  margin: 0;
+  padding: 0; }
+  body .navbar, html .navbar {
+    background: rgba(255, 255, 255, 0);
+    border: 0px solid black;
+    position: absolute;
+    top: 0; }
+    body .navbar .navbar-brand, html .navbar .navbar-brand {
+      font-size: 3em; }
+  body .landing, html .landing {
+    height: 99vh;
+    background: #0fe3bd;
+    background-image: url(https://unsplash.imgix.net/photo-1414490929659-9a12b7e31907);
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px; }
+    body .landing .landing_content, html .landing .landing_content {
+      position: relative;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 2.5em;
+      color: #0d8f8b;
+      filter: grayscale(10%); }
+      body .landing .landing_content .landingButton, html .landing .landing_content .landingButton {
+        display: block;
+        position: relative;
+        width: 25rem;
+        padding: 2%;
+        margin-top: 5%;
+        margin-left: auto;
+        margin-right: auto;
+        border: 2px solid #1414be;
+        border-radius: 5px 10px;
+        background: rgba(27, 96, 176, 0.66);
+        color: rgba(228, 159, 79, 0.66); }
+        body .landing .landing_content .landingButton:hover, html .landing .landing_content .landingButton:hover {
+          border-radius: 10px 5px;
+          color: rgba(27, 96, 176, 0.66);
+          background: rgba(228, 159, 79, 0.66);
+          cursor: default; }
+
+a {
+  color: rgba(32, 33, 36, 0.84) !important; }
+  a:hover {
+    color: #202124 !important;
+    box-shadow: 0px 0px 10px #abaaa9; }
+
+.aFooter {
+  color: #fff !important; }
+  .aFooter:hover {
+    color: #bbb !important;
+    box-shadow: 0px 0px 10px #abaaa9; }
+
+/*# sourceMappingURL=index2.css.map */

@@ -11,7 +11,7 @@ if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filepath = 'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/'; //Laptop 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'
+      $filepath = 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'; //'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/'; Laptop 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
@@ -19,7 +19,7 @@ if (isset($_FILES['uploaddatei']))
         $default_imageName = "bild"; //TODO Name anpassen
         $data = addslashes(file_get_contents($image));
         $meta = getimagesize($image);
-        $mime = $meta['mime'];
+        //$mime = $meta['mime'];
         $mime = $endung;
         $updated_at = time();
         $mapName = "default"; //TODO anpassen
@@ -91,9 +91,11 @@ if (isset($_FILES['uploaddatei']))
         $pos_x = $result['pos_x'];
         $pos_y = $result['pos_y'];
         $minor_id = $result['minor_id'];
+        $special = $result['fk_special'];
+        $ordinary = $result['fk_ordinary'];
         ?>
         <div class="beaconContainer" id="beaconContainer-<?php echo $minor_id; ?>" style="left: <?php echo $pos_x; ?>%; top: <?php echo $pos_y; ?>%;">
-          <span class="beacon beacon-<?php echo $minor_id; ?>"></span>
+          <span class="beacon beacon-<?php echo $minor_id; if($special != 0 || $ordinary != 0)echo ' specialBeacon';?>"></span>
         </div>
         <?php
       }

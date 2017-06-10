@@ -1,0 +1,70 @@
+body, html
+  margin: 0
+  padding: 0
+
+  .navbar
+    background: rgba(255, 255, 255, 0)
+    border: 0px solid black
+    position: absolute
+    top: 0
+
+    .navbar-brand
+      font-size: 3em
+
+  .landing
+    height: 99vh
+    background: rgb(15, 227, 189)
+    background-image: url(https://unsplash.imgix.net/photo-1414490929659-9a12b7e31907)
+    background-size: cover
+    background-position: center
+    align-items: center
+    justify-content: center
+    text-align: center
+    display: flex
+    flex-direction: column
+    margin-bottom: 30px
+
+    .landing_content
+      position: relative
+      margin-left: auto
+      margin-right: auto
+      font-size: 2.5em
+      color: rgb(13, 143, 139)
+      //background: rgba(254, 254, 254, .3)
+      //box-shadow: 0 0 10px 1px grey
+      filter: grayscale(10%)
+
+      .landingButton
+        display: block
+        position: relative
+        width: 25rem
+        padding: 2%
+        margin-top: 5%
+        margin-left: auto
+        margin-right: auto
+        border: 2px solid rgba(20  , 20, 190, 1)
+        border-radius: 5px 10px
+        background: rgba(27, 96, 176, 0.66)
+        color: invert(rgba(27, 96, 176, 0.66))
+        &:hover
+          border-radius: 10px 5px
+          color: rgba(27, 96, 176, 0.66)
+          background: invert(rgba(27, 96, 176, 0.66))
+          cursor: default
+
+
+
+
+
+
+a
+  color: rgba(32, 33, 36, 0.84) !important
+  &:hover
+    color: rgba(32, 33, 36, 1)  !important
+    box-shadow: 0px 0px 10px rgb(171, 170, 169)
+
+.aFooter
+  color: #fff !important
+  &:hover
+    color: #bbb  !important
+    box-shadow: 0px 0px 10px rgb(171, 170, 169)

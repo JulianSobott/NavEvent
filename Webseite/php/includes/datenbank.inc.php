@@ -86,7 +86,7 @@ if ($_POST['action'] === "map_name") {
 if($_POST['action'] === "updateSidebar" && isset($_POST['map_id'])){
   if (isset($_POST['action'])){
     if ($_POST['action'] == "updateSidebar") {
-      $map_id = $_SESSION['map_id'];
+      $map_id = $_POST['map_id'];
       $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
       $res = mysqli_query($con, $sql);
       while($result = mysqli_fetch_assoc($res)){
@@ -108,6 +108,19 @@ if($_POST['action'] === "updateSidebar" && isset($_POST['map_id'])){
       }
     }
   }
+}
+
+if ($_POST['action'] === "updateBeaconPosition") {
+  $minor_id = $_POST['minor_id'];
+  $fk_map_id = $_POST['fk_map_id'];
+  $pos_x = $_POST['pos_x'];
+  $pos_y = $_POST['pos_y'];
+  $sql = "UPDATE beacons SET pos_x = '$pos_x', pos_y = '$pos_y' WHERE minor_id = '$minor_id' AND fk_map_id = '$fk_map_id'";
+  $res = mysqli_query($con, $sql);
+  if ($res) {
+    echo $res;
+  }
+
 }
 
 if ($_POST['action'] === "show") {

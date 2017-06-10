@@ -6,12 +6,12 @@ $account_id = $_SESSION['accountId'];
   <div class="seitenmenue">
     <h2>Navigation</h2>
     <ul class="navigation">
-      <li>Meine Karten</li>
-      <li>Profil bearbeiten</li>
+      <li class="hide">Meine Karten</li>
+      <li class="hide">Profil bearbeiten</li>
       <li><a href="http://localhost/NavEvent/php/includes/logout.inc.php?action=logout">Logout</a></li>
     </ul>
-    <h3>Anhang</h3>
-    <ul class="anhang">
+    <h3 class="hide">Anhang</h3>
+    <ul class="anhang hide">
       <li><div class="material-icons icons SM settings">settings</div>
       Optionen</li>
       <li><div class="material-icons icons SM help">help</div>
@@ -56,7 +56,7 @@ $account_id = $_SESSION['accountId'];
                   <i class="material-icons miDelete btnDelete" onclick="delete_map(<?php echo $map_id; ?>)">delete</i>
                 </div>
                 <div class="o_field edit">
-                  <i class="material-icons miEdit btnEdit" onclick="edit(<?php echo $map_id; ?>)">edit</i>
+                  <i class="material-icons miEdit btnEdit" onclick="edit_map(<?php echo $map_id; ?>)">edit</i>
                 </div>
               </div>
             </div>
