@@ -264,7 +264,7 @@ public class ServiceInterface {
 		}
 		else if (event.message == MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED, event.additionalData));
 			if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 		}
 	}

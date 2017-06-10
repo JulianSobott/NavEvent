@@ -15,6 +15,7 @@ public class MapUpdateEvent {
 
 	public final int message;
 	public List<MapIR> maps;
+	public String additionalData;
 
 	public MapUpdateEvent(int message) {
 		this.message = message;
@@ -22,5 +23,9 @@ public class MapUpdateEvent {
 	public MapUpdateEvent(int message, List<MapIR> maps) {
 		this.message = message;
 		this.maps = maps;
+	}
+	public MapUpdateEvent(int message, String additionalData) {
+		this.message = message;
+		this.additionalData = additionalData;
 	}
 }

@@ -441,7 +441,7 @@ public class MapService extends Service {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED, e.getLocalizedMessage()));
 
 			//Load the map locally if connection failed
 			loadLocalMap(mapID);

@@ -18,10 +18,18 @@ public class ServiceToActivityEvent {
 	public static final int EVENT_NO_BEACON_FOUND = 15;
 	public static final int EVENT_NO_CORRESPONDING_MAPS_AVAILABLE = 16;
 	public static final int EVENT_MARK_BEACONS = 17;
+	public static final int EVENT_BEACON_CONFIG_SUCCESSFUL = 18;
+	public static final int EVENT_BEACON_CONFIG_FAILED = 19;
+
 
 	public final int message;
+	public String additionalInfo;
 
 	public ServiceToActivityEvent(int message) {
 		this.message = message;
+	}
+	public ServiceToActivityEvent(int message, String additionalInfo) {
+		this.message = message;
+		this.additionalInfo = additionalInfo;
 	}
 }

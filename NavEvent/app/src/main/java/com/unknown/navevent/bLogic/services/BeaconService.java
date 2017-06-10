@@ -236,19 +236,15 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 	//Writes ids to a beacon
 	private void writeBeaconData(final String mac, final int majorID, final int minorID) {
-		if (liteBluetooth == null) {
-			liteBluetooth = new LiteBluetooth(this);
-		}
+		liteBluetooth = new LiteBluetooth(this);
 		bleExceptionHandler = new DefaultBleExceptionHandler(this);
 
-		if (liteBluetooth.isConnectingOrConnected())
-			liteBluetooth.closeBluetoothGatt();//Disconnect, if is connected to any beacon
 		liteBluetooth.scanAndConnect(mac, false, new LiteBleGattCallback() {
 
 			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 			@Override
 			public void onConnectSuccess(BluetoothGatt gatt, int status) {
-				// discover services !
+				// discover services
 				gatt.discoverServices();
 			}
 
@@ -268,7 +264,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 			@Override
 			public void onConnectFailure(BleException e) {
-				Toast.makeText(BeaconService.this, mac + " Services discovered FAILURE (" + e.getDescription() + ")", Toast.LENGTH_SHORT).show();
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
 			}
 		});
 	}
@@ -300,15 +296,18 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 							writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MINOR, data);
 						} else if (characteristic.getUuid().toString().toUpperCase().equals(UUID_SERVICE_MINOR)) {//Major id done. Next would be reboot
 							writeBeaconBytes(connector, UUID_SERVICE_RESET, UUID_SERVICE_REBOOT, data);
+							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_SUCCESSFUL));
+							liteBluetooth.closeBluetoothGatt();
 						} else {//Disconnect if not automatically done by reboot
-							if (liteBluetooth.isConnectingOrConnected())
-								liteBluetooth.closeBluetoothGatt();
+							/*if (liteBluetooth.isConnectingOrConnected())
+								*/
 						}
 					}
 
 					@Override
 					public void onFailure(BleException e) {
 						BleLog.i(TAG, "Write failure: " + e);
+						EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
 						bleExceptionHandler.handleException(e);
 					}
 				});

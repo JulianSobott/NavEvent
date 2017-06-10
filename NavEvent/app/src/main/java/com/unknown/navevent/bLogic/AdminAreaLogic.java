@@ -88,7 +88,15 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			mResponder.downloadFailed("Failed to download map!");//todo change string
+			mResponder.downloadFailed(event.additionalInfo);
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_BEACON_CONFIG_SUCCESSFUL) {
+			Log.i(TAG, "onMessageEvent: EVENT_BEACON_CONFIG_SUCCESSFUL");
+			mResponder.beaconSuccessfullyConfigured();
+		}
+		else if( event.message == ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED) {
+			Log.i(TAG, "onMessageEvent: EVENT_BEACON_CONFIG_FAILED");
+			mResponder.beaconConfigurationFailed(event.additionalInfo);
 		}
 	}
 }
