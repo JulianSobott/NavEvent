@@ -64,7 +64,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Override
 	public void configureBeacon(int beaconID) {
-		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_CONFIG_DEVICE, new BeaconServiceEvent.WriteBeaconData(1, 2)));//todo change ids
+		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_CONFIG_DEVICE, new BeaconServiceEvent.WriteBeaconData(serviceInterface.currentMap.getMajorID(), serviceInterface.currentMap.getBeaconsIR().get(beaconID).minorID)));
 	}
 
 

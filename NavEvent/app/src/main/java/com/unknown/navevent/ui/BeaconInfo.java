@@ -35,6 +35,11 @@ public class BeaconInfo extends Fragment implements BottomSheetUI{
 
 	@Override
 	public void beaconInfoRespond(String info) {
+		//todo
+	}
+
+	@Override
+	public void beaconNameRespond(String info) {
 		changeText(info);
 	}
 }

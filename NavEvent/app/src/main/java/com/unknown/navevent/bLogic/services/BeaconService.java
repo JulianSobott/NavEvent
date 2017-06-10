@@ -62,8 +62,10 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private LiteBluetooth liteBluetooth;
 	private DefaultBleExceptionHandler bleExceptionHandler;
 	String UUID_SERVICE_PROXIMITY = "F001A0A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon proximity data
-	String UUID_SERVICE_MAJOR = "F001A0A2-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon major id
-	String UUID_SERVICE_MINOR = "F001A0A3-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon minor id
+	String UUID_SERVICE_RESET = "F001A4A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon reset data
+	String UUID_SERVICE_MAJOR = "F001A0A2-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon major id (with UUID_SERVICE_PROXIMITY)
+	String UUID_SERVICE_MINOR = "F001A0A3-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon minor id (with UUID_SERVICE_PROXIMITY)
+	String UUID_SERVICE_REBOOT = "F001A4A1-7509-4C31-A905-1A27D39C003C";//UUID to reboot beacon (with UUID_SERVICE_RESET)
 
 	//State data
 	private boolean isBluetoothSupported = true;
@@ -119,86 +121,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			stopSelf();
 		} else if (event.message == BeaconServiceEvent.EVENT_CONFIG_DEVICE) {
 			if (nearestBeacon != null) {
-				final String mac = nearestBeacon.mac;
-
-				if (liteBluetooth == null) {
-					liteBluetooth = new LiteBluetooth(this);
-				}
-				bleExceptionHandler = new DefaultBleExceptionHandler(this);
-
-				liteBluetooth.scanAndConnect(mac, false, new LiteBleGattCallback() {
-
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-					@Override
-					public void onConnectSuccess(BluetoothGatt gatt, int status) {
-						// discover services !
-						gatt.discoverServices();
-					}
-
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-					@Override
-					public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-						BluetoothUtil.printServices(gatt);
-						//Toast.makeText(BeaconService.this, mac + " Services discovered SUCCESS", Toast.LENGTH_SHORT).show();
-
-						//Convert the id to Little Endian
-						ByteBuffer bb = ByteBuffer.allocate(4);
-						bb.order(ByteOrder.LITTLE_ENDIAN);
-						bb.putInt(event.writeBeaconData.writeMajor);
-						bb.flip();
-
-						Looper.prepare();//todo check this method
-
-						//Write data
-						LiteBleConnector connector = liteBluetooth.newBleConnector();
-						connector.withUUIDString(UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, null)
-								.writeCharacteristic(new byte[]{bb.get(), bb.get()}, new BleCharactCallback() {
-									@Override
-									public void onSuccess(BluetoothGattCharacteristic characteristic) {
-										BleLog.i(TAG, "Write Success, DATA: " + Arrays.toString(characteristic.getValue()));
-
-										/*todo
-										*  - notify user that has to restart the beacon (or figure out how to reboot the beacon).
-										*  - Add loading-animation while is setting up the beacon
-										*  - Retry configuration multiple times after failure
-										*  - disconnect from beacon
-										*  - Add information about needed android version for the user
-										*  - notify user if configuration failed
-										*/
-
-										/*Looper.prepare();
-
-										LiteBleConnector connector = liteBluetooth.newBleConnector();
-										connector.withUUIDString(UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, null)
-												.writeCharacteristic(new byte[]{0x00}, new BleCharactCallback() {
-													@Override
-													public void onSuccess(BluetoothGattCharacteristic characteristic) {
-														BleLog.i(TAG, "Write Success, DATA: " + Arrays.toString(characteristic.getValue()));
-													}
-
-													@Override
-													public void onFailure(BleException e) {
-														BleLog.i(TAG, "Write failure: " + e);
-														bleExceptionHandler.handleException(e);
-													}
-												});*/
-									}
-
-									@Override
-									public void onFailure(BleException e) {
-										BleLog.i(TAG, "Write failure: " + e);
-										bleExceptionHandler.handleException(e);
-									}
-								});
-					}
-
-					@Override
-					public void onConnectFailure(BleException e) {
-						Toast.makeText(BeaconService.this, mac + " Services discovered FAILURE (" + e.getDescription() + ")", Toast.LENGTH_SHORT).show();
-					}
-				});
-
-
+				writeBeaconData(nearestBeacon.mac, event.writeBeaconData.writeMajor, event.writeBeaconData.writeMinor);
 			}
 		}
 	}
@@ -310,4 +233,84 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
 	}
 
+
+	//Writes ids to a beacon
+	private void writeBeaconData(final String mac, final int majorID, final int minorID) {
+		if (liteBluetooth == null) {
+			liteBluetooth = new LiteBluetooth(this);
+		}
+		bleExceptionHandler = new DefaultBleExceptionHandler(this);
+
+		if (liteBluetooth.isConnectingOrConnected())
+			liteBluetooth.closeBluetoothGatt();//Disconnect, if is connected to any beacon
+		liteBluetooth.scanAndConnect(mac, false, new LiteBleGattCallback() {
+
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+			@Override
+			public void onConnectSuccess(BluetoothGatt gatt, int status) {
+				// discover services !
+				gatt.discoverServices();
+			}
+
+			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+			@Override
+			public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+				BluetoothUtil.printServices(gatt);
+				//Toast.makeText(BeaconService.this, mac + " Services discovered SUCCESS", Toast.LENGTH_SHORT).show();
+
+
+				//Write data
+				Looper.prepare();//todo check this method
+				LiteBleConnector connector = liteBluetooth.newBleConnector();
+
+				writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, majorID, minorID);
+			}
+
+			@Override
+			public void onConnectFailure(BleException e) {
+				Toast.makeText(BeaconService.this, mac + " Services discovered FAILURE (" + e.getDescription() + ")", Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	private void writeBeaconBytes(LiteBleConnector connector, String uuidService, String uuidCharacteristic, int majorID, int minorID) {
+		//Convert the id to Little Endian
+		ByteBuffer bb = ByteBuffer.allocate(6);
+		bb.order(ByteOrder.LITTLE_ENDIAN);
+
+		bb.putShort((short)majorID);
+		bb.putShort((short)minorID);
+		bb.putShort((short)0);//Reboot
+
+		bb.flip();//This causes reverse ordering above todo del
+
+		writeBeaconBytes(connector, uuidService, uuidCharacteristic, bb);
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	private void writeBeaconBytes(final LiteBleConnector connector, String uuidService, String uuidCharacteristic, final ByteBuffer data) {
+		connector.withUUIDString(uuidService, uuidCharacteristic, null)
+				.writeCharacteristic(new byte[]{data.get(), data.get()}, new BleCharactCallback() {
+					@Override
+					public void onSuccess(BluetoothGattCharacteristic characteristic) {
+						BleLog.i(TAG, "Write Success, DATA: " + Arrays.toString(characteristic.getValue()));
+
+						if (characteristic.getUuid().toString().toUpperCase().equals(UUID_SERVICE_MAJOR)) {//Major id done. Next would be minor id
+							writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MINOR, data);
+						} else if (characteristic.getUuid().toString().toUpperCase().equals(UUID_SERVICE_MINOR)) {//Major id done. Next would be reboot
+							writeBeaconBytes(connector, UUID_SERVICE_RESET, UUID_SERVICE_REBOOT, data);
+						} else {//Disconnect if not automatically done by reboot
+							if (liteBluetooth.isConnectingOrConnected())
+								liteBluetooth.closeBluetoothGatt();
+						}
+					}
+
+					@Override
+					public void onFailure(BleException e) {
+						BleLog.i(TAG, "Write failure: " + e);
+						bleExceptionHandler.handleException(e);
+					}
+				});
+	}
 }

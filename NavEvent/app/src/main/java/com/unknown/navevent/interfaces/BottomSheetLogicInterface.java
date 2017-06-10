@@ -8,6 +8,9 @@ public interface BottomSheetLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
+	//Get the name of the beacon specified by beaconID. Responses in BottomSheetUI.beaconNameRespond().
+	void getBeaconName(int beaconID);
+
 	//Get the information of the beacon specified by beaconID. Responses in BottomSheetUI.beaconInfoRespond().
 	void getBeaconInfo(int beaconID);
 }
