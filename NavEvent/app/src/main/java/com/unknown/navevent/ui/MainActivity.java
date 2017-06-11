@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         beaconInfo.getView().setOnClickListener(new View.OnClickListener() {                            //Expanding the Bottomsheet if clicked on
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Device does not support required Bluetooth LE", Toast.LENGTH_LONG).show();
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
                 if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
                 params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal

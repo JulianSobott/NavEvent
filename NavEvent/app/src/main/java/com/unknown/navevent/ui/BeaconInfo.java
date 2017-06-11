@@ -43,10 +43,8 @@ public class BeaconInfo extends Fragment implements BottomSheetUI{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
-		//infoText = (TextView) v.findViewById(R.id.textView);
 		markdownView = (MarkdownView) v.findViewById(R.id.markdownView);
 		markdownView.loadMarkdown("test...GO *asdf*");
-		//infoText.setText("das ist ein Infotext\nwithsome\nmoreLines\nThan\nNeeded");			//todo del if not needed anymore
         return v;
 	}
 
