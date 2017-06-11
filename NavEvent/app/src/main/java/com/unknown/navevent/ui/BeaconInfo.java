@@ -24,7 +24,7 @@ public class BeaconInfo extends Fragment implements BottomSheetUI{
 		View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
 		infoText = (TextView) v.findViewById(R.id.textView);
         mIfc=new BottomSheetLogic(this);
-		infoText.setText("das ist ein Infotext\nwithsome\nmoreLines\nThan\nNeeded");
+		infoText.setText("das ist ein Infotext\nwithsome\nmoreLines\nThan\nNeeded");			//todo del if not needed anymore
         return v;
 	}
 

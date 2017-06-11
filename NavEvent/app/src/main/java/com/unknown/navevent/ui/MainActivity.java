@@ -11,12 +11,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -99,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
             public void onClick(View view) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
                 if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
-                params.height = 32;
+                params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal
                 else  params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
                 beaconInfo.getView().setLayoutParams(params);
             }
