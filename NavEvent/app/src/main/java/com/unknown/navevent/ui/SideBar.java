@@ -50,6 +50,7 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
         });
 	}
 
+
 	public interface SideBarInterface {
         void hideSideBar();
         void markBeacons(List<Integer> beaconIDs);

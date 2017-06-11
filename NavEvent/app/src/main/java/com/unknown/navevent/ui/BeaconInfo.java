@@ -3,9 +3,11 @@ package com.unknown.navevent.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.BottomSheetLogic;
@@ -22,6 +24,7 @@ public class BeaconInfo extends Fragment implements BottomSheetUI{
 		View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
 		infoText = (TextView) v.findViewById(R.id.textView);
         mIfc=new BottomSheetLogic(this);
+		infoText.setText("das ist ein Infotext\nwithsome\nmoreLines\nThan\nNeeded");
         return v;
 	}
 

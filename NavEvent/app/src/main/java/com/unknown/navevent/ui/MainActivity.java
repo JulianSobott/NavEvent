@@ -11,10 +11,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
@@ -74,13 +78,14 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         setContentView(R.layout.activity_main);
 
 
-        bar = (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
+        bar = (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);                 //setting the fragments
         beaconInfo = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
         sideOpen = (Button) findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
-        bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));
+        bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));                               //Setting the rough desing for the Fragments
+        beaconInfo.getView().setBackgroundColor(Color.argb(255,255,255,255));
 
-        hideFragment(bar);
+                hideFragment(bar);
 
         sideOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +93,18 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 showFragment(bar);
             }
         });
+
+        beaconInfo.getView().setOnClickListener(new View.OnClickListener() {                            //Expanding the Bottomsheet if clicked on
+            @Override
+            public void onClick(View view) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
+                if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
+                params.height = 32;
+                else  params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+                beaconInfo.getView().setLayoutParams(params);
+            }
+        });
+
 
 
         //Creating background-logic for this activity
@@ -275,13 +292,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         return out;
     }
 
-
-
-	/*public static boolean mapIsSelected() { todo check if needed del if not
-		if (activeMap == null)
-			return false;
-		else return true;
-	}*/
 
 
 }
