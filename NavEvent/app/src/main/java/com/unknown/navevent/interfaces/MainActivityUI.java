@@ -6,7 +6,7 @@ import java.util.List;
 public interface MainActivityUI
 {
 	//Respond to MainActivityLogicInterface.init().
-	void initCompleted();//todo del
+	void initCompleted();
 	//Will be called, if bluetooth or beacons are not supported. \p errorcode contains a human-readable description of the problem.
 	void notSupported(String errorcode);
 	//Will be called, if bluetooth is deactivated, but should be activated to detect beacons.
@@ -16,6 +16,9 @@ public interface MainActivityUI
 
 	//Will be called, when no beacon and no local map was found.
 	void switchToMapSelectActivity();
+
+	//Is called when a beacon and a corresponding map could be found.
+	void foundLocalMap(MapData map);
 
 	//Respond to MainActivityLogicInterface.getMap(). \p map is the data contained in the active map.
 	void updateMap(MapData map);

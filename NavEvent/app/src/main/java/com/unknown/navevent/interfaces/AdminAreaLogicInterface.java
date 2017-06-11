@@ -10,7 +10,12 @@ public interface AdminAreaLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
-	//Will download the map specified by \p mapID. Will resppond with AdminAreaUI.upateMap(), AdminAreaUI.invalidMapID(), AdminAreaUI.downloadFailed() or AdminAreaUI.isOffline().
+	//Should be called on start.
+	void onStart();
+	//Should be called on stop.
+	void onStop();
+
+	//Will download the map specified by \p mapID. Will respond with AdminAreaUI.updateMap(), AdminAreaUI.invalidMapID(), AdminAreaUI.downloadFailed() or AdminAreaUI.isOffline().
 	void loadMap(int mapID);
 
 	//Configure neares local-area beacon with map-data for \p beaconID. Will respond in AdminAreaUI.beaconSuccessfullyConfigured() or AdminAreaUI.beaconConfigurationFailed().

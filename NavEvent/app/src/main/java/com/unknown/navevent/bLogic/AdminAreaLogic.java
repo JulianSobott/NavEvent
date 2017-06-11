@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.MapIR;
@@ -38,16 +39,21 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Override
 	public void onCreate(Context context) {
-		EventBus.getDefault().register(this);
-
 		serviceInterface.onCreate(context);
-
 	}
 
 	@Override
 	public void onDestroy() {
 		serviceInterface.onDestroy();
+	}
 
+	@Override
+	public void onStart() {
+		EventBus.getDefault().register(this);
+	}
+
+	@Override
+	public void onStop() {
 		EventBus.getDefault().unregister(this);
 	}
 
@@ -63,7 +69,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Override
 	public void configureBeacon(int beaconID) {
-		//todo
+		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_CONFIG_DEVICE, new BeaconServiceEvent.WriteBeaconData(serviceInterface.currentMap.getMajorID(), serviceInterface.currentMap.getBeaconsIR().get(beaconID).minorID)));
 	}
 
 
@@ -73,20 +79,24 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		if( event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) {
+		if (event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_NEW_MAP_LOADED");
 
 			mResponder.updateMap(serviceInterface.currentMap);
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
+		} else if (event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
-			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
-			//todo load map
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
+			mResponder.updateMap(serviceInterface.currentMap);
+			Toast.makeText(serviceInterface.mContext, "Map '" + serviceInterface.lastDownloadedMap.getName() + "' downloaded.", Toast.LENGTH_SHORT).show();
+		} else if (event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			mResponder.downloadFailed("Failed to download map!");//todo change string
+			mResponder.downloadFailed(event.additionalInfo);
+		} else if (event.message == ServiceToActivityEvent.EVENT_BEACON_CONFIG_SUCCESSFUL) {
+			Log.i(TAG, "onMessageEvent: EVENT_BEACON_CONFIG_SUCCESSFUL");
+			mResponder.beaconSuccessfullyConfigured();
+		} else if (event.message == ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED) {
+			Log.i(TAG, "onMessageEvent: EVENT_BEACON_CONFIG_FAILED");
+			mResponder.beaconConfigurationFailed(event.additionalInfo);
 		}
 	}
 }

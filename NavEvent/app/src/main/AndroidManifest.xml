@@ -2,18 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.unknown.navevent">
 
-
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
-
 
     <application
         android:allowBackup="true"
@@ -38,13 +39,11 @@
             android:enabled="true"
             android:exported="true" />
 
-        <supports-screens android:anyDensity="true"/>
+        <supports-screens android:anyDensity="true" />
 
         <activity android:name=".ui.MapSelectActivity" />
-        <activity android:name=".ui.AdminAreaActivity"></activity>
-
+        <activity android:name=".ui.AdminAreaActivity" />
+        <activity android:name=".ui.QrActivity"></activity>
     </application>
-
-
 
 </manifest>

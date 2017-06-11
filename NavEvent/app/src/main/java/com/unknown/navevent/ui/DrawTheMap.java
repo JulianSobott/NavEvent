@@ -1,123 +1,147 @@
 package com.unknown.navevent.ui;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
+import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.unknown.navevent.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class DrawTheMap extends View implements View.OnTouchListener {
-    boolean beacon_isSelected[];
-    Bitmap beaconTexture[];
-    float[] x;
-    float[] y;
-    private int BeaconNumber=3;
-    int theMagicNumberThatNeverShouldBeUsed=975667323;
-    MapForTests testMap;
-    public DrawTheMap(Context context , MapForTests MapInput) {
-        super(context);
-            testMap = MapInput;
-            BeaconNumber = testMap.getBeaconNumber();
-            x = new float[BeaconNumber];
-            y = new float[BeaconNumber];
-            beacon_isSelected = new boolean[BeaconNumber];
-            beaconTexture = new Bitmap[BeaconNumber];
+	//boolean beacon_isSelected[]; todo del
+	Bitmap beaconTexture[];
+	float[] x;
+	float[] y;
+	private int beaconNumber;
+    private ScaleGestureDetector scaleGestureDetector;
+	//int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
+	MapDataForUI displayedMap;
+	float scale = 1;
 
-            for (int i = 0; i < BeaconNumber; i++) {
-                beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-                x[i] = (float) this.testMap.Beacons[i].getxCord();
-                y[i] = (float) this.testMap.Beacons[i].getyCord();
-            }
-            setOnTouchListener(this);
+	public DrawTheMap(Context context, MapDataForUI MapInput) {
+		super(context);
+		displayedMap = MapInput;
+		beaconNumber = displayedMap.getBeaconNumber();
+		x = new float[beaconNumber];
+		y = new float[beaconNumber];
+		beaconTexture = new Bitmap[beaconNumber];
+        scaleGestureDetector = new ScaleGestureDetector(context,new Scalelistener());
 
-    }
+		for (int i = 0; i < beaconNumber; i++) {
+			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
+			x[i] = (float) this.displayedMap.beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.beacons[i].getyCord();
+		}
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());
+        setOnTouchListener(this);
 
-        Log.e("TestLog","Bitmapstats:"+testMap.getMap().getDensity()+" "+testMap.getMap().getHeight()+" "+testMap.getMap().getWidth());*/
+	}
 
-        float scale=1;
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+	    /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());                 todo del
+
+        Log.e("TestLog","Bitmapstats:"+displayedMap.getMap().getDensity()+" "+displayedMap.getMap().getHeight()+" "+displayedMap.getMap().getWidth());*/
+
         /*if(true){
-        scale=(float)(240.0/ testMap.getMap().getDensity());}
+        scale=(float)(240.0/ displayedMap.getMap().getDensity());}
 
         Log.e("TestLog","scale:"+scale);*/
 
-        canvas.drawBitmap(testMap.getMap(),null,new RectF(0,0,((float)(testMap.getMap().getWidth()*scale)),((float)(testMap.getMap().getHeight()*scale))),new Paint());
+		canvas.drawBitmap( displayedMap.getMap(), null, new RectF(0, 0, ((float) ( displayedMap.getMap().getWidth() * scale)), ((float) ( displayedMap.getMap().getHeight() * scale))), new Paint());
 
-        for (int i=0;i<BeaconNumber;i++){
-            canvas.drawBitmap(beaconTexture[i],null,new RectF(x[i],y[i],x[i]+50,y[i]+50),new Paint());
+		for (int i = 0; i < beaconNumber; i++) {
+			Paint paintGreen= new Paint();			//creating the paints to paint the beacons with and configure them
+			Paint paintRed = new Paint();
+			Paint paintYellow = new Paint();
+			Paint paintBlue = new Paint();
+			Paint paintNot = new Paint();
 
-        }
-        MainActivity.updateDisplayedText();
-        invalidate();
-    }
-    public boolean onTouch(View v, MotionEvent me) {
-        int selectedBeacon= getClickedBeacon((int) me.getX(), (int) me.getY());
-        if(me.ACTION_DOWN==me.getAction()&&selectedBeacon!=theMagicNumberThatNeverShouldBeUsed)
+			paintGreen.setARGB(255,0,100,0);
+			paintRed.setARGB(255,255,0,0);
+			paintYellow.setARGB(255,255,215,0);
+			paintBlue.setARGB(255,0,0,255);
+			paintNot.setARGB(0,0,0,0);
 
-            if (!beacon_isSelected[selectedBeacon]) {
-            beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
-            beacon_isSelected[selectedBeacon] = true;
-                testMap.Beacons[selectedBeacon].select(true);
-                for(int i=0;i<BeaconNumber;i++){
-                    if(beacon_isSelected[i]&&i!=selectedBeacon){
-                        beacon_isSelected[selectedBeacon] = false;
-                        testMap.Beacons[selectedBeacon].select(false);
+			//canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint()); todo del
+            if(displayedMap.beacons[i].isOrdinary()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
+            else if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
+            else canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot);
+            if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
+            if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
+		}
+		//MainActivity.updateDisplayedText();		// TODO: 08.06.2017  del
+		invalidate();
+	}
 
-                    }
-                }
+	public boolean onTouch(View v, MotionEvent me) {
+		scaleGestureDetector.onTouchEvent(me);
 
-            } else {
-                beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-                beacon_isSelected[selectedBeacon] = false;
-                testMap.Beacons[selectedBeacon].select(false);
-        }
-        return true;
-    }
+        /*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo del when obsolete
+		if (me.ACTION_DOWN == me.getAction() && selectedBeacon != theMagicNumberThatNeverShouldBeUsed)
 
-    private int getClickedBeacon(int x, int y){
-        int returnBeaconID=theMagicNumberThatNeverShouldBeUsed;
-        for (int i=0;i<BeaconNumber;i++){
-            if (Math.abs((this.x[i]+25)-x)<=50&&Math.abs((this.y[i]+25)-y)<=50){
-                returnBeaconID=i;
-            }
-        }
-        return returnBeaconID;
-    }
+			if (!beacon_isSelected[selectedBeacon]) {
+				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
+				beacon_isSelected[selectedBeacon] = true;
+				 displayedMap.beacons[selectedBeacon].select(true);
+				for (int i = 0; i < beaconNumber; i++) {
+					if (beacon_isSelected[i] && i != selectedBeacon) {
+						beacon_isSelected[selectedBeacon] = false;
+						 displayedMap.beacons[selectedBeacon].select(false);
 
-    public void loadMap(MapForTests newMap){
-        testMap=newMap;
-        BeaconNumber = testMap.getBeaconNumber();
-        x=new float[BeaconNumber];
-        y=new float[BeaconNumber];
-        beacon_isSelected=new boolean[BeaconNumber];
-        beaconTexture=new Bitmap[BeaconNumber];
+					}
+				}
 
-        for(int i=0; i<BeaconNumber;i++){
-            beaconTexture[i]=BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-            x[i]=(float)this.testMap.Beacons[i].getxCord();
-            y[i]=(float)this.testMap.Beacons[i].getyCord();
-        }
-    }
+			} else {
+				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
+				beacon_isSelected[selectedBeacon] = false;
+				displayedMap.beacons[selectedBeacon].select(false);
+			}*/
+
+		return true;
+	}
+
+	private int getClickedBeacon(int x, int y) {					//returns the beacon at the position the user tapped or a magic number if there is no Beacon
+		int returnBeaconID = 0;
+		for (int i = 0; i < beaconNumber; i++) {
+			if (Math.abs((this.x[i]) - x) <= 50 && Math.abs((this.y[i]) - y) <= 50) {
+				returnBeaconID = displayedMap.beacons[i].getID();
+			}
+		}
+		return returnBeaconID;
+	}
+
+	public void loadMap(MapDataForUI newMap) {						//has to be called every time something on the map changes!!
+		displayedMap = newMap;
+		beaconNumber = displayedMap.getBeaconNumber();
+		x = new float[beaconNumber];
+		y = new float[beaconNumber];
+		beaconTexture = new Bitmap[beaconNumber];
+
+		for (int i = 0; i < beaconNumber; i++) {
+			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
+			x[i] = (float) this.displayedMap.beacons[i].getxCord();
+			y[i] = (float) this.displayedMap.beacons[i].getyCord();
+		}
+	}
+	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{      //Androidnative Listenerclass for scaleevents
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+			scale *= detector.getScaleFactor();
+
+
+			scale = Math.max(0.1f, Math.min(scale, 5.0f));
+
+			invalidate();
+			return true;
+		}
+
+	}
 
 }

@@ -1,12 +1,11 @@
 package com.unknown.navevent.ui;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,11 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
@@ -32,57 +30,60 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class MainActivity extends AppCompatActivity implements SideBar.SideBarInterface, MainActivityUI {
-	//Background-logic interface
-	private MainActivityLogicInterface mIfc = null;
-	
-	//Request-callback ids
-	private static final int PERMISSION_REQUEST_COARSE_LOCATION = 0;
-	
-	
-    private static BeaconInfo text;
+    //Background-logic interface
+    private MainActivityLogicInterface mIfc = null;
+
+    //Request-callback ids
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 0;
+
+
+    private static BeaconInfo beaconInfo;
     private SideBar bar;
     private Button sideOpen;
     private MapDisplayFragment mapDisplayFragment;
-    MapForTests mapFlur;
-    MapForTests mapFlurKreuzung;
-    private static MapForTests activeMap;
-    private float displayDensity;
-	
+    MapDataForUI mapDefault;
+    //MapDataForUI mapFlurKreuzung; todo del
+    private static MapDataForUI activeMap;
+    //private float displayDensity; // TODO: 08.06.2017 check if needed del if not
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Generating 2 Maps for testing purposes
-        List <BeaconForTests> list1=new ArrayList<BeaconForTests>();
+        //Generating 2 Maps for testing purposes				todo del
+        List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
 
-        List <BeaconForTests> list2=new ArrayList<BeaconForTests>();
+        List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
 
-        list1.add(new BeaconForTests(200, 100));
-        list1.add(new BeaconForTests(200, 600));
+        list1.add(new BeaconDataForUI(1, 150, 100));
+        list1.add(new BeaconDataForUI(2, 150, 650));
+        list1.get(0).setOrdinary(true);
+        list1.get(1).setOrdinary(true);
 
-        list2.add(new BeaconForTests(200, 100));
-        list2.add(new BeaconForTests(200, 600));
-        list2.add(new BeaconForTests(430, 300));
+        mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
-        mapFlur = new MapForTests(list1, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflur), 2);
+        /*list2.add(new BeaconDataForUI(1, 200, 100));      todo del
+        list2.add(new BeaconDataForUI(2, 200, 600));
+        list2.add(new BeaconDataForUI(3, 430, 300));
+        mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));*/
 
-        mapFlurKreuzung = new MapForTests(list2, BitmapFactory.decodeResource(getResources(),R.mipmap.testmapflurkreuzung),3);
-        if (activeMap==null) {
-            activeMap=mapFlur;
+
+        if (activeMap == null) {
+            activeMap = mapDefault;
         }
 
         setContentView(R.layout.activity_main);
 
 
-        bar= (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);
-        text = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
-        sideOpen=(Button)findViewById(R.id.SideBarBtn);
+        bar = (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);                 //setting the fragments
+        beaconInfo = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
+        sideOpen = (Button) findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
-        bar.getView().setBackgroundColor(Color.argb(220,240,240,240));
+        bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));                               //Setting the rough desing for the Fragments
+        beaconInfo.getView().setBackgroundColor(Color.argb(255,255,255,255));
 
-        hideFragment(bar);
+                hideFragment(bar);
 
         sideOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,68 +92,96 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
             }
         });
 
+        beaconInfo.getView().setOnClickListener(new View.OnClickListener() {                            //Expanding the Bottomsheet if clicked on
+            @Override
+            public void onClick(View view) {
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
+                if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
+                params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal
+                else  params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+                beaconInfo.getView().setLayoutParams(params);
+            }
+        });
 
-	    //Creating background-logic for this activity
-	    mIfc = new MainActivityLogic(this);
-	    mIfc.onCreate(this);
+
+
+        //Creating background-logic for this activity
+        mIfc = new MainActivityLogic(this);
+        mIfc.onCreate(this);
 
     }
-	
-	@Override
-	protected  void onDestroy() {
-		mIfc.onDestroy();//Destroying background-logic
 
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        mIfc.onDestroy();//Destroying background-logic
 
-    private void showFragment(Fragment f){
-    FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mIfc.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mIfc.onStop();
+    }
+
+    //Display a hidden fragment
+    private void showFragment(Fragment f) {
+        FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.show(f);
         Tr.commit();
     }
 
-    public void hideFragment(Fragment f){
+    //Hide a displayed fragment
+    public void hideFragment(Fragment f) {
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.hide(f);
         Tr.commit();
     }
 
-    public static void updateDisplayedText(){
+	/*public static void updateDisplayedText() {
 
-    }
+	}*/
 
-    public static MapForTests getMap(){
+    public static MapDataForUI getMap() {
         return activeMap;
     }
 
-    public void hideSideBar(){
+    public void hideSideBar() {
         hideFragment(bar);
     }
 
-    @Override
+	/*@Override		todo del
     public void showMapFlur() {
-        activeMap=mapFlur;
-        mapDisplayFragment.LoadBeacons();
-    }
+		activeMap = mapFlur;
+		mapDisplayFragment.LoadBeacons();
+	}
 
-    @Override
-    public void showMapKreuz() {
-        activeMap=mapFlurKreuzung;
-        mapDisplayFragment.LoadBeacons();
+	@Override
+	public void showMapKreuz() {
+		activeMap = mapFlurKreuzung;
+		mapDisplayFragment.LoadBeacons();
 
-    }
+	}*/
 
 
     @Override
     public void initCompleted() {
-
+        Toast.makeText(MainActivity.this, "Map has been successfully loaded", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void notSupported(String errorcode) {
-	    //todo debug: uncomment this block to enable the app only for supported devices
-		//Notify user and shutdown the app
-		/*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void notSupported(String errorcode) {            //Checks if the Device is supported and kills the App if not
+        //todo debug: uncomment this block to enable the app only for supported devices
+        //Notify user and shutdown the app
+        /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(R.string.bluetoothNotAvailable);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -162,99 +191,125 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 			}
 		});
 		builder.show();*/
-	    Toast.makeText(MainActivity.this, "Device does not support required Bluetooth LE", Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "Device does not support required Bluetooth LE", Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void bluetoothDeactivated() {
-		//Notify user to enable bluetooth
-		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.bluetoothNotEnabled);
-		builder.setPositiveButton(android.R.string.ok, null);
-		builder.show();
+    public void bluetoothDeactivated() {        //Is called if bluetooth is offline, requests to enable it
+        //Notify user to enable bluetooth
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.bluetoothNotEnabled);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.show();
     }
 
     @Override
-    public void askForPermissions() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			//Android M+ Permission check
-			if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-				final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setTitle(R.string.locationAccessDialogTitle);
-				builder.setMessage(R.string.locationAccessDialogContent);
-				builder.setPositiveButton(android.R.string.ok, null);
-				builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+    public void askForPermissions() {            //Is called if device-location is offline, asks for permission to enable it
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //Android M+ Permission check
+            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.locationAccessDialogTitle);
+                builder.setMessage(R.string.locationAccessDialogContent);
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-					@TargetApi(23)
-					@Override
-					public void onDismiss(DialogInterface dialog) {
-						requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-					}
+                    @TargetApi(23)
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
+                    }
 
-				});
-				builder.show();
-			}
-		}
-    }
-	@Override
-	public void onRequestPermissionsResult(int requestCode,
-	                                       String permissions[], int[] grantResults) {
-		if( requestCode == PERMISSION_REQUEST_COARSE_LOCATION ) {
-			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				Toast.makeText(this, "coarse location permission granted", Toast.LENGTH_SHORT).show();//debug
-				mIfc.retryBeaconConnection();
-			} else {
-				Toast.makeText(this, R.string.locationAccessDeniedWarning, Toast.LENGTH_LONG).show();
-			}
-		}
-	}
-
-    @Override
-    public void switchToMapSelectActivity() {
-		Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
-		startActivity(intent);
-		finish();
-	    Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
+                });
+                builder.show();
+            }
+        }
     }
 
     @Override
-    public void updateMap(MapData map) {
-        activeMap=MapdataAdapter(map);
+    public void onRequestPermissionsResult(int requestCode,        //Is called to tell the user if the app can eable the things it needs
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_COARSE_LOCATION) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "coarse location permission granted", Toast.LENGTH_SHORT).show();//debug
+                mIfc.retryBeaconConnection();
+            } else {
+                Toast.makeText(this, R.string.locationAccessDeniedWarning, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void switchToMapSelectActivity() {                        //Switches to the Activity to select a Map if none is Loaded
+        Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
+        startActivity(intent);
+        finish();
+        Toast.makeText(this, "Switch to map select activity", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void foundLocalMap(MapData map) {
+        //todo
+    }
+
+    @Override
+    public void updateMap(MapData map) {                            //Loads a Map if one is selected in the MapSelectActivity
+        activeMap = mapDataAdapter(map);
         mapDisplayFragment.LoadBeacons();
         bar.loadBeacons();
-        Toast.makeText(this, "Map '"+map.getName()+" loaded!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Map '" + map.getName() + " loaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void updateBeaconPosition(int beaconID) {
-		//this method gives the beacon where the usern is standing at right now
-        //example implementation
-		/*if( beaconID == 0 )
-			Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
-		else outputView.setText("Beacon id: " + beaconID);*/
-    }
-
-    @Override
-    public void markBeacons(List<Integer> beaconIDs) {
-        activeMap.selectBeacons(beaconIDs);
-    }
-    private MapForTests MapdataAdapter(MapData in){
-        List <BeaconForTests> newBeaconList=new ArrayList<BeaconForTests>();
-        BeaconData[] oldBeacons;
-        oldBeacons= in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
-        for(int i=0;i<in.getBeacons().size();i++){
-            newBeaconList.add(new BeaconForTests(oldBeacons[i].getMapPositionX(),oldBeacons[i].getMapPositionY()));
+    public void updateBeaconPosition(int beaconID) {                //this method gives the beacon where the usern is standing at right now and shows it on the map
+        if (beaconID == 0)
+            Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
+        else {
+            activeMap.setClosestBeacon(beaconID);
         }
-        MapForTests out=new MapForTests(newBeaconList,in.getImage(),in.getBeacons().size());
+        beaconInfo.updateBeaconText(beaconID);
+    }
+
+    @Override
+    public void markBeacons(List<Integer> beaconIDs) {                //Marks a list of beacons on the map for example as a search result
+        activeMap.selectBeacons(beaconIDs);
+        mapDisplayFragment.LoadBeacons();
+    }
+
+    private MapDataForUI mapDataAdapter(MapData in) {                //Converts a list of Data for a Map into a UI-usable format.
+        List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
+        BeaconData[] oldBeacons;
+        oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
+
+
+        for (int i = 0; i < in.getBeacons().size(); i++) {
+            newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+            newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
+            for (List<Integer> listSpec : in.getSpecialPlaces().values()) {
+                if (listSpec.contains(newBeaconList.get(i).getID())){
+                    newBeaconList.get(i).setSpecial(true);
+                }
+            }
+            for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
+                if (listOrd.contains(newBeaconList.get(i).getID())){
+                    newBeaconList.get(i).setOrdinary(true);}
+            }
+
+
+
+            /*for (int j = 0; j < in.getBeacons().size(); j++) {                                todo del
+                if (in.getSpecialPlaces().values().contains(newBeaconList.get(i).getID()))
+                    newBeaconList.get(i).setSpecial(true);
+                else if (!in.getOrdinaryPlaces().values().contains(newBeaconList.get(i).getID()))
+                    newBeaconList.get(i).setVisibility(false);
+
+            }*/
+        }
+        MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
         return out;
     }
 
 
-    public static boolean mapIsSelected(){
-        if (activeMap==null)
-            return false;
-        else return true;
-    }
-
 
 }
+

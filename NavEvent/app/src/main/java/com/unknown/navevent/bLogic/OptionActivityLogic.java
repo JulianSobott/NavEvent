@@ -1,23 +1,29 @@
 package com.unknown.navevent.bLogic;
 
+import android.content.Context;
+
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.interfaces.AdminAreaUI;
-import com.unknown.navevent.interfaces.BottomSheetLogicInterface;
-import com.unknown.navevent.interfaces.BottomSheetUI;
+import com.unknown.navevent.interfaces.OptionActivityLogicInterface;
+import com.unknown.navevent.interfaces.OptionActivityUI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class BottomSheetLogic implements BottomSheetLogicInterface {
-	private static final String TAG = "BottomSheetLogic";
+import java.util.HashMap;
+import java.util.Map;
 
 
-	private BottomSheetUI mResponder = null;
+public class OptionActivityLogic implements OptionActivityLogicInterface {
+	private static final String TAG = "OptionActivityLogic";
+
+
+	private OptionActivityUI mResponder = null;
 	private ServiceInterface serviceInterface = ServiceInterface.getInstance();
 
 
-	public BottomSheetLogic(BottomSheetUI responder) {
+	public OptionActivityLogic(OptionActivityUI responder) {
 		mResponder = responder;
 	}
 
@@ -27,17 +33,28 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public void onCreate() {
-		EventBus.getDefault().register(this);
-
+	public void onCreate(Context context) {
+		serviceInterface.onCreate(context);
 	}
 
 	@Override
 	public void onDestroy() {
-		EventBus.getDefault().unregister(this);
-
+		serviceInterface.onDestroy();
 	}
 
+	@Override
+	public void onStart() {
+		EventBus.getDefault().register(this);
+
+		Map<String, String> settingsMap = new HashMap<>();
+		settingsMap.put("autoDownloadMaps", ServiceInterface.autoDownloadMaps + "");
+		mResponder.currentSettings(settingsMap);
+	}
+
+	@Override
+	public void onStop() {
+		EventBus.getDefault().unregister(this);
+	}
 
 
 	/////////////////////////////////////////////////////////
@@ -45,16 +62,8 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 	/////////////////////////////////////////////////////////
 
 	@Override
-	public void getBeaconName(int beaconID) {
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
-			mResponder.beaconInfoRespond(serviceInterface.currentMap.getBeaconsIR().get(beaconID).name);
-		}
-	}
-	@Override
-	public void getBeaconInfo(int beaconID) {
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
-			mResponder.beaconInfoRespond(serviceInterface.currentMap.getBeaconsIR().get(beaconID).description);
-		}
+	public void changeSetting(String name, String value) {
+
 	}
 
 

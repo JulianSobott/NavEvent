@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.bLogic.MainActivityLogic;
 import com.unknown.navevent.bLogic.MapSelectActivityLogic;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapData;
@@ -23,18 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapSelectActivity extends AppCompatActivity implements MapSelectActivityUI {
-    private MapSelectActivityLogicInterface mIfc = null;
+	private MapSelectActivityLogicInterface mIfc = null;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_select);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_map_select);
 
 
-        //Creating the mapSelectLogic // TODO uncomment when changed to the right class
-        mIfc = new MapSelectActivityLogic(this);
-        mIfc.onCreate(this);
-    }
+		//Creating the mapSelectLogic
+		mIfc = new MapSelectActivityLogic(this);
+		mIfc.onCreate(this);
+	}
 
 
 	@Override
@@ -44,81 +45,96 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		mIfc.onDestroy();
 	}
 
+
 	@Override
-    public void onlineMapQueryRespond(final List<MapData> maps) {
-        final ListView list=(ListView) findViewById(R.id.onlineMapList);
+	protected void onStart() {
+		super.onStart();
 
-        List<String> tmpList = new ArrayList<>();//convert to string list
-        for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+		mIfc.onStart();
+	}
 
-	    //todo change so that it will not override local maps-list
-        ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mIfc.downloadMap(maps.get(i).getID());
-            }
-        });
-    }
+	@Override
+	protected void onStop() {
+		super.onStop();
 
-    @Override
-    public void localMapsLoaded(final List<MapData> maps) {
-	    final ListView list=(ListView) findViewById(R.id.onlineMapList);
+		mIfc.onStop();
+	}
 
-	    List<String> tmpList = new ArrayList<>();//convert to string list
-	    for( int i = 0 ; i < maps.size() ; i++ ) tmpList.add(maps.get(i).getName());
+	@Override
+	public void onlineMapQueryRespond(final List<MapData> maps) {
+		final ListView list = (ListView) findViewById(R.id.onlineMapList);
 
-	    ArrayAdapter <String> adapter = new ArrayAdapter<>(MapSelectActivity.this,android.R.layout.simple_list_item_1,tmpList);
-	    list.setAdapter(adapter);
-	    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    @Override
-		    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-			    mIfc.setActiveMap(maps.get(i).getID());
-		    }
-	    });
-    }
+		List<String> tmpList = new ArrayList<>();//convert to string list
+		for (int i = 0; i < maps.size(); i++) tmpList.add(maps.get(i).getName());
 
-    @Override
-    public void downloadFailed(String errorcode) {
-        Toast.makeText(this, getString(R.string.Download_failed)+ errorcode, Toast.LENGTH_SHORT).show();
-    }
+		//todo change so that it will not override local maps-list
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(MapSelectActivity.this, android.R.layout.simple_list_item_1, tmpList);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				mIfc.downloadMap(maps.get(i).getID());
+			}
+		});
+	}
 
-    @Override
-    public void downloadFinished(MapData map) {
-        Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
+	@Override
+	public void localMapsLoaded(final List<MapData> maps) {
+		final ListView list = (ListView) findViewById(R.id.onlineMapList);
 
-        mIfc.setActiveMap(map.getID());
-    }
+		List<String> tmpList = new ArrayList<>();//convert to string list
+		for (int i = 0; i < maps.size(); i++) tmpList.add(maps.get(i).getName());
 
-    @Override
-    public void foundLocalMap(final MapData map) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(MapSelectActivity.this, android.R.layout.simple_list_item_1, tmpList);
+		list.setAdapter(adapter);
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+				mIfc.setActiveMap(maps.get(i).getID());
+			}
+		});
+	}
 
-        // set title
-        alertDialogBuilder.setTitle(getString(R.string.FoundMap));
+	@Override
+	public void downloadFailed(String errorcode) {
+		Toast.makeText(this, getString(R.string.Download_failed) + errorcode, Toast.LENGTH_SHORT).show();
+	}
 
-        // set dialog message
-        alertDialogBuilder
-                .setMessage("Local Map "+ map.getName()+ "found, do you want to load it?")
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.String_Yes),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        mIfc.setActiveMap(map.getID());
-                    }
-                })
-                .setNegativeButton(getString(R.string.String_No),new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog,int id) {
-                        dialog.cancel();
-                    }
-                });
+	@Override
+	public void downloadFinished(MapData map) {
+		Toast.makeText(this, R.string.Download_Finished, Toast.LENGTH_SHORT).show();
 
-        // create alert dialog
-        AlertDialog alertDialog = alertDialogBuilder.create();
+		mIfc.setActiveMap(map.getID());
+	}
 
-        // show it
-        alertDialog.show();
-    }
+	@Override
+	public void foundLocalMap(final MapData map) {					//notifies when a map is already located on the device
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
+
+		// set title
+		alertDialogBuilder.setTitle(getString(R.string.FoundMap));
+
+		// set dialog message
+		alertDialogBuilder
+				.setMessage("Local Map " + map.getName() + "found, do you want to load it?")
+				.setCancelable(false)
+				.setPositiveButton(getString(R.string.String_Yes), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						mIfc.setActiveMap(map.getID());
+					}
+				})
+				.setNegativeButton(getString(R.string.String_No), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
 
 	@Override
 	public void switchToMainActivity() {

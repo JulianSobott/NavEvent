@@ -12,11 +12,10 @@ public interface MapSelectActivityLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
-	//Returns a list of the offline saved maps
-	//List<String> loadAvailableMaps();//todo del
-
-	//Returns true, if connection to server is available
-	//boolean isOnline();//todo del
+	//Should be called on start.
+	void onStart();
+	//Should be called on stop.
+	void onStop();
 
 	//Load maps which match to the query string \p name. Responses in MapSelectActivityUI.onlineMapsRespond(), MapSelectActivityUI.downloadFailed() or MapSelectActivityUI.isOffline()
 	void findOnlineMap(String query);
@@ -25,5 +24,5 @@ public interface MapSelectActivityLogicInterface
 	void downloadMap(int mapID);
 
 	//Set active map to a map specified by \p name. Returns false if map is not available offline.
-	boolean setActiveMap(int mapID);
+	void setActiveMap(int mapID);
 }
