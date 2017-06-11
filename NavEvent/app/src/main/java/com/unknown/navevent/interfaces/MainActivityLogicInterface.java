@@ -10,6 +10,12 @@ public interface MainActivityLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
+	//Should be called on start.
+	void onStart();
+	//Should be called on stop.
+	void onStop();
+
+
 	//Should be called after permission-check failed with MainActivityUI.askForPermissions().
 	void retryBeaconConnection();
 

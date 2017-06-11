@@ -10,6 +10,11 @@ public interface AdminAreaLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
+	//Should be called on start.
+	void onStart();
+	//Should be called on stop.
+	void onStop();
+
 	//Will download the map specified by \p mapID. Will respond with AdminAreaUI.updateMap(), AdminAreaUI.invalidMapID(), AdminAreaUI.downloadFailed() or AdminAreaUI.isOffline().
 	void loadMap(int mapID);
 

@@ -118,6 +118,20 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         super.onDestroy();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mIfc.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mIfc.onStop();
+    }
+
     //Display a hidden fragment
     private void showFragment(Fragment f) {
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();

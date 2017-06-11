@@ -29,11 +29,10 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_admin_area);
+
 		//Creating the AdminAreaLogic
 		mIfc = new AdminAreaLogic(this);
 		mIfc.onCreate(this);
-        mIfc.loadMap(mapID);
-
 	}
 
 	@Override
@@ -41,6 +40,21 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 		super.onDestroy();
 
 		mIfc.onDestroy();
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		mIfc.onStart();
+		mIfc.loadMap(mapID);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+		mIfc.onStop();
 	}
 
 	@Override

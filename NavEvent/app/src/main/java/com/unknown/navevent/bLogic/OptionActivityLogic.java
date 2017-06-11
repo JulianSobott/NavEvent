@@ -34,20 +34,25 @@ public class OptionActivityLogic implements OptionActivityLogicInterface {
 
 	@Override
 	public void onCreate(Context context) {
-		EventBus.getDefault().register(this);
-
 		serviceInterface.onCreate(context);
-
-
-		Map<String, String> settingsMap = new HashMap<>();
-		settingsMap.put("autoDownloadMaps", ServiceInterface.autoDownloadMaps +"");
-		mResponder.currentSettings(settingsMap);
 	}
 
 	@Override
 	public void onDestroy() {
 		serviceInterface.onDestroy();
+	}
 
+	@Override
+	public void onStart() {
+		EventBus.getDefault().register(this);
+
+		Map<String, String> settingsMap = new HashMap<>();
+		settingsMap.put("autoDownloadMaps", ServiceInterface.autoDownloadMaps + "");
+		mResponder.currentSettings(settingsMap);
+	}
+
+	@Override
+	public void onStop() {
 		EventBus.getDefault().unregister(this);
 	}
 

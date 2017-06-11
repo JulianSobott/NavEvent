@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.unknown.navevent.R;
+import com.unknown.navevent.bLogic.MainActivityLogic;
 import com.unknown.navevent.bLogic.MapSelectActivityLogic;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapData;
@@ -31,7 +32,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		setContentView(R.layout.activity_map_select);
 
 
-		//Creating the mapSelectLogic // TODO uncomment when changed to the right class
+		//Creating the mapSelectLogic
 		mIfc = new MapSelectActivityLogic(this);
 		mIfc.onCreate(this);
 	}
@@ -42,6 +43,21 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		super.onDestroy();
 
 		mIfc.onDestroy();
+	}
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		mIfc.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+		mIfc.onStop();
 	}
 
 	@Override

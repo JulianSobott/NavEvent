@@ -12,6 +12,11 @@ public interface MapSelectActivityLogicInterface
 	//Should be called on destruction.
 	void onDestroy();
 
+	//Should be called on start.
+	void onStart();
+	//Should be called on stop.
+	void onStop();
+
 	//Load maps which match to the query string \p name. Responses in MapSelectActivityUI.onlineMapsRespond(), MapSelectActivityUI.downloadFailed() or MapSelectActivityUI.isOffline()
 	void findOnlineMap(String query);
 
