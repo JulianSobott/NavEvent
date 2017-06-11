@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Creating background-logic for this activity
+        mIfc = new MainActivityLogic(this);
+        mIfc.onCreate(this);
+
         super.onCreate(savedInstanceState);
 
         //Generating 2 Maps for testing purposes				todo del
@@ -105,9 +109,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 
 
-        //Creating background-logic for this activity
-        mIfc = new MainActivityLogic(this);
-        mIfc.onCreate(this);
 
     }
 
