@@ -2,11 +2,14 @@ package com.unknown.navevent.bLogic;
 
 import android.content.Context;
 
+import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.OptionActivityLogicInterface;
 import com.unknown.navevent.interfaces.OptionActivityUI;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +34,7 @@ public class OptionActivityLogic implements OptionActivityLogicInterface {
 
 	@Override
 	public void onCreate(Context context) {
-		//EventBus.getDefault().register(this);//todo delete if is not needed
+		EventBus.getDefault().register(this);
 
 		serviceInterface.onCreate(context);
 
@@ -45,7 +48,7 @@ public class OptionActivityLogic implements OptionActivityLogicInterface {
 	public void onDestroy() {
 		serviceInterface.onDestroy();
 
-		//EventBus.getDefault().unregister(this);
+		EventBus.getDefault().unregister(this);
 	}
 
 
@@ -56,5 +59,14 @@ public class OptionActivityLogic implements OptionActivityLogicInterface {
 	@Override
 	public void changeSetting(String name, String value) {
 
+	}
+
+
+	/////////////////////////////////////////////////////////
+	// Event handling
+	/////////////////////////////////////////////////////////
+
+	@Subscribe(threadMode = ThreadMode.MAIN)
+	public void onMessageEvent(ServiceToActivityEvent event) {
 	}
 }

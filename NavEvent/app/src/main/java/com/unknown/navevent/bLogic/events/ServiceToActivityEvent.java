@@ -1,7 +1,7 @@
 package com.unknown.navevent.bLogic.events;
 
 public class ServiceToActivityEvent {
-	public static final int EVENT_LISTENER_STARTED = 1;
+	public static final int EVENT_BEACON_LISTENER_STARTED = 1;
 	public static final int EVENT_BLUETOOTH_DEACTIVATED = 2;
 	public static final int EVENT_BLUETOOTH_NOT_SUPPORTED = 3;
 	public static final int EVENT_BLE_NOT_SUPPORTED = 4;//Bluetooth Low Energy

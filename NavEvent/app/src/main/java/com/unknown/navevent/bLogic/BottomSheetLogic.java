@@ -35,6 +35,7 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 	@Override
 	public void onDestroy() {
 		EventBus.getDefault().unregister(this);
+
 	}
 
 
@@ -63,20 +64,5 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		/*if( event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) { todo change
-			Log.i(TAG, "onMessageEvent: EVENT_NEW_MAP_LOADED");
-
-			mResponder.updateMap(serviceInterface.currentMap);
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
-			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
-
-			Toast.makeText(serviceInterface.mContext, "Map '"+serviceInterface.lastDownloadedMap.getName()+"' downloaded.", Toast.LENGTH_SHORT).show();
-			//todo load map
-		}
-		else if( event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED) {
-			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			mResponder.downloadFailed("Failed to download map!");//todo change string
-		}*/
 	}
 }

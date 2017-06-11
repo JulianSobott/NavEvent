@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
-import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
 import com.unknown.navevent.interfaces.MainActivityLogicInterface;
 import com.unknown.navevent.interfaces.MainActivityUI;
@@ -15,9 +14,6 @@ import com.unknown.navevent.interfaces.MainActivityUI;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //Background-logic of the MainActivity
 public class MainActivityLogic  implements MainActivityLogicInterface {
@@ -92,10 +88,9 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		if( event.message == ServiceToActivityEvent.EVENT_LISTENER_STARTED) {
-			Log.i(TAG, "onMessageEvent: EVENT_LISTENER_STARTED");
-			//todo?
-			//Toast.makeText(serviceInterface.mContext, "Listening started", Toast.LENGTH_SHORT).show();
+		if( event.message == ServiceToActivityEvent.EVENT_BEACON_LISTENER_STARTED) {
+			Log.i(TAG, "onMessageEvent: EVENT_BEACON_LISTENER_STARTED");
+			mResponder.initCompleted();
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
@@ -105,7 +100,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 		else if( event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
-			mResponder.notSupported("");//todo change to error-string
+			mResponder.notSupported(event.additionalInfo);
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
@@ -140,8 +135,7 @@ public class MainActivityLogic  implements MainActivityLogicInterface {
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_CORRESPONDING_MAP) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
-			//todo
-			Toast.makeText(serviceInterface.mContext, "Found map. Download?", Toast.LENGTH_SHORT).show();
+			mResponder.foundLocalMap(serviceInterface.availableNearbyMap);
 		}
 		else if( event.message == ServiceToActivityEvent.EVENT_BEACON_UPDATE) {
 			//Log.i(TAG, "onMessageEvent: EVENT_BEACON_UPDATE");

@@ -12,11 +12,9 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.litesuits.bluetooth.LiteBleGattCallback;
 import com.litesuits.bluetooth.LiteBluetooth;
-import com.litesuits.bluetooth.conn.BleCallback;
 import com.litesuits.bluetooth.conn.BleCharactCallback;
 import com.litesuits.bluetooth.conn.LiteBleConnector;
 import com.litesuits.bluetooth.exception.BleException;
@@ -45,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private static final String TAG = "BeaconService";
@@ -167,7 +164,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		} catch (RuntimeException e) {
 			isBluetoothSupported = false;
 			isBluetoothActivated = false;
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED, e.getLocalizedMessage()));
 		}
 
 	}
@@ -190,7 +187,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
 
-		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_LISTENER_STARTED));
+		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_LISTENER_STARTED));
 	}
 
 	private void stopListening() {
@@ -256,7 +253,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 
 				//Write data
-				Looper.prepare();//todo check this method
+				Looper.prepare();
 				LiteBleConnector connector = liteBluetooth.newBleConnector();
 
 				writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, majorID, minorID);
@@ -275,9 +272,9 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		ByteBuffer bb = ByteBuffer.allocate(6);
 		bb.order(ByteOrder.LITTLE_ENDIAN);
 
-		bb.putShort((short)majorID);
-		bb.putShort((short)minorID);
-		bb.putShort((short)0);//Reboot
+		bb.putShort((short) majorID);
+		bb.putShort((short) minorID);
+		bb.putShort((short) 0);//Reboot
 
 		bb.flip();
 
@@ -301,6 +298,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 						} else {//Disconnect if not automatically done by reboot
 							/*if (liteBluetooth.isConnectingOrConnected())
 								*/
+							Looper.loop();
 						}
 					}
 

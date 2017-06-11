@@ -234,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     }
 
     @Override
+    public void foundLocalMap(MapData map) {
+        //todo
+    }
+
+    @Override
     public void updateMap(MapData map) {                            //Loads a Map if one is selected in the MapSelectActivity
         activeMap = mapDataAdapter(map);
         mapDisplayFragment.LoadBeacons();

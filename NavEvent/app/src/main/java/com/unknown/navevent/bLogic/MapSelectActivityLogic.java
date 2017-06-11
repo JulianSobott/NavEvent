@@ -71,9 +71,8 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 	}
 
 	@Override
-	public boolean setActiveMap(int mapID) {
+	public void setActiveMap(int mapID) {
 		EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, mapID));
-		return false;//todo
 	}
 
 
@@ -106,13 +105,17 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 			}
 			mResponder.onlineMapQueryRespond(newList);
 		}
+		else if( event.message == ServiceToActivityEvent.EVENT_FOUND_CORRESPONDING_MAP) {
+			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
+			mResponder.foundLocalMap(serviceInterface.availableNearbyMap);
+		}
 		else if( event.message == ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");
 
-			List<MapData> tmpList = new ArrayList<>();//Todo: remove this debug code
+			//Downcast list
+			List<MapData> tmpList = new ArrayList<>();
 			for( int i = 0 ; i < serviceInterface.availableLocalMaps.size() ; i++ ) tmpList.add(serviceInterface.availableLocalMaps.get(i));
 			mResponder.localMapsLoaded(tmpList);
-			//todo
 		}
 	}
 }

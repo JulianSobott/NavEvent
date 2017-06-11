@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +16,8 @@ import android.widget.Toast;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.unknown.navevent.R;
-import com.unknown.navevent.interfaces.QrCodeReaderUI;
 
-import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
-
-public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRCodeReaderView.OnQRCodeReadListener {
+public class QrActivity extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
 
     Button continueButton;
     int mapID;
@@ -39,11 +35,6 @@ public class QrActivity extends AppCompatActivity implements QrCodeReaderUI, QRC
         qrCodeReaderView = (QRCodeReaderView) findViewById(R.id.qrdecoderview);
         qrCodeReaderView.setOnQRCodeReadListener(this);
         qrCodeReaderView.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void capturedMapID(int mapID) {
-
     }
 
     private void setOnclickListeners() {
