@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
             public void onClick(View view) {
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
                 if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
-                params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal
+                params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal
                 else  params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
                 beaconInfo.getView().setLayoutParams(params);
             }

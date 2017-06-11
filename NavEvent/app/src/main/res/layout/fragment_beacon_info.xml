@@ -5,18 +5,9 @@
     tools:context="com.unknown.navevent.ui.BeaconInfo"
     android:id="@+id/textFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:gravity="top|center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:scrollHorizontally="false" />
-
     <us.feras.mdv.MarkdownView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/markdownView" />
 
 </RelativeLayout>
