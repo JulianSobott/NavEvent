@@ -37,14 +37,13 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     //Request-callback ids
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 0;
 
-
     private static BeaconInfo beaconInfo;
     private SideBar bar;
     private Button sideOpen;
     private MapDisplayFragment mapDisplayFragment;
     MapDataForUI mapDefault;
-    //MapDataForUI mapFlurKreuzung; todo del
     private static MapDataForUI activeMap;
+
     //private float displayDensity; // TODO: 08.06.2017 check if needed del if not
 
     @Override
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         //Generating 2 Maps for testing purposes				todo del
         List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
 
-        List<BeaconDataForUI> list2 = new ArrayList<BeaconDataForUI>();
-
         list1.add(new BeaconDataForUI(1, 150, 100));
         list1.add(new BeaconDataForUI(2, 150, 650));
         list1.get(0).setOrdinary(true);
@@ -67,10 +64,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
         mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
-        /*list2.add(new BeaconDataForUI(1, 200, 100));      todo del
-        list2.add(new BeaconDataForUI(2, 200, 600));
-        list2.add(new BeaconDataForUI(3, 430, 300));
-        mapFlurKreuzung = new MapDataForUI(list2, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflurkreuzung));*/
 
 
         if (activeMap == null) {
@@ -78,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         }
 
         setContentView(R.layout.activity_main);
-
 
         bar = (SideBar) getSupportFragmentManager().findFragmentById(R.id.SideBarFrag);                 //setting the fragments
         beaconInfo = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
@@ -99,11 +91,15 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         beaconInfo.getView().setOnClickListener(new View.OnClickListener() {                            //Expanding the Bottomsheet if clicked on
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Device does not support required Bluetooth LE", Toast.LENGTH_LONG).show();
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
-                if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT)
-                params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 32, getResources().getDisplayMetrics());                //some complex code to insert the height in density pixels not in normal
-                else  params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+                if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT) {
+                    params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());       //some complex code to insert the height in density pixels not in normal
+                    beaconInfo.onCollapse();
+                }
+                else{
+                    params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+                    beaconInfo.onExtend();
+                }
                 beaconInfo.getView().setLayoutParams(params);
             }
         });
@@ -148,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         Tr.commit();
     }
 
-	/*public static void updateDisplayedText() {
+	/*public static void updateDisplayedText() {        todo del
 
 	}*/
 
@@ -159,19 +155,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     public void hideSideBar() {
         hideFragment(bar);
     }
-
-	/*@Override		todo del
-    public void showMapFlur() {
-		activeMap = mapFlur;
-		mapDisplayFragment.LoadBeacons();
-	}
-
-	@Override
-	public void showMapKreuz() {
-		activeMap = mapFlurKreuzung;
-		mapDisplayFragment.LoadBeacons();
-
-	}*/
 
 
     @Override
@@ -268,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
             Toast.makeText(this, "Lost beacon signal", Toast.LENGTH_SHORT).show();
         else {
             activeMap.setClosestBeacon(beaconID);
+            mapDisplayFragment.LoadBeacons();
         }
         beaconInfo.updateBeaconText(beaconID);
     }
@@ -296,16 +280,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
                 if (listOrd.contains(newBeaconList.get(i).getID())){
                     newBeaconList.get(i).setOrdinary(true);}
             }
-
-
-
-            /*for (int j = 0; j < in.getBeacons().size(); j++) {                                todo del
-                if (in.getSpecialPlaces().values().contains(newBeaconList.get(i).getID()))
-                    newBeaconList.get(i).setSpecial(true);
-                else if (!in.getOrdinaryPlaces().values().contains(newBeaconList.get(i).getID()))
-                    newBeaconList.get(i).setVisibility(false);
-
-            }*/
         }
         MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
         return out;

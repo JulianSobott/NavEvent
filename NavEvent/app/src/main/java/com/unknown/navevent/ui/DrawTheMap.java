@@ -13,13 +13,11 @@ import android.view.View;
 import com.unknown.navevent.R;
 
 public class DrawTheMap extends View implements View.OnTouchListener {
-	//boolean beacon_isSelected[]; todo del
 	Bitmap beaconTexture[];
 	float[] x;
 	float[] y;
 	private int beaconNumber;
     private ScaleGestureDetector scaleGestureDetector;
-	//int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
 	MapDataForUI displayedMap;
 	float scale = 1;
 
@@ -29,11 +27,9 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		beaconNumber = displayedMap.getBeaconNumber();
 		x = new float[beaconNumber];
 		y = new float[beaconNumber];
-		beaconTexture = new Bitmap[beaconNumber];
         scaleGestureDetector = new ScaleGestureDetector(context,new Scalelistener());
 
 		for (int i = 0; i < beaconNumber; i++) {
-			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 			x[i] = (float) this.displayedMap.beacons[i].getxCord();
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
@@ -45,14 +41,6 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-	    /*Log.e("TestLog","Canvasstats:"+canvas.getDensity()+" "+canvas.getHeight()+" "+canvas.getWidth());                 todo del
-
-        Log.e("TestLog","Bitmapstats:"+displayedMap.getMap().getDensity()+" "+displayedMap.getMap().getHeight()+" "+displayedMap.getMap().getWidth());*/
-
-        /*if(true){
-        scale=(float)(240.0/ displayedMap.getMap().getDensity());}
-
-        Log.e("TestLog","scale:"+scale);*/
 
 		canvas.drawBitmap( displayedMap.getMap(), null, new RectF(0, 0, ((float) ( displayedMap.getMap().getWidth() * scale)), ((float) ( displayedMap.getMap().getHeight() * scale))), new Paint());
 
@@ -69,41 +57,21 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			paintBlue.setARGB(255,0,0,255);
 			paintNot.setARGB(0,0,0,0);
 
-			//canvas.drawBitmap(beaconTexture[i], null, new RectF(x[i], y[i], x[i] + 50, y[i] + 50), new Paint()); todo del
-            if(displayedMap.beacons[i].isOrdinary()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);
+            if(displayedMap.beacons[i].isOrdinary()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintBlue);		//Painting the Beacons according to their state
             else if(displayedMap.beacons[i].isSpecial()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintGreen);
             else canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintNot);
             if(displayedMap.beacons[i].isSelected()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintYellow);
             if(displayedMap.beacons[i].isClosest()) canvas.drawCircle(x[i]*scale,y[i]*scale,25*scale,paintRed);
 		}
-		//MainActivity.updateDisplayedText();		// TODO: 08.06.2017  del
 		invalidate();
 	}
 
 	public boolean onTouch(View v, MotionEvent me) {
 		scaleGestureDetector.onTouchEvent(me);
+		int selectedBeaconID = getClickedBeacon((int) me.getX(), (int) me.getY());
+		if (me.ACTION_DOWN == me.getAction()) {
 
-        /*int selectedBeacon = getClickedBeacon((int) me.getX(), (int) me.getY());							todo del when obsolete
-		if (me.ACTION_DOWN == me.getAction() && selectedBeacon != theMagicNumberThatNeverShouldBeUsed)
-
-			if (!beacon_isSelected[selectedBeacon]) {
-				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_selected);
-				beacon_isSelected[selectedBeacon] = true;
-				 displayedMap.beacons[selectedBeacon].select(true);
-				for (int i = 0; i < beaconNumber; i++) {
-					if (beacon_isSelected[i] && i != selectedBeacon) {
-						beacon_isSelected[selectedBeacon] = false;
-						 displayedMap.beacons[selectedBeacon].select(false);
-
-					}
-				}
-
-			} else {
-				beaconTexture[selectedBeacon] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
-				beacon_isSelected[selectedBeacon] = false;
-				displayedMap.beacons[selectedBeacon].select(false);
-			}*/
-
+		}
 		return true;
 	}
 
