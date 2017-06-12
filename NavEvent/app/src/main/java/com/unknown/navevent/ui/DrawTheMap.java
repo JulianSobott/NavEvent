@@ -69,7 +69,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 	public boolean onTouch(View v, MotionEvent me) {
 		scaleGestureDetector.onTouchEvent(me);
 		int selectedBeaconID = getClickedBeacon((int) me.getX(), (int) me.getY());
-		if (me.ACTION_DOWN == me.getAction()) {
+		if (me.ACTION_DOWN == me.getAction()&&selectedBeaconID!=0) {
 			MainActivity.beaconTaped(selectedBeaconID);
 		}
 		return true;
