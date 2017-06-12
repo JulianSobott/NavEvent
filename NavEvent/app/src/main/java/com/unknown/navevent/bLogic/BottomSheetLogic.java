@@ -46,13 +46,15 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 
 	@Override
 	public void getBeaconName(int beaconID) {
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded &&
+				serviceInterface.currentMap.getBeaconsIR().get(beaconID) != null ) {//Fixes bug where this method is called with not existing beaconID.
 			mResponder.beaconNameRespond(serviceInterface.currentMap.getBeaconsIR().get(beaconID).name);
 		}
 	}
 	@Override
 	public void getBeaconInfo(int beaconID) {
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded &&
+				serviceInterface.currentMap.getBeaconsIR().get(beaconID) != null ) {//Fixes bug where this method is called with not existing beaconID.
 			mResponder.beaconInfoRespond(serviceInterface.currentMap.getBeaconsIR().get(beaconID).description);
 		}
 	}
