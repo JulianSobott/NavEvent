@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
 
 
-
         if (activeMap == null) {
             activeMap = mapDefault;
         }
@@ -77,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         sideOpen = (Button) findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
         bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));                               //Setting the rough desing for the Fragments
-        beaconInfo.getView().setBackgroundColor(Color.argb(255,255,255,255));
+        beaconInfo.getView().setBackgroundColor(Color.argb(255, 255, 255, 255));
 
-                hideFragment(bar);
+        hideFragment(bar);
 
         sideOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,20 +90,17 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         beaconInfo.getView().setOnClickListener(new View.OnClickListener() {                            //Expanding the Bottomsheet if clicked on
             @Override
             public void onClick(View view) {
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)  beaconInfo.getView().getLayoutParams();
-                if(params.height==RelativeLayout.LayoutParams.WRAP_CONTENT) {
-                    params.height =(int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());       //some complex code to insert the height in density pixels not in normal
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
+                if (params.height == RelativeLayout.LayoutParams.WRAP_CONTENT) {
+                    params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());       //some complex code to insert the height in density pixels not in normal
                     beaconInfo.onCollapse();
-                }
-                else{
-                    params.height=RelativeLayout.LayoutParams.WRAP_CONTENT;
+                } else {
+                    params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                     beaconInfo.onExtend();
                 }
                 beaconInfo.getView().setLayoutParams(params);
             }
         });
-
-
 
 
     }
@@ -167,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         //todo debug: uncomment this block to enable the app only for supported devices
         //Notify user and shutdown the app
         /*final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(R.string.bluetoothNotAvailable);
+        builder.setMessage(R.string.bluetoothNotAvailable);
 		builder.setPositiveButton(android.R.string.ok, null);
 		builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			@Override
@@ -272,19 +268,25 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
             newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
             newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
             for (List<Integer> listSpec : in.getSpecialPlaces().values()) {
-                if (listSpec.contains(newBeaconList.get(i).getID())){
+                if (listSpec.contains(newBeaconList.get(i).getID())) {
                     newBeaconList.get(i).setSpecial(true);
                 }
             }
             for (List<Integer> listOrd : in.getOrdinaryPlaces().values()) {
-                if (listOrd.contains(newBeaconList.get(i).getID())){
-                    newBeaconList.get(i).setOrdinary(true);}
+                if (listOrd.contains(newBeaconList.get(i).getID())) {
+                    newBeaconList.get(i).setOrdinary(true);
+                }
             }
         }
         MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
         return out;
     }
-
+    public static void beaconTaped(int beaconID){
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
+        params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+        beaconInfo.showBeaconInfo(beaconID);
+        beaconInfo.getView().setLayoutParams(params);
+    }
 
 
 }

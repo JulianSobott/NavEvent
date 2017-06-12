@@ -70,7 +70,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		scaleGestureDetector.onTouchEvent(me);
 		int selectedBeaconID = getClickedBeacon((int) me.getX(), (int) me.getY());
 		if (me.ACTION_DOWN == me.getAction()) {
-
+			MainActivity.beaconTaped(selectedBeaconID);
 		}
 		return true;
 	}
@@ -102,10 +102,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
 			scale *= detector.getScaleFactor();
-
-
 			scale = Math.max(0.1f, Math.min(scale, 5.0f));
-
 			invalidate();
 			return true;
 		}

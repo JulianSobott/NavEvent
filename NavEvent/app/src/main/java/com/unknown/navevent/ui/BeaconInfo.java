@@ -15,58 +15,65 @@ import com.unknown.navevent.interfaces.BottomSheetUI;
 
 import us.feras.mdv.MarkdownView;
 
-public class BeaconInfo extends Fragment implements BottomSheetUI{
-	private TextView beaconNameText;
-	private MarkdownView markdownView;
-	private BottomSheetLogicInterface mIfc = null;
-    int nearestBeacon;
+public class BeaconInfo extends Fragment implements BottomSheetUI {
+    private TextView beaconNameText;
+    private MarkdownView markdownView;
+    private BottomSheetLogicInterface mIfc = null;
+    private int nearestBeacon;
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		//Creating the NavigationDrawer
-		mIfc=new BottomSheetLogic(this);
-		mIfc.onCreate();
-	}
-    public void onExtend(){     //is called when the Sheet is extended
+        //Creating the NavigationDrawer
+        mIfc = new BottomSheetLogic(this);
+        mIfc.onCreate();
+    }
+
+    public void onExtend() {     //is called when the Sheet is extended
         beaconNameText.setText("Click here to collapse");
     }
-    public void onCollapse(){    //is called when the Sheet is collapsed
+
+    public void onCollapse() {    //is called when the Sheet is collapsed
         beaconNameText.setText("NoBeaconSignal");
+        mIfc.getBeaconInfo(nearestBeacon);
         mIfc.getBeaconName(nearestBeacon);
     }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
 
-		mIfc.onDestroy();
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
-		beaconNameText = (TextView) v.findViewById(R.id.textViewBeaconName);
-        beaconNameText.setText("NoBeaconSignal");
-		markdownView = (MarkdownView) v.findViewById(R.id.markdownView);
-		markdownView.loadMarkdown("test...GO *asdf*");
-        return v;
-	}
-
-    public void updateBeaconText(int idNearestBeacon){
-        mIfc.getBeaconName(idNearestBeacon);
-	    mIfc.getBeaconInfo(idNearestBeacon);
+        mIfc.onDestroy();
     }
 
-	@Override
-	public void beaconInfoRespond(String info) {
-		markdownView.loadMarkdown(info);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_beacon_info, container, false);
+        beaconNameText = (TextView) v.findViewById(R.id.textViewBeaconName);
+        beaconNameText.setText("NoBeaconSignal");
+        markdownView = (MarkdownView) v.findViewById(R.id.markdownView);
+        markdownView.loadMarkdown("test...GO *asdf*");
+        return v;
+    }
 
-	@Override
-	public void beaconNameRespond(String name) {
-		beaconNameText.setText(name);
-	}
+    public void updateBeaconText(int idNearestBeacon) {
+        nearestBeacon=idNearestBeacon;
+        mIfc.getBeaconName(idNearestBeacon);
+        mIfc.getBeaconInfo(idNearestBeacon);
+    }
+    public void showBeaconInfo(int beaconID){
+        mIfc.getBeaconInfo(beaconID);
+    }
+
+    @Override
+    public void beaconInfoRespond(String info) {
+        markdownView.loadMarkdown(info);
+    }
+
+    @Override
+    public void beaconNameRespond(String name) {
+        beaconNameText.setText(name);
+    }
 }
