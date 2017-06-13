@@ -155,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     @Override
     public void initCompleted() {
-        Toast.makeText(MainActivity.this, "Map has been successfully loaded", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -285,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
         params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         beaconInfo.showBeaconInfo(beaconID);
+        beaconInfo.onExtend();
         beaconInfo.getView().setLayoutParams(params);
     }
 
