@@ -53,7 +53,6 @@ public class BeaconInfo extends Fragment implements BottomSheetUI {
 		beaconNameText = (TextView) v.findViewById(R.id.textViewBeaconName);
 		beaconNameText.setText("NoBeaconSignal");
 		markdownView = (MarkdownView) v.findViewById(R.id.markdownView);
-		markdownView.loadMarkdown("test...GO *asdf*");
 		return v;
 	}
 

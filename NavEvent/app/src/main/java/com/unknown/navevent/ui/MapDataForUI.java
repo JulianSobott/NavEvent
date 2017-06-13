@@ -52,7 +52,7 @@ public class MapDataForUI {
 		for (int i = 0; i < beacons.length; i++) {
 			beacons[i].select(false);
 		}
-		for (int i = 0; i < toSelect.length; i++) {
+		for (int i = 0; i < beacons.length; i++) {
             for (int j = 0; j < toSelect.length; j++) {
                 if (beacons[i].getID() == toSelect[j]) beacons[i].select(true);
             }

@@ -2,14 +2,17 @@ package com.unknown.navevent.bLogic;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
+import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.BeaconData;
 import com.unknown.navevent.interfaces.NavigationDrawerLogicInterface;
 import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
+import org.altbeacon.beacon.Beacon;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -105,19 +108,22 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	}
 
 	@Override
-	public void searchFor(String name) {
+	public void searchFor(String query) {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
-			List<BeaconData> beacons = serviceInterface.currentMap.getBeacons();
+			SparseArray<MapBeaconIR> beacons = serviceInterface.currentMap.getBeaconsIR();
 			List<BeaconData> retBeacons = new LinkedList<>();
+			String queryString = query.toLowerCase();
 
-			for( BeaconData beacon : beacons ) {
-				if( beacon.getName().contains(name) ) { //Found beacon by name
-					retBeacons.add(beacon);
+			for( int i = 0 ; i < beacons.size() ; i++ ) {
+				String name = beacons.valueAt(i).name.toLowerCase();
+				String description = beacons.valueAt(i).description.toLowerCase();
+
+				if( name.contains(queryString) || description.contains(queryString) ) {
+					retBeacons.add(beacons.valueAt(i));
 				}
 			}
-			if( !retBeacons.isEmpty() ) {
-				mResponder.searchResults(retBeacons);
-			}
+
+			mResponder.searchResults(retBeacons);
 		}
 	}
 
