@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         beaconInfo = (BeaconInfo) getSupportFragmentManager().findFragmentById(R.id.frag);
         sideOpen = (Button) findViewById(R.id.SideBarBtn);
         mapDisplayFragment = (MapDisplayFragment) getSupportFragmentManager().findFragmentById(R.id.mapDisplayfragment);
-        bar.getView().setBackgroundColor(Color.argb(220, 240, 240, 240));                               //Setting the rough desing for the Fragments
+        bar.getView().setBackgroundColor(Color.argb(255, 240, 240, 240));                               //Setting the rough desing for the Fragments
         beaconInfo.getView().setBackgroundColor(Color.argb(255, 255, 255, 255));
 
         hideFragment(bar);
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         sideOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sideOpen.setVisibility(View.INVISIBLE);
                 showFragment(bar);
             }
         });
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     //Hide a displayed fragment
     public void hideFragment(Fragment f) {
+        sideOpen.setVisibility(View.VISIBLE);
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.hide(f);
         Tr.commit();
