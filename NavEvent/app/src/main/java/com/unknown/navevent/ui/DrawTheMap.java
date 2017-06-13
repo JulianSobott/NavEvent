@@ -93,7 +93,6 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 		beaconTexture = new Bitmap[beaconNumber];
 
 		for (int i = 0; i < beaconNumber; i++) {
-			beaconTexture[i] = BitmapFactory.decodeResource(getResources(), R.mipmap.beacon_enabeld);
 			x[i] = (float) this.displayedMap.beacons[i].getxCord();
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}

@@ -54,15 +54,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
         super.onCreate(savedInstanceState);
 
-        //Generating 2 Maps for testing purposes				todo del
+        //Generating a default empty map
         List<BeaconDataForUI> list1 = new ArrayList<BeaconDataForUI>();
-
-        list1.add(new BeaconDataForUI(1, 150, 100));
-        list1.add(new BeaconDataForUI(2, 150, 650));
-        list1.get(0).setOrdinary(true);
-        list1.get(1).setOrdinary(true);
-
-        mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.testmapflur));
+        mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.empty_map));
 
 
         if (activeMap == null) {
