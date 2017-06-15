@@ -10,6 +10,16 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/buttonClose"
+        android:background="@android:drawable/ic_menu_close_clear_cancel"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_alignBaseline="@+id/OptionButton"
+        android:layout_alignBottom="@+id/OptionButton"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/OptionButton"
         android:background="@drawable/ic_menu_manage"
         android:layout_alignParentTop="true"
@@ -51,15 +61,5 @@
         android:layout_height="220dp"
         android:layout_below="@+id/textViewNeededPlaces"
         android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonClose"
-        android:background="@android:drawable/ic_menu_close_clear_cancel"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_alignBaseline="@+id/OptionButton"
-        android:layout_alignBottom="@+id/OptionButton"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

@@ -9,35 +9,15 @@ import java.util.List;
 
 public class MapDataForUI {
 	private int beaconNumber;
-	//private int theMagicNumberThatNeverShouldBeUsed = 975667323; todo del
 	private Bitmap Map;
 	BeaconDataForUI[] beacons;
 
 	MapDataForUI(List<BeaconDataForUI> bList, Bitmap map) {
 		Map = map;
 		beaconNumber=bList.size();
-		//Map.setDensity(Bitmap.DENSITY_NONE);      todo del
 		beacons = bList.toArray(new BeaconDataForUI[bList.size()]);
 
 	}
-
-	public String getStringOfDisplayedBeacon(int beaconToDisplay) {
-		String returnText=" ";
-        for (int i=0;i<beaconNumber;i++) {
-            if (beaconToDisplay==beacons[i].getID()) returnText=beacons[i].getDisplayedText();
-        }
-		return returnText;
-	}
-
-	/*public List<Integer> getSelectedBeacon() {            todo check if needed del if not
-		List<Integer> selectedBeacons = new ArrayList<>();
-		for (int i = 0; i < beaconNumber; i++) {
-			if (beacons[i].isSelected()) {
-				selectedBeacons.add(i);
-			}
-		}
-		return selectedBeacons;
-	}*/
 
 	public int getBeaconNumber() {
 		return beaconNumber;

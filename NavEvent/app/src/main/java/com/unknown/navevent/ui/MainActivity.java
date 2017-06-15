@@ -286,4 +286,3 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
 
 }
-

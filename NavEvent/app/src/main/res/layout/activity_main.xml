@@ -30,7 +30,7 @@
         android:id="@+id/frag"
         android:name="com.unknown.navevent.ui.BeaconInfo"
         android:layout_width="match_parent"
-        android:layout_height="16dp"
+        android:layout_height="32dp"
         android:layout_alignParentBottom="true"
         tools:layout="@layout/fragment_beacon_info"/>
 
