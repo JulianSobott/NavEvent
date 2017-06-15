@@ -164,7 +164,7 @@ public class MapService extends Service {
 	/////////////////////////////////////////////////////////
 
 	private final static String SEP_CHAR = ";";//Separates items in a file
-	private final static String URL_TO_SERVER = "192.168.2.103";//todo change URL
+	private final static String URL_TO_SERVER = "navevent.ddns.net";
 
 	//Returns the file for the specified path
 	private File getFile(String filename) {
