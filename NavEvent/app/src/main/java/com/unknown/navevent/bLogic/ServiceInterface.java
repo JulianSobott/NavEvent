@@ -55,6 +55,9 @@ public class ServiceInterface {
 		return mSingleton;
 	}
 
+	//Private constructor to prohibit external instancing.
+	private ServiceInterface() {}
+
 	/////////////////////////////////////////////////////////
 	// Data & constants
 	/////////////////////////////////////////////////////////
