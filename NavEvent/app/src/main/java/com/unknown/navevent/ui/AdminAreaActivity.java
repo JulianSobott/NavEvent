@@ -1,9 +1,9 @@
 package com.unknown.navevent.ui;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,11 +12,9 @@ import android.widget.Toast;
 
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.AdminAreaLogic;
-import com.unknown.navevent.bLogic.MapSelectActivityLogic;
 import com.unknown.navevent.interfaces.AdminAreaLogicInterface;
 import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.MapData;
-import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +61,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 		for (int i = 0; i < map.getBeacons().size(); i++) {
 			mapList.add(map.getBeacons().get(i).getName());
 		}
-		final ListView BeaconList = (ListView) findViewById(R.id.ListViewConfiguration);
+		final ListView BeaconList = (ListView) findViewById(R.id.ListViewConfiguration);									//Opens a Dialog to check if the user really wants to configure the beacon
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminAreaActivity.this, android.R.layout.simple_list_item_1, mapList);
 		BeaconList.setAdapter(adapter);
 		BeaconList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -78,7 +76,8 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 						.setCancelable(false)
 						.setPositiveButton(getString(R.string.String_Yes), new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-							mIfc.configureBeacon(map.getBeacons().get(i).getId());
+								mIfc.configureBeacon(map.getBeacons().get(i).getId());
+								beaconConfigurationStarted();
 							}
 						})
 						.setNegativeButton(getString(R.string.String_No), new DialogInterface.OnClickListener() {
@@ -111,6 +110,9 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 	@Override
 	public void beaconConfigurationFailed(String errorcode) {
 		Toast.makeText(this, getString(R.string.BeaconNotConfigured) + errorcode, Toast.LENGTH_SHORT).show();
+	}
+	private void beaconConfigurationStarted(){
+		Toast.makeText(this, getString(R.string.beacon_configuration_started), Toast.LENGTH_LONG).show();
 	}
 
 }

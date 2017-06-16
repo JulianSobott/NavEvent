@@ -2,15 +2,12 @@ package com.unknown.navevent.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-
-import com.unknown.navevent.R;
 
 public class DrawTheMap extends View implements View.OnTouchListener {
 	Bitmap beaconTexture[];

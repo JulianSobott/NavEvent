@@ -18,7 +18,7 @@
     <string name="bluetoothNotEnabled">Bluetooth not enabled! Please enable bluetooth in settings.</string>
     <string name="bluetoothNotAvailable">Sorry, this device does not support required Bluetooth LE.</string>
     <string name="bluetoothTurnedOffWarning">Bluetooth turned off. Functionality limited!</string>
-    <string name="please_select_a_map">Please select a Map:</string>
+    <string name="please_select_a_map">Or select a map that's already stored on locally on your Device:</string>
     <string name="NoInternetAccess">You are not connected to the internet. Mapdownload unavailable.</string>
     <string name="Download_failed">"Download failed state reason: "</string>
     <string name="invalid_MapID">Map not loaded, invalid ID</string>
@@ -36,6 +36,7 @@
     are not supposed to be here please return to the last screen by using the back-button on your phone. \n\nSincerely your Navevent Team</string>
     <string name="i_acknowledged_and_want_to_proceed">I acknowledged and want to proceed</string>
     <string name="found_no_search_results">No search results found</string>
+    <string name="beacon_configuration_started">Configuring the Beacon. \nThis may take a While\nPlease don't close the App or disable the beacon before its finished</string>
 
 
 </resources>
