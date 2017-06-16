@@ -55,6 +55,9 @@ public class MapService extends Service {
 
 	private Queue<MapServiceEvent> backgroundTaskQueue = new ConcurrentLinkedQueue<>();
 
+	private final static String SEP_CHAR = ";";//Separates items in a file
+	private final static String URL_TO_SERVER = "navevent.ddns.net";
+	private final static int TIMEOUT_MILLIS = 10000;
 
 	/////////////////////////////////////////////////////////
 	// Lifecycle methods
@@ -163,8 +166,6 @@ public class MapService extends Service {
 	// Methods to handle tasks
 	/////////////////////////////////////////////////////////
 
-	private final static String SEP_CHAR = ";";//Separates items in a file
-	private final static String URL_TO_SERVER = "navevent.ddns.net";
 
 	//Returns the file for the specified path
 	private File getFile(String filename) {
@@ -335,6 +336,7 @@ public class MapService extends Service {
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
+			connection.setConnectTimeout(TIMEOUT_MILLIS);
 
 			OutputStream outputStream = connection.getOutputStream();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
@@ -440,6 +442,7 @@ public class MapService extends Service {
 			URL url = new URL("http://" + URL_TO_SERVER + "/uploads/" + path);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setDoOutput(true);
+			connection.setConnectTimeout(TIMEOUT_MILLIS);
 
 			InputStream inputStream = connection.getInputStream();
 
@@ -487,6 +490,7 @@ public class MapService extends Service {
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
+			connection.setConnectTimeout(TIMEOUT_MILLIS);
 
 			OutputStream outputStream = connection.getOutputStream();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
@@ -534,6 +538,7 @@ public class MapService extends Service {
 			connection.setRequestMethod("POST");
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
+			connection.setConnectTimeout(TIMEOUT_MILLIS);
 
 			OutputStream outputStream = connection.getOutputStream();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
