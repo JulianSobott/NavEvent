@@ -10,13 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.unknown.navevent.ui.MapSelectActivity">
 
-    <TextView
-        android:text="@string/please_select_a_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textViewSelectLocalMaps"
-        android:layout_below="@id/searchViewOnlineMaps"/>
-
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,11 +17,18 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:queryHint="Search online" />
+    <TextView
+        android:text="@string/please_select_a_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSelectLocalMaps"
+        android:layout_below="@id/searchViewOnlineMaps"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/onlineMapList"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:id="@+id/offlineMapList"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewSelectLocalMaps"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

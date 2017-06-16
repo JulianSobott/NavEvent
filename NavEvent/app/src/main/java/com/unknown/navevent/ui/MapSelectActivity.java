@@ -62,25 +62,29 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
 	@Override
 	public void onlineMapQueryRespond(final List<MapData> maps) {
-		final ListView list = (ListView) findViewById(R.id.onlineMapList);
+		final List<String> results = new ArrayList<>();//convert to string list
+		for (int i = 0; i < maps.size(); i++) results.add(maps.get(i).getName());
 
-		List<String> tmpList = new ArrayList<>();//convert to string list
-		for (int i = 0; i < maps.size(); i++) tmpList.add(maps.get(i).getName());
-
-		//todo change so that it will not override local maps-list
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(MapSelectActivity.this, android.R.layout.simple_list_item_1, tmpList);
-		list.setAdapter(adapter);
-		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-				mIfc.downloadMap(maps.get(i).getID());
+		if(!results.isEmpty()) {												//Opens a dialog for the user to select the Maps he wants to load
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Searchresults");
+			String[] beaconNames = new String[results.size()];
+			for (int i = 0; i < results.size(); i++) {
+				beaconNames[i] = maps.get(i).getName();
 			}
-		});
+			builder.setItems(beaconNames, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i) {
+					mIfc.downloadMap(maps.get(i).getID());
+				}
+			}).show();
+		}
+		else Toast.makeText(this, getString(R.string.found_no_search_results), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	public void localMapsLoaded(final List<MapData> maps) {
-		final ListView list = (ListView) findViewById(R.id.onlineMapList);
+		final ListView list = (ListView) findViewById(R.id.offlineMapList);
 
 		List<String> tmpList = new ArrayList<>();//convert to string list
 		for (int i = 0; i < maps.size(); i++) tmpList.add(maps.get(i).getName());
