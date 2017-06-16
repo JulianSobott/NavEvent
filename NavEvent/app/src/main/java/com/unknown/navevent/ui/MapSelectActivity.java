@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class MapSelectActivity extends AppCompatActivity implements MapSelectActivityUI {
 	private MapSelectActivityLogicInterface mIfc = null;
-
+	private SearchView onlineMapSearchView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +36,21 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		//Creating the mapSelectLogic
 		mIfc = new MapSelectActivityLogic(this);
 		mIfc.onCreate(this);
+
+		onlineMapSearchView = (SearchView) findViewById(R.id.searchViewOnlineMaps);
+		onlineMapSearchView.setQueryHint("Search online for Maps");
+		onlineMapSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				mIfc.findOnlineMap(query);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				return false;
+			}
+		});
 	}
 
 
@@ -65,7 +81,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 		final List<String> results = new ArrayList<>();//convert to string list
 		for (int i = 0; i < maps.size(); i++) results.add(maps.get(i).getName());
 
-		if(!results.isEmpty()) {												//Opens a dialog for the user to select the Maps he wants to load
+		if(!results.isEmpty()) {												//Opens a dialog for the user to select the Map he wants to load
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Searchresults");
 			String[] beaconNames = new String[results.size()];
@@ -76,6 +92,8 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 				@Override
 				public void onClick(DialogInterface dialogInterface, int i) {
 					mIfc.downloadMap(maps.get(i).getID());
+					onlineMapSearchView.setQuery("",false);
+
 				}
 			}).show();
 		}
