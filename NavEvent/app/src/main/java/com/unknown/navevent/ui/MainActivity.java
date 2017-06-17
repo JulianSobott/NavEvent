@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         sideOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sideOpen.setVisibility(View.INVISIBLE);
                 showFragment(bar);
             }
         });
@@ -125,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     private void showFragment(Fragment f) {
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.show(f);
+        Tr.addToBackStack("f");
         Tr.commit();
     }
 
@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         sideOpen.setVisibility(View.VISIBLE);
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.hide(f);
+        Tr.addToBackStack("f");
         Tr.commit();
     }
 
