@@ -10,8 +10,8 @@ import com.unknown.navevent.R;
 
 
 public class MapDisplayFragment extends Fragment {
-
 	DrawTheMap theMap;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SideBar.SideBarInterface, MainActivityUI {
+public class MainActivity extends AppCompatActivity implements SideBar.SideBarInterface, MainActivityUI, DrawTheMap.MapActionInterface {
     //Background-logic interface
     private MainActivityLogicInterface mIfc = null;
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         mapDefault = new MapDataForUI(list1, BitmapFactory.decodeResource(getResources(), R.mipmap.empty_map));
 
 
-        if (activeMap == null) {
+        if (activeMap == null) {                        //Sets a empty default map if there is no Map loaded to prevent a Crash
             activeMap = mapDefault;
         }
 
@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
 
     //Hide a displayed fragment
     public void hideFragment(Fragment f) {
-        sideOpen.setVisibility(View.VISIBLE);
         FragmentTransaction Tr = getSupportFragmentManager().beginTransaction();
         Tr.hide(f);
         Tr.addToBackStack("f");
@@ -271,7 +270,9 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
         return out;
     }
-    public static void beaconTaped(int beaconID){                   //The logic for the Case the user tapped on a Beacon
+
+    @Override
+    public void beaconTaped(int beaconID){                   //The logic for the Case the user tapped on a Beacon
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
         params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         beaconInfo.showBeaconInfo(beaconID);

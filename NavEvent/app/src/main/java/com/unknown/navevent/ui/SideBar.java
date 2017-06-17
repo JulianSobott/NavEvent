@@ -29,10 +29,10 @@ import java.util.List;
 public class SideBar extends Fragment implements NavigationDrawerUI {
 	private NavigationDrawerLogicInterface mIfc = null;
 
-	public SideBarInterface activityCommander;
+	public SideBarInterface activityCommander;												//Creats a Interface to talk to he Mainactivity
 
 	@Override
-	public void searchResults(final List<BeaconData> results) {
+	public void searchResults(final List<BeaconData> results) {								//Processes the response to mIfc.searchfor() and presents the results
 		if(!results.isEmpty()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setTitle("Searchresults");
@@ -66,7 +66,6 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 	private SearchView searchView;
 	private ListView importantPlacesList;
 	private ListView neededPlacesList;
-	private List<String> SearchResults;
 
 	@Override
 	public void onAttach(Context context) {
@@ -94,17 +93,15 @@ public class SideBar extends Fragment implements NavigationDrawerUI {
 		neededPlacesList = (ListView) v.findViewById(R.id.ListViewNeededPlaces);
 		searchView = (SearchView) v.findViewById(R.id.SeachViewBeacons);
 		createButtonListeners();
-
-
-		ArrayAdapter<String> adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getSpecialBeacons());
-		importantPlacesList.setAdapter(adapter);
-		adapter =new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getOrdinaryBeacons());
-		neededPlacesList.setAdapter(adapter);
+		loadBeacons();
 		return v;
 	}
 
 	public void loadBeacons() {
-
+		ArrayAdapter<String> adapter =new ArrayAdapter<>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getSpecialBeacons());				//Fills the Lists in the NavigationDrawer
+		importantPlacesList.setAdapter(adapter);
+		adapter =new ArrayAdapter<>(this.getActivity(),android.R.layout.simple_list_item_1,mIfc.getOrdinaryBeacons());
+		neededPlacesList.setAdapter(adapter);
 	}
 
 	@Override
