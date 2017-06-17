@@ -80,9 +80,9 @@ public class MapService extends Service {
 					while (!mBackgroundThreadShouldStop.get()) {//Loop until thread should stop
 						Thread.sleep(mBackgroundThreadShouldWait);//Wait to save cpu time
 
-						if (mBackgroundThreadShouldWait < 1000) {
+						if (mBackgroundThreadShouldWait < 1000) {//Slow down event. From 5 ms to 100 ms after 500 ms. From 100 ms to 1 s after 10 s.
 							mBackgroundThreadSlowdownCount++;
-							if (mBackgroundThreadSlowdownCount >= 100) {//Slow down event. From 5 ms to 100 ms after 500 ms. From 100 ms to 1 s after 10 s.
+							if (mBackgroundThreadSlowdownCount >= 100) {
 								if (mBackgroundThreadShouldWait == 5)
 									mBackgroundThreadShouldWait = 100;
 								else mBackgroundThreadShouldWait = 1000;
