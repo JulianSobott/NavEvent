@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     MapDataForUI mapDefault;
     private static MapDataForUI activeMap;
 
-    //private float displayDensity; // TODO: 08.06.2017 check if needed del if not
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Creating background-logic for this activity
@@ -136,10 +134,6 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         Tr.addToBackStack("f");
         Tr.commit();
     }
-
-	/*public static void updateDisplayedText() {        todo del
-
-	}*/
 
     public static MapDataForUI getMap() {
         return activeMap;
@@ -277,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         MapDataForUI out = new MapDataForUI(newBeaconList, in.getImage());
         return out;
     }
-    public static void beaconTaped(int beaconID){
+    public static void beaconTaped(int beaconID){                   //The logic for the Case the user tapped on a Beacon
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
         params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;
         beaconInfo.showBeaconInfo(beaconID);
