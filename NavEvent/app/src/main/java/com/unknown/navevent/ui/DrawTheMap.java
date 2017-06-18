@@ -98,7 +98,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 			y[i] = (float) this.displayedMap.beacons[i].getyCord();
 		}
 	}
-	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{      //Androidnative Listenerclass for scaleevents
+	private class Scalelistener extends ScaleGestureDetector.SimpleOnScaleGestureListener{      //Listenerclass for scaleevents, inherits from the android native ListenerClass
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
 			scale *= detector.getScaleFactor();
