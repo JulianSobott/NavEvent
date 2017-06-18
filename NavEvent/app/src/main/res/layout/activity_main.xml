@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.unknown.navevent.ui.MainActivity"
-    android:background="@android:color/background_light"
-    android:theme="@style/AppTheme.NoActionBar">
+    android:background="@android:color/background_light">
 
     <fragment
         android:layout_width="match_parent"
