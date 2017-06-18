@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.unknown.navevent.ui.MainActivity"
-    android:background="@android:color/background_light">
+    android:background="@android:color/background_light"
+    android:theme="@style/AppTheme.NoActionBar">
 
     <fragment
         android:layout_width="match_parent"
@@ -21,7 +22,6 @@
         android:id="@+id/SideBarBtn"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="@android:drawable/ic_menu_sort_by_size"/>
 
