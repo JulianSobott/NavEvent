@@ -94,12 +94,12 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 
 	@Override
 	public void invalidMapID() {
-		Toast.makeText(this, R.string.invalid_MapID, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, R.string.invalid_MapID, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void downloadFailed(String errorcode) {
-		Toast.makeText(this, getString(R.string.Download_failed) + errorcode, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(R.string.Download_failed) + errorcode, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -109,7 +109,7 @@ public class AdminAreaActivity extends AppCompatActivity implements AdminAreaUI 
 
 	@Override
 	public void beaconConfigurationFailed(String errorcode) {
-		Toast.makeText(this, getString(R.string.BeaconNotConfigured) + errorcode, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(R.string.BeaconNotConfigured) + errorcode, Toast.LENGTH_LONG).show();
 	}
 	private void beaconConfigurationStarted(){
 		Toast.makeText(this, getString(R.string.beacon_configuration_started), Toast.LENGTH_LONG).show();

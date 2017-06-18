@@ -116,7 +116,7 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 
 	@Override
 	public void downloadFailed(String errorcode) {
-		Toast.makeText(this, getString(R.string.Download_failed) + errorcode, Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, getString(R.string.Download_failed) + errorcode, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
