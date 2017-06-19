@@ -280,8 +280,8 @@ public class ServiceInterface {
 			if (event.beacons != null && event.beacons.size() > 0) {
 				currentBeacons = event.beacons;
 				int nearestBeaconIndex = -1;//Not existing index
-				nearestBeaconMajorID = currentBeacons.get(0).majorID;
-				double nearestDistance = currentBeacons.get(0).distance;
+				nearestBeaconMajorID = -1;
+				double nearestDistance = 100000000;//To big nr
 				for (BeaconIR beacon : currentBeacons) {
 					if ((mapAvailabilityState != MapAvailabilityState.loaded || beacon.majorID == currentMap.getMajorID()) && nearestDistance > beacon.distance) {
 						//Set nearest beacon (beacon which matches to current map OR to any map, if no map loaded)
@@ -298,7 +298,7 @@ public class ServiceInterface {
 
 				//Update ui
 				if (mapAvailabilityState == MapAvailabilityState.loaded && nearestBeaconIndex >= 0) {
-					//Find id of minorID
+					//Find id from minorID
 					for (int i = 0; i < currentMap.getBeaconsIR().size(); i++) {
 						if (currentMap.getBeaconsIR().valueAt(i).minorID == currentBeacons.get(nearestBeaconIndex).minorID) {
 							//Found id
