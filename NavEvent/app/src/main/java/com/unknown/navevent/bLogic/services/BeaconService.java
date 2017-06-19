@@ -240,8 +240,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 			@Override
-			public void onConnectSuccess(BluetoothGatt gatt, int status) {
-				// discover services
+			public void onConnectSuccess(BluetoothGatt gatt, int status) {//Discover services
 				gatt.discoverServices();
 			}
 
