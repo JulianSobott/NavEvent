@@ -131,7 +131,7 @@ public class ServiceInterface {
 		if (mapServiceBindCount == 1) mContext.startService(new Intent(mContext, MapService.class));
 
 
-		{//Debug-map todo del
+		{//Debug-map. Uncomment this to get a debug-map at the local storage.
 			/*currentMap = new MapIR();
 
 			currentMap.name = "debug map 1";
@@ -174,10 +174,10 @@ public class ServiceInterface {
 	public void onDestroy() {
 		beaconServiceBindCount--;
 		if (beaconServiceBindCount == 0)
-			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_STOP_SELF));//todo: check if interrupts other activities
+			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_STOP_SELF));
 		mapServiceBindCount--;
 		if (mapServiceBindCount == 0) {
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_STOP_SELF));//todo: check if interrupts other activities
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_STOP_SELF));
 			mContext.stopService(new Intent(mContext, MapService.class));
 		}
 

@@ -17,9 +17,6 @@ public interface MainActivityUI
 	//Will be called, when no beacon and no local map was found.
 	void switchToMapSelectActivity();
 
-	//Is called when a beacon and a corresponding map could be found.
-	void foundLocalMap(MapData map);
-
 	//Respond to MainActivityLogicInterface.getMap(). \p map is the data contained in the active map.
 	void updateMap(MapData map);
 

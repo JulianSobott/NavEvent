@@ -106,9 +106,6 @@ public class MapSelectActivityLogic implements MapSelectActivityLogicInterface {
 				newList.add(map);
 			}
 			mResponder.onlineMapQueryRespond(newList);
-		} else if (event.message == ServiceToActivityEvent.Type.EVENT_FOUND_CORRESPONDING_MAP) {
-			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
-			mResponder.foundLocalMap(serviceInterface.availableNearbyMap);
 		} else if (event.message == ServiceToActivityEvent.Type.EVENT_AVAIL_LOCAL_MAPS_UPDATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_LOCAL_MAPS_UPDATED");
 

@@ -127,35 +127,6 @@ public class MapSelectActivity extends AppCompatActivity implements MapSelectAct
 	}
 
 	@Override
-	public void foundLocalMap(final MapData map) {					//notifies when a map is already located on the device
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MapSelectActivity.this);
-
-		// set title
-		alertDialogBuilder.setTitle(getString(R.string.FoundMap));
-
-		// set dialog message
-		alertDialogBuilder
-				.setMessage("Local Map " + map.getName() + "found, do you want to load it?")
-				.setCancelable(false)
-				.setPositiveButton(getString(R.string.String_Yes), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						mIfc.setActiveMap(map.getID());
-					}
-				})
-				.setNegativeButton(getString(R.string.String_No), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
-
-		// show it
-		alertDialog.show();
-	}
-
-	@Override
 	public void switchToMainActivity() {
 		Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 		startActivity(intent);

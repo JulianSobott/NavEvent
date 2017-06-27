@@ -129,9 +129,6 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
 			Toast.makeText(serviceInterface.mContext, "Map '" + serviceInterface.lastDownloadedMap.getName() + "' downloaded.", Toast.LENGTH_SHORT).show();
-		} else if (event.message == ServiceToActivityEvent.Type.EVENT_FOUND_CORRESPONDING_MAP) {
-			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
-			mResponder.foundLocalMap(serviceInterface.availableNearbyMap);
 		} else if (event.message == ServiceToActivityEvent.Type.EVENT_BEACON_UPDATE) {
 			//Log.i(TAG, "onMessageEvent: EVENT_BEACON_UPDATE");
 			mResponder.updateBeaconPosition(serviceInterface.nearestBeaconID);
