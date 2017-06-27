@@ -41,7 +41,7 @@ public class ServiceInterface {
 	// Settings
 	/////////////////////////////////////////////////////////
 
-	public static boolean autoDownloadMaps = true;//Map will be downloaded automatically, if nearby corresponding beacon found.
+	//public static boolean autoDownloadMaps = true;//Map will be downloaded automatically, if nearby corresponding beacon found.
 
 
 	/////////////////////////////////////////////////////////
@@ -247,11 +247,7 @@ public class ServiceInterface {
 				availableNearbyMap = event.maps.get(0);
 				nearbyMapChosen = false;
 				mapAvailabilityState = MapAvailabilityState.loading;
-				if (autoDownloadMaps) {
-					EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_DOWNLOAD_MAP, event.maps.get(0).getID()));
-				} else {
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_FOUND_CORRESPONDING_MAP));
-				}
+				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_DOWNLOAD_MAP, event.maps.get(0).getID()));
 			}
 		} else if (event.message == MapUpdateEvent.Type.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
