@@ -93,25 +93,25 @@ public class MapService extends Service {
 						while ((task = backgroundTaskQueue.poll()) != null) {
 							mBackgroundThreadShouldWait = 5;//Set to high frequency
 
-							if (task.task == MapServiceEvent.EVENT_LOAD_MAP_LOCAL) {
+							if (task.task == MapServiceEvent.Type.EVENT_LOAD_MAP_LOCAL) {
 								Log.i(TAG, "mapThread: EVENT_LOAD_MAP_LOCAL");
 								loadLocalMap(task.mapID);
-							} else if (task.task == MapServiceEvent.EVENT_SAVE_MAP_LOCAL) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_SAVE_MAP_LOCAL) {
 								Log.i(TAG, "mapThread: EVENT_SAVE_MAP_LOCAL");
 								saveLocalMap(task.map);
-							} else if (task.task == MapServiceEvent.EVENT_DOWNLOAD_MAP) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_DOWNLOAD_MAP) {
 								Log.i(TAG, "mapThread: EVENT_DOWNLOAD_MAP");
 								downloadMap(task.mapID);
-							} else if (task.task == MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_GET_ALL_LOCAL_MAPS) {
 								Log.i(TAG, "mapThread: EVENT_GET_ALL_LOCAL_MAPS");
 								getAllLocalMaps();
-							} else if (task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_QUERY) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_FIND_ONLINE_MAP_BY_QUERY) {
 								Log.i(TAG, "mapThread: EVENT_FIND_ONLINE_MAP_BY_QUERY");
 								findOnlineMap(task.query);
-							} else if (task.task == MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_ID) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_FIND_ONLINE_MAP_BY_ID) {
 								Log.i(TAG, "mapThread: EVENT_FIND_ONLINE_MAP_BY_ID");
 								findOnlineMap(task.mapID);
-							} else if (task.task == MapServiceEvent.EVENT_STOP_SELF) {
+							} else if (task.task == MapServiceEvent.Type.EVENT_STOP_SELF) {
 								Log.i(TAG, "mapThread: EVENT_STOP_SELF");
 								mBackgroundThreadShouldStop.set(true);
 							}
@@ -127,7 +127,7 @@ public class MapService extends Service {
 
 		EventBus.getDefault().register(this);
 
-		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED));
+		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.Type.EVENT_MAP_SERVICE_STARTED));
 	}
 
 
@@ -243,7 +243,7 @@ public class MapService extends Service {
 
 			List<MapIR> retList = new ArrayList<>();
 			retList.add(map);
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_LOADED, retList));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_MAP_LOADED, retList));
 		} catch (Exception e) {
 			e.printStackTrace();
 			Toast.makeText(this, "Failed to load map '" + mapID + "'", Toast.LENGTH_LONG).show();
@@ -417,7 +417,7 @@ public class MapService extends Service {
 
 				List<MapIR> retList = new ArrayList<>();
 				retList.add(newMap);
-				EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOADED, retList));
+				EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_MAP_DOWNLOADED, retList));
 
 			} else {
 				//Load the map locally if connection failed
@@ -429,7 +429,7 @@ public class MapService extends Service {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED, e.getLocalizedMessage()));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_MAP_DOWNLOAD_FAILED, e.getLocalizedMessage()));
 
 			//Load the map locally if connection failed
 			loadLocalMap(mapID);
@@ -474,7 +474,7 @@ public class MapService extends Service {
 					bufReader.close();
 				}
 			}
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_AVAIL_OFFLINE_MAPS_LOADED, list));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -525,7 +525,7 @@ public class MapService extends Service {
 			e.printStackTrace();
 		}
 		//Return map if found any
-		EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS, foundMaps));
+		EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_FOUND_ONLINE_MAPS, foundMaps));
 	}
 
 	private void findOnlineMap(int majorID) {
@@ -565,7 +565,7 @@ public class MapService extends Service {
 				foundMaps.add(map);
 			}
 
-			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.EVENT_FOUND_ONLINE_MAP_BY_ID, foundMaps));
+			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_FOUND_ONLINE_MAP_BY_ID, foundMaps));
 
 			reader.close();
 			inputStream.close();

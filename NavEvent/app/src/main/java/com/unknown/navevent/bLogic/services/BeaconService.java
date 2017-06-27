@@ -85,7 +85,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 		EventBus.getDefault().register(this);
 
-		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED));
+		EventBus.getDefault().post(new ServiceInterfaceEvent(ServiceInterfaceEvent.Type.EVENT_BEACON_SERVICE_STARTED));
 
 	}
 
@@ -108,15 +108,15 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 	@Subscribe(threadMode = ThreadMode.ASYNC)
 	public void onMessageEvent(final BeaconServiceEvent event) {
-		if (event.message == BeaconServiceEvent.EVENT_START_LISTENING) {
+		if (event.message == BeaconServiceEvent.Type.EVENT_START_LISTENING) {
 			Log.i(TAG, "onMessageEvent: START_LISTENING");
 			startBeaconManager();
-		} else if (event.message == BeaconServiceEvent.EVENT_STOP_LISTENING) {
+		} else if (event.message == BeaconServiceEvent.Type.EVENT_STOP_LISTENING) {
 			Log.i(TAG, "onMessageEvent: START_LISTENING");
 			stopBeaconManager();
-		} else if (event.message == BeaconServiceEvent.EVENT_STOP_SELF) {
+		} else if (event.message == BeaconServiceEvent.Type.EVENT_STOP_SELF) {
 			stopSelf();
-		} else if (event.message == BeaconServiceEvent.EVENT_CONFIG_DEVICE) {
+		} else if (event.message == BeaconServiceEvent.Type.EVENT_CONFIG_DEVICE) {
 			if (nearestBeacon != null) {
 				writeBeaconData(nearestBeacon.mac, event.writeBeaconData.writeMajor, event.writeBeaconData.writeMinor);
 			}
@@ -150,7 +150,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private void verifyBluetooth() {
 		try {
 			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLE_NOT_SUPPORTED));
 			}
 
 			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {
@@ -159,12 +159,12 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			} else {
 				isBluetoothSupported = true;
 				isBluetoothActivated = false;
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLUETOOTH_DEACTIVATED));
 			}
 		} catch (RuntimeException e) {
 			isBluetoothSupported = false;
 			isBluetoothActivated = false;
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED, e.getLocalizedMessage()));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLUETOOTH_NOT_SUPPORTED, e.getLocalizedMessage()));
 		}
 
 	}
@@ -175,7 +175,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			//Android M+ permission check
 			if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) { //Permission denied
 				hasBeaconPermissions = false;
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_ASK_PERMISSION));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_ASK_PERMISSION));
 			} else hasBeaconPermissions = true;//Permission granted
 		} else hasBeaconPermissions = true;//Permission should be granted if android version < 6
 	}
@@ -187,7 +187,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		internBeaconMgr.bind(this);
 		isBeaconListening = true;
 
-		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_LISTENER_STARTED));
+		EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_LISTENER_STARTED));
 	}
 
 	private void stopListening() {
@@ -227,7 +227,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			}
 		}
 
-		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.EVENT_BEACON_UPDATE, this.beacons));
+		EventBus.getDefault().post(new BeaconUpdateEvent(BeaconUpdateEvent.Type.EVENT_BEACON_UPDATE, this.beacons));
 	}
 
 
@@ -260,7 +260,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 
 			@Override
 			public void onConnectFailure(BleException e) {
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
 			}
 		});
 	}
@@ -292,7 +292,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 							writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MINOR, data);
 						} else if (characteristic.getUuid().toString().toUpperCase().equals(UUID_SERVICE_MINOR)) {//Major id done. Next would be reboot
 							writeBeaconBytes(connector, UUID_SERVICE_RESET, UUID_SERVICE_REBOOT, data);
-							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_SUCCESSFUL));
+							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_CONFIG_SUCCESSFUL));
 							liteBluetooth.closeBluetoothGatt();
 						} else {//Disconnect if not automatically done by reboot
 							/*if (liteBluetooth.isConnectingOrConnected())
@@ -304,7 +304,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 					@Override
 					public void onFailure(BleException e) {
 						BleLog.i(TAG, "Write failure: " + e);
-						EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
+						EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_CONFIG_FAILED, e.getDescription()));
 						bleExceptionHandler.handleException(e);
 					}
 				});

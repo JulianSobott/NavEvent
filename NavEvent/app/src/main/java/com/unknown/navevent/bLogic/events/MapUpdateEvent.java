@@ -6,25 +6,27 @@ import com.unknown.navevent.bLogic.services.MapIR;
 import java.util.List;
 
 public class MapUpdateEvent {
-	public static final int EVENT_MAP_LOADED = 1;
-	public static final int EVENT_AVAIL_OFFLINE_MAPS_LOADED = 2;
-	public static final int EVENT_FOUND_ONLINE_MAPS = 3;
-	public static final int EVENT_FOUND_ONLINE_MAP_BY_ID = 4;
-	public static final int EVENT_MAP_DOWNLOADED = 5;
-	public static final int EVENT_MAP_DOWNLOAD_FAILED = 6;
+	public enum Type {
+		EVENT_MAP_LOADED,
+		EVENT_AVAIL_OFFLINE_MAPS_LOADED,
+		EVENT_FOUND_ONLINE_MAPS,
+		EVENT_FOUND_ONLINE_MAP_BY_ID,
+		EVENT_MAP_DOWNLOADED,
+		EVENT_MAP_DOWNLOAD_FAILED,
+	}
 
-	public final int message;
+	public Type message;
 	public List<MapIR> maps;
 	public String additionalData;
 
-	public MapUpdateEvent(int message) {
+	public MapUpdateEvent(Type message) {
 		this.message = message;
 	}
-	public MapUpdateEvent(int message, List<MapIR> maps) {
+	public MapUpdateEvent(Type message, List<MapIR> maps) {
 		this.message = message;
 		this.maps = maps;
 	}
-	public MapUpdateEvent(int message, String additionalData) {
+	public MapUpdateEvent(Type message, String additionalData) {
 		this.message = message;
 		this.additionalData = additionalData;
 	}
