@@ -138,7 +138,6 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NO_BEACON_FOUND) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_BEACON_FOUND");
 			mResponder.updateBeaconPosition(0);
-			Toast.makeText(serviceInterface.mContext, "NO_BEACON", Toast.LENGTH_SHORT).show();
 		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NO_CORRESPONDING_MAPS_AVAILABLE) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_CORRESPONDING_MAPS_AVAILABLE");
 			mResponder.switchToMapSelectActivity();

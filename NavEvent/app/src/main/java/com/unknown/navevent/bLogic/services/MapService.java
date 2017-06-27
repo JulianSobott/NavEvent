@@ -246,7 +246,6 @@ public class MapService extends Service {
 			EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_MAP_LOADED, retList));
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(this, "Failed to load map '" + mapID + "'", Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -316,7 +315,6 @@ public class MapService extends Service {
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(this, "Failed to save map '" + map.name + "'", Toast.LENGTH_LONG).show();
 		}
 	}
 
