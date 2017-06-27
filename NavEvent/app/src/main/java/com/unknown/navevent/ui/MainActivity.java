@@ -248,13 +248,13 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
     }
 
     private MapDataForUI mapDataAdapter(MapData in) {                //Converts a list of Data for a Map into a UI-usable format.
-        List<BeaconDataForUI> newBeaconList = new ArrayList<BeaconDataForUI>();
+        List<BeaconDataForUI> newBeaconList = new ArrayList<>();
         BeaconData[] oldBeacons;
         oldBeacons = in.getBeacons().toArray(new BeaconData[in.getBeacons().size()]);
 
 
         for (int i = 0; i < in.getBeacons().size(); i++) {
-            newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX(), oldBeacons[i].getMapPositionY()));
+            newBeaconList.add(new BeaconDataForUI(oldBeacons[i].getId(), oldBeacons[i].getMapPositionX()*in.getImage().getWidth(), oldBeacons[i].getMapPositionY()*in.getImage().getHeight()));
             newBeaconList.get(i).setDisplayedText(oldBeacons[i].getName());
             for (List<Integer> listSpec : in.getSpecialPlaces().values()) {
                 if (listSpec.contains(newBeaconList.get(i).getID())) {
