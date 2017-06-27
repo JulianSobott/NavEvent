@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         return out;
     }
 
-    @Override
+
     public void beaconTaped(int beaconID){                   //The logic for the Case the user tapped on a Beacon
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) beaconInfo.getView().getLayoutParams();
         params.height = RelativeLayout.LayoutParams.WRAP_CONTENT;

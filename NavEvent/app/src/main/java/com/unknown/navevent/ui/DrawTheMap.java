@@ -10,6 +10,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 public class DrawTheMap extends View implements View.OnTouchListener {
+
 	public interface MapActionInterface{
 		void beaconTaped(int beaconID);
 	}
@@ -24,6 +25,7 @@ public class DrawTheMap extends View implements View.OnTouchListener {
 
 	public DrawTheMap(Context context, MapDataForUI MapInput) {
 		super(context);
+		mapActionInterface = new  MainActivity();
 		displayedMap = MapInput;
 		beaconNumber = displayedMap.getBeaconNumber();
 		x = new float[beaconNumber];
