@@ -59,11 +59,11 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	//Beacon writing
 	private LiteBluetooth liteBluetooth;
 	private DefaultBleExceptionHandler bleExceptionHandler;
-	String UUID_SERVICE_PROXIMITY = "F001A0A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon proximity data
-	String UUID_SERVICE_RESET = "F001A4A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon reset data
-	String UUID_SERVICE_MAJOR = "F001A0A2-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon major id (with UUID_SERVICE_PROXIMITY)
-	String UUID_SERVICE_MINOR = "F001A0A3-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon minor id (with UUID_SERVICE_PROXIMITY)
-	String UUID_SERVICE_REBOOT = "F001A4A1-7509-4C31-A905-1A27D39C003C";//UUID to reboot beacon (with UUID_SERVICE_RESET)
+	private final String UUID_SERVICE_PROXIMITY = "F001A0A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon proximity data
+	private final String UUID_SERVICE_RESET = "F001A4A0-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon reset data
+	private final String UUID_SERVICE_MAJOR = "F001A0A2-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon major id (with UUID_SERVICE_PROXIMITY)
+	private final String UUID_SERVICE_MINOR = "F001A0A3-7509-4C31-A905-1A27D39C003C";//UUID to configure the beacon minor id (with UUID_SERVICE_PROXIMITY)
+	private final String UUID_SERVICE_REBOOT = "F001A4A1-7509-4C31-A905-1A27D39C003C";//UUID to reboot beacon (with UUID_SERVICE_RESET)
 
 	//State data
 	private boolean isBluetoothActivated = false;
@@ -71,7 +71,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
 
 	//Current beacons in region
-	public List<BeaconIR> beacons = new ArrayList<>();
+	List<BeaconIR> beacons = new ArrayList<>();
 	private BeaconIR nearestBeacon;
 
 

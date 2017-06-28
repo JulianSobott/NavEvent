@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements SideBar.SideBarIn
         activeMap = mapDataAdapter(map);
         mapDisplayFragment.LoadBeacons();
         bar.loadBeacons();
-        Toast.makeText(this, "Map '" + map.getName() + " loaded!", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Map '" + map.getName() + " loaded!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
