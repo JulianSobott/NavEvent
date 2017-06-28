@@ -3,30 +3,17 @@ NavEvent
 
 /work in progress.../
 
-Beschreibung
-------------
+Description
+-----------
 
-Android-App zur Zurechtfindung an Veranstaltungen, mithilfe von Beacons.
+Android-App for self-orientation at events, powered by beacons.
 
 
 Features
 --------
 
-* Kartenansicht
-* Ungefähre Positionsbestimmung
-* Informationen zu Attraktionen/Ständen/Räumen
-* Ortsangaben zu Ausgängen, Toiletten, etc.
-* Raumsuche
-* Vorgeschlagene Orte/Hauptattraktionen
-
-
-Allgemeine Todos
-----------------
-
-* App-UI
-* Server-Backend
-  * Server-Kommunikation mit App
-* Administration
-  * Website
-  * Qr-Code-Reader
-  * Beacon-Configuration
+* View of the map
+* Approximately localization
+* Information about attractions/rooms
+* Information about entrance/exit, toilets, etc.
+* Seeking for rooms
