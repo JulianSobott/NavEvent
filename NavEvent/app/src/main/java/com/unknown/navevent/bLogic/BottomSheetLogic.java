@@ -1,13 +1,7 @@
 package com.unknown.navevent.bLogic;
 
-import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
-import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.BottomSheetLogicInterface;
 import com.unknown.navevent.interfaces.BottomSheetUI;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 public class BottomSheetLogic implements BottomSheetLogicInterface {
 	private static final String TAG = "BottomSheetLogic";
@@ -28,13 +22,11 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 
 	@Override
 	public void onCreate() {
-		EventBus.getDefault().register(this);
 
 	}
 
 	@Override
 	public void onDestroy() {
-		EventBus.getDefault().unregister(this);
 
 	}
 
@@ -52,12 +44,4 @@ public class BottomSheetLogic implements BottomSheetLogicInterface {
 		}
 	}
 
-
-	/////////////////////////////////////////////////////////
-	// Event handling
-	/////////////////////////////////////////////////////////
-
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ServiceToActivityEvent event) {
-	}
 }

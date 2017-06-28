@@ -1,5 +1,6 @@
 package com.unknown.navevent.bLogic.events;
 
+//Events exclusively from the services to the serviceInterface
 public class ServiceInterfaceEvent {
 	public enum Type {
 		EVENT_BEACON_SERVICE_STARTED,

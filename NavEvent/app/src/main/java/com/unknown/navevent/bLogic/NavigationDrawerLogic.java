@@ -1,21 +1,14 @@
 package com.unknown.navevent.bLogic;
 
-import android.content.Context;
-import android.util.Log;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.MapBeaconIR;
-import com.unknown.navevent.interfaces.AdminAreaUI;
 import com.unknown.navevent.interfaces.BeaconData;
 import com.unknown.navevent.interfaces.NavigationDrawerLogicInterface;
 import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
-import org.altbeacon.beacon.Beacon;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -42,14 +35,12 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 
 	@Override
 	public void onCreate() {
-		EventBus.getDefault().register(this);
-
 
 	}
 
 	@Override
 	public void onDestroy() {
-		EventBus.getDefault().unregister(this);
+
 	}
 
 
@@ -60,7 +51,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	@Override
 	public List<String> getSpecialBeacons() {
 		List<String> retList = new ArrayList<>();
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {//Only return the list if the map was loaded
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
 			retList.addAll(beacons.keySet());
 		}
@@ -70,7 +61,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	@Override
 	public List<String> getOrdinaryBeacons() {
 		List<String> retList = new ArrayList<>();
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {//Only return the list if the map was loaded
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
 			retList.addAll(beacons.keySet());
 		}
@@ -82,6 +73,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
 
+			//Select all beacons by name
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
 					serviceInterface.markableBeacons = beacon.getValue();
@@ -97,6 +89,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
 
+			//Select all beacons by name
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
 					serviceInterface.markableBeacons = beacon.getValue();
@@ -112,27 +105,18 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			SparseArray<MapBeaconIR> beacons = serviceInterface.currentMap.getBeaconsIR();
 			List<BeaconData> retBeacons = new LinkedList<>();
-			String queryString = query.toLowerCase();
+			String queryString = query.toLowerCase();//Use only lower case
 
 			for( int i = 0 ; i < beacons.size() ; i++ ) {
-				String name = beacons.valueAt(i).name.toLowerCase();
+				String name = beacons.valueAt(i).name.toLowerCase();//Use only lower case
 				String description = beacons.valueAt(i).description.toLowerCase();
 
-				if( name.contains(queryString) || description.contains(queryString) ) {
+				if( name.contains(queryString) || description.contains(queryString) ) {//Searched string is in name or in description of the beacon.
 					retBeacons.add(beacons.valueAt(i));
 				}
 			}
 
 			mResponder.searchResults(retBeacons);
 		}
-	}
-
-
-	/////////////////////////////////////////////////////////
-	// Event handling
-	/////////////////////////////////////////////////////////
-
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ServiceToActivityEvent event) {
 	}
 }

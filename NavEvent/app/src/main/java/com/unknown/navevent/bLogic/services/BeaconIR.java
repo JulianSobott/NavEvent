@@ -5,5 +5,5 @@ public class BeaconIR {
 	public int majorID;
 	public int minorID;
 	public double distance;
-	public String mac;//MAC-address (for beacon configuration)
+	String mac;//MAC-address (for beacon configuration)
 }

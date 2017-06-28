@@ -68,6 +68,8 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 
 	@Override
 	public void getMap(int id) {
+
+		//Check if this map is locally available.
 		boolean contains = false;
 		if (serviceInterface.availableLocalMaps != null) {
 			for (MapIR map : serviceInterface.availableLocalMaps) {

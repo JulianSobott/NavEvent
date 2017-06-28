@@ -4,6 +4,7 @@ import com.unknown.navevent.bLogic.services.BeaconIR;
 
 import java.util.List;
 
+//This event notifies the ui-classes if beacon data changed.
 public class BeaconUpdateEvent {
 	public enum Type {
 		EVENT_BEACON_UPDATE,

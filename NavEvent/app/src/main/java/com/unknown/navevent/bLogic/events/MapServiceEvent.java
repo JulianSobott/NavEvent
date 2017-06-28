@@ -8,7 +8,7 @@ public class MapServiceEvent {
 		EVENT_LOAD_MAP_LOCAL,
 		EVENT_SAVE_MAP_LOCAL,
 		EVENT_DOWNLOAD_MAP,
-		EVENT_GET_ALL_LOCAL_MAPS,
+		EVENT_GET_ALL_LOCAL_MAPS,//Scan the drive for already downloaded maps
 		EVENT_FIND_ONLINE_MAP_BY_QUERY,//Search for map with a query string
 		EVENT_FIND_ONLINE_MAP_BY_ID,//Search for map by id
 		EVENT_STOP_SELF,
@@ -22,10 +22,7 @@ public class MapServiceEvent {
 	public MapServiceEvent(Type task) {
 		this.task = task;
 	}
-	public MapServiceEvent(Type task, MapIR map) {
-		this.task = task;
-		this.map = map;
-	}
+
 	public MapServiceEvent(Type task, String query) {
 		this.task = task;
 		this.query = query;

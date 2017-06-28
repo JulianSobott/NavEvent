@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.MapUpdateEvent;
+import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -37,7 +36,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 //Service for map loading, etc.
 public class MapService extends Service {
@@ -47,17 +45,17 @@ public class MapService extends Service {
 	// Background data
 	/////////////////////////////////////////////////////////
 
-	private Thread mBackgroundThread;
+	private Thread mBackgroundThread;//This thread will be used to do all the background work.
 	private AtomicBoolean mBackgroundThreadRunning = new AtomicBoolean();
 	private AtomicBoolean mBackgroundThreadShouldStop = new AtomicBoolean();
 	private int mBackgroundThreadShouldWait = 5;//Milliseconds to sleep in thread. Will be automatically set longer after start, to stop battery drain.
 	private int mBackgroundThreadSlowdownCount = 0;
 
-	private Queue<MapServiceEvent> backgroundTaskQueue = new ConcurrentLinkedQueue<>();
+	private Queue<MapServiceEvent> backgroundTaskQueue = new ConcurrentLinkedQueue<>();//The queue of events, which can be accessed from any thread.
 
 	private final static String SEP_CHAR = ";";//Separates items in a file
 	private final static String URL_TO_SERVER = "navevent.ddns.net";
-	private final static int TIMEOUT_MILLIS = 10000;
+	private final static int TIMEOUT_MILLIS = 10000;//Timeout for the server connection-process
 
 	/////////////////////////////////////////////////////////
 	// Lifecycle methods
@@ -67,14 +65,12 @@ public class MapService extends Service {
 	public void onCreate() {
 		super.onCreate();
 
-
-		//Thread
+		//Thread stuff
 		mBackgroundThreadShouldStop.set(false);
 
 		mBackgroundThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				MapServiceEvent task;
 				try {
 					mBackgroundThreadRunning.set(true);
 					while (!mBackgroundThreadShouldStop.get()) {//Loop until thread should stop
@@ -90,6 +86,8 @@ public class MapService extends Service {
 							}
 						}
 
+						//Handle all occurring events
+						MapServiceEvent task;
 						while ((task = backgroundTaskQueue.poll()) != null) {
 							mBackgroundThreadShouldWait = 5;//Set to high frequency
 
@@ -140,6 +138,7 @@ public class MapService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 
+		//Stop the thread and wait until he stopped.
 		mBackgroundThreadShouldStop.set(true);
 		try {
 			while (mBackgroundThreadRunning.get()) Thread.sleep(10);
@@ -157,7 +156,7 @@ public class MapService extends Service {
 	/////////////////////////////////////////////////////////
 
 	@Subscribe(threadMode = ThreadMode.ASYNC)
-	public void onMessageEvent(MapServiceEvent event) {
+	public void onMessageEvent(MapServiceEvent event) {//Move all occurring events into the task queue.
 		backgroundTaskQueue.add(event);
 	}
 
@@ -179,12 +178,13 @@ public class MapService extends Service {
 		try {
 			MapIR map = new MapIR();
 
-			if (!getFile("maps/" + mapID + ".mapDat").exists()) {
+			if (!getFile("maps/" + mapID + ".mapDat").exists()) {//Stop if the file does not exist.
 				Toast.makeText(this, "Map '" + map.name + "' does not exist!", Toast.LENGTH_LONG).show();
 				return;
 			}
 			BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(getFile("maps/" + mapID + ".mapDat")), "UTF-8"));
 
+			//General data
 			map.name = getNextString(bufReader);
 			map.id = Integer.parseInt(getNextString(bufReader));
 			map.majorID = Integer.parseInt(getNextString(bufReader));
@@ -273,6 +273,7 @@ public class MapService extends Service {
 			Writer writer = new OutputStreamWriter(
 					new FileOutputStream(getFile("maps/" + map.id + ".mapDat")), "UTF-8");
 
+			//General data
 			writer.write(formatOutString(map.name) + SEP_CHAR);
 			writer.write(map.id + SEP_CHAR);
 			writer.write(map.majorID + SEP_CHAR);
@@ -318,12 +319,14 @@ public class MapService extends Service {
 		}
 	}
 
+	//This method is used to format the strings which should be written to a file.
 	private String formatOutString(String string) {
 		string = string.replace("\\", "\\\\");
 		string = string.replace(SEP_CHAR, "\\" + SEP_CHAR);
 		return string;
 	}
 
+	//Download the map from the server
 	private void downloadMap(int mapID) {
 		try {
 			MapIR newMap = new MapIR();
@@ -345,12 +348,12 @@ public class MapService extends Service {
 			writer.write(postData);
 			writer.flush();
 			writer.close();
-			outputStream.close();
+			outputStream.close();//Finish the request
 
 			InputStream inputStream = connection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));//Result stream/reader
 
-			String queryRespond = reader.readLine();
+			String queryRespond = reader.readLine();//Read first line of the answer.
 
 			if (queryRespond.equals("found map"))//Found map id on server.
 			{
@@ -418,7 +421,7 @@ public class MapService extends Service {
 				EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_MAP_DOWNLOADED, retList));
 
 			} else {
-				//Load the map locally if connection failed
+				//Try to load the map locally if the connection process failed
 				loadLocalMap(mapID);
 			}
 			reader.close();
@@ -434,6 +437,7 @@ public class MapService extends Service {
 		}
 	}
 
+	//Downloads the image from the server
 	private void downloadImage(String path) {
 		try {
 			//Connect
@@ -444,8 +448,9 @@ public class MapService extends Service {
 
 			InputStream inputStream = connection.getInputStream();
 
-			FileOutputStream outputStream = new FileOutputStream(getFile("mapImgs/" + path));
+			FileOutputStream outputStream = new FileOutputStream(getFile("mapImgs/" + path));//Output file
 
+			//Buffer the inputStream and write the result into the file.
 			int bytesRead;
 			byte[] buffer = new byte[4096];
 			while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -461,12 +466,13 @@ public class MapService extends Service {
 		}
 	}
 
+	//Update the local saved files list.
 	private void getAllLocalMaps() {
 		try {
 			File[] files = getFile("maps/").listFiles();
 			List<MapIR> list = new ArrayList<>();
 			if (files != null) {
-				for (File file : files) {
+				for (File file : files) {//Iterate the list and save general data about each map.
 					BufferedReader bufReader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 					list.add(new MapIR(getNextString(bufReader), Integer.parseInt(getNextString(bufReader)), Integer.parseInt(getNextString(bufReader))));
 					bufReader.close();
@@ -478,6 +484,7 @@ public class MapService extends Service {
 		}
 	}
 
+	//Find all maps on the server which match to \p query
 	private void findOnlineMap(String query) {
 		List<MapIR> foundMaps = new ArrayList<>();
 
@@ -499,11 +506,12 @@ public class MapService extends Service {
 			writer.write(postData);
 			writer.flush();
 			writer.close();
-			outputStream.close();
+			outputStream.close();//Finish the request
 
 			InputStream inputStream = connection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));//Result stream/reader
 
+			//Get the list of maps and some general information
 			int tmpSize = Integer.parseInt(reader.readLine());
 			for (int i = 0; i < tmpSize; i++) {
 				MapIR map = new MapIR();
@@ -526,6 +534,7 @@ public class MapService extends Service {
 		EventBus.getDefault().post(new MapUpdateEvent(MapUpdateEvent.Type.EVENT_FOUND_ONLINE_MAPS, foundMaps));
 	}
 
+	//Find the map on the server which hast \p majorID
 	private void findOnlineMap(int majorID) {
 		List<MapIR> foundMaps = new ArrayList<>();
 
@@ -547,11 +556,12 @@ public class MapService extends Service {
 			writer.write(postData);
 			writer.flush();
 			writer.close();
-			outputStream.close();
+			outputStream.close();//Finish the request
 
 			InputStream inputStream = connection.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));//Result stream/reader
 
+			//Get the list of maps and some general information
 			int tmpSize = Integer.parseInt(reader.readLine());
 			for (int i = 0; i < tmpSize; i++) {
 				MapIR map = new MapIR();
@@ -571,9 +581,6 @@ public class MapService extends Service {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (RuntimeException e) {
-			e.printStackTrace();
 		}
-		//Return map if found any
 	}
 }

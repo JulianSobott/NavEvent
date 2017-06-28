@@ -5,6 +5,7 @@ import com.unknown.navevent.bLogic.services.MapIR;
 
 import java.util.List;
 
+//Transmits any map state change
 public class MapUpdateEvent {
 	public enum Type {
 		EVENT_MAP_LOADED,
@@ -17,11 +18,8 @@ public class MapUpdateEvent {
 
 	public Type message;
 	public List<MapIR> maps;
-	public String additionalData;
+	public String additionalData;//E. g. the error description.
 
-	public MapUpdateEvent(Type message) {
-		this.message = message;
-	}
 	public MapUpdateEvent(Type message, List<MapIR> maps) {
 		this.message = message;
 		this.maps = maps;

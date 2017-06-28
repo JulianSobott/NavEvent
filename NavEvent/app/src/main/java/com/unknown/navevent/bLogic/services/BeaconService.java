@@ -44,6 +44,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+//The BeaconService handles all interactions with nearby beacons.
 public class BeaconService extends Service implements BeaconConsumer, RangeNotifier {
 	private static final String TAG = "BeaconService";
 
@@ -65,7 +66,6 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	String UUID_SERVICE_REBOOT = "F001A4A1-7509-4C31-A905-1A27D39C003C";//UUID to reboot beacon (with UUID_SERVICE_RESET)
 
 	//State data
-	private boolean isBluetoothSupported = true;
 	private boolean isBluetoothActivated = false;
 	private boolean hasBeaconPermissions = false;
 	private boolean isBeaconListening = true;//beacon-receiver is deactivated
@@ -133,15 +133,15 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		if (isBluetoothActivated) {
 			if (!hasBeaconPermissions) {
 				handleBeaconPermissions();
-				if (hasBeaconPermissions) startListening();
-			} else {
+				if (hasBeaconPermissions) startListening();//Test again, if permissions were granted.
+			} else {//Bluetooth is on & permissions were granted.
 				startListening();
 			}
 		}
 	}
 
 	private void stopBeaconManager() {
-		if (isBeaconListening) {
+		if (isBeaconListening) {//Stop if is listening
 			stopListening();
 		}
 	}
@@ -149,20 +149,17 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	//Returns true if bluetooth is enabled
 	private void verifyBluetooth() {
 		try {
-			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+			if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {//BLE is not supported
 				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLE_NOT_SUPPORTED));
 			}
 
-			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {
-				isBluetoothSupported = true;
+			if (org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this).checkAvailability()) {//Bluetooth is activated
 				isBluetoothActivated = true;
 			} else {
-				isBluetoothSupported = true;
 				isBluetoothActivated = false;
 				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLUETOOTH_DEACTIVATED));
 			}
 		} catch (RuntimeException e) {
-			isBluetoothSupported = false;
 			isBluetoothActivated = false;
 			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BLUETOOTH_NOT_SUPPORTED, e.getLocalizedMessage()));
 		}
@@ -212,6 +209,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 	public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
 		double nearest = -1;
 
+		//Save data in internal beacon list
 		this.beacons.clear();
 		for (Beacon beacon : beacons) {
 			BeaconIR b = new BeaconIR();
@@ -236,11 +234,12 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		liteBluetooth = new LiteBluetooth(this);
 		bleExceptionHandler = new DefaultBleExceptionHandler(this);
 
+		//First scan and then connect to found beacon
 		liteBluetooth.scanAndConnect(mac, false, new LiteBleGattCallback() {
 
 			@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 			@Override
-			public void onConnectSuccess(BluetoothGatt gatt, int status) {//Discover services
+			public void onConnectSuccess(BluetoothGatt gatt, int status) {//Connected => discover services
 				gatt.discoverServices();
 			}
 
@@ -248,14 +247,23 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 			@Override
 			public void onServicesDiscovered(BluetoothGatt gatt, int status) {
 				BluetoothUtil.printServices(gatt);
-				//Toast.makeText(BeaconService.this, mac + " Services discovered SUCCESS", Toast.LENGTH_SHORT).show();
-
 
 				//Write data
 				Looper.prepare();
 				LiteBleConnector connector = liteBluetooth.newBleConnector();
 
-				writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, majorID, minorID);
+
+				{//Prepare the data. Convert the ids to Little Endian
+					ByteBuffer bb = ByteBuffer.allocate(6);//BB contains all codes which will be written.
+					bb.order(ByteOrder.LITTLE_ENDIAN);
+
+					bb.putShort((short) majorID);
+					bb.putShort((short) minorID);
+					bb.putShort((short) 0);//Reboot
+
+					bb.flip();
+					writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MAJOR, bb);
+				}
 			}
 
 			@Override
@@ -265,21 +273,7 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 		});
 	}
 
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private void writeBeaconBytes(LiteBleConnector connector, String uuidService, String uuidCharacteristic, int majorID, int minorID) {
-		//Convert the id to Little Endian
-		ByteBuffer bb = ByteBuffer.allocate(6);
-		bb.order(ByteOrder.LITTLE_ENDIAN);
-
-		bb.putShort((short) majorID);
-		bb.putShort((short) minorID);
-		bb.putShort((short) 0);//Reboot
-
-		bb.flip();
-
-		writeBeaconBytes(connector, uuidService, uuidCharacteristic, bb);
-	}
-
+	//Writes the first bytes from \p data to the beacon with a specific service and characteristic
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private void writeBeaconBytes(final LiteBleConnector connector, String uuidService, String uuidCharacteristic, final ByteBuffer data) {
 		connector.withUUIDString(uuidService, uuidCharacteristic, null)
@@ -292,11 +286,10 @@ public class BeaconService extends Service implements BeaconConsumer, RangeNotif
 							writeBeaconBytes(connector, UUID_SERVICE_PROXIMITY, UUID_SERVICE_MINOR, data);
 						} else if (characteristic.getUuid().toString().toUpperCase().equals(UUID_SERVICE_MINOR)) {//Major id done. Next would be reboot
 							writeBeaconBytes(connector, UUID_SERVICE_RESET, UUID_SERVICE_REBOOT, data);
+							//After the reboot, the beacon should be configured.
 							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_CONFIG_SUCCESSFUL));
 							liteBluetooth.closeBluetoothGatt();
-						} else {//Disconnect if not automatically done by reboot
-							/*if (liteBluetooth.isConnectingOrConnected())
-								*/
+						} else {
 							Looper.loop();
 						}
 					}

@@ -7,18 +7,12 @@ import android.widget.Toast;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
-import com.unknown.navevent.bLogic.services.MapIR;
 import com.unknown.navevent.interfaces.AdminAreaLogicInterface;
 import com.unknown.navevent.interfaces.AdminAreaUI;
-import com.unknown.navevent.interfaces.MapData;
-import com.unknown.navevent.interfaces.MapSelectActivityUI;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdminAreaLogic implements AdminAreaLogicInterface {
 	private static final String TAG = "AdminAreaLogic";
@@ -69,6 +63,7 @@ public class AdminAreaLogic implements AdminAreaLogicInterface {
 
 	@Override
 	public void configureBeacon(int beaconID) {
+		//Configure the nearest beacon to be a beacon with \p beaconID.
 		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_CONFIG_DEVICE, new BeaconServiceEvent.WriteBeaconData(serviceInterface.currentMap.getMajorID(), serviceInterface.currentMap.getBeaconsIR().get(beaconID).minorID)));
 	}
 

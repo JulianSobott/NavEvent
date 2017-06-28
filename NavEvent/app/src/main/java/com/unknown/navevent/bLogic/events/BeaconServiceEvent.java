@@ -1,19 +1,17 @@
 package com.unknown.navevent.bLogic.events;
 
 
-import android.support.annotation.RequiresPermission;
-
 //Events to BeaconService
 public class BeaconServiceEvent {
 	public enum Type {
 		EVENT_START_LISTENING,
 		EVENT_STOP_LISTENING,
-		EVENT_STOP_SELF,
-		EVENT_CONFIG_DEVICE,
+		EVENT_STOP_SELF,//Beacon service should be stopped
+		EVENT_CONFIG_DEVICE,//A beacon should be configured
 	}
 
 	public final Type message;
-	public static class WriteBeaconData {//for EVENT_CONFIG_DEVICE
+	public static class WriteBeaconData {//Contains additional data for EVENT_CONFIG_DEVICE
 		public int writeMajor;
 		public int writeMinor;
 		public WriteBeaconData( int majorID, int minorID ) {

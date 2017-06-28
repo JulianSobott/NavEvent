@@ -1,6 +1,5 @@
 package com.unknown.navevent.bLogic;
 
-import android.app.usage.UsageEvents;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -8,8 +7,6 @@ import android.widget.Toast;
 import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.MapIR;
-import com.unknown.navevent.bLogic.services.MapService;
-import com.unknown.navevent.interfaces.MainActivityUI;
 import com.unknown.navevent.interfaces.MapData;
 import com.unknown.navevent.interfaces.MapSelectActivityLogicInterface;
 import com.unknown.navevent.interfaces.MapSelectActivityUI;
