@@ -1,18 +1,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.unknown.navevent.ui.BeaconInfo"
     android:id="@+id/textFragment">
 
+    <!--
+              Implements the MarkdownView in a Bottomsheet
+              -->
+    <us.feras.mdv.MarkdownView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/markdownView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:layout_below="@+id/textViewBeaconName" />
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/textView"
-        android:layout_weight="1"
-        android:gravity="top|center_horizontal"
+        android:layout_height="32dp"
+        android:id="@+id/textViewBeaconName"
+        android:textAlignment="center"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:maxHeight="32dp"
-        android:scrollHorizontally="false" />
+        android:textSize="18dp" />
+
 </RelativeLayout>

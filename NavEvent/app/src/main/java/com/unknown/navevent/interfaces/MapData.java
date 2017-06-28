@@ -11,6 +11,9 @@ public interface MapData
 	//Returns the human-readable name of the Map.
 	String getName();
 
+	//Returns the description of this map.
+	String getDescription();
+
 	//Returns the id of the Map.
 	int getID();
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -13,35 +14,32 @@
         android:name="com.unknown.navevent.ui.MapDisplayFragment"
         android:layout_toEndOf="@+id/SideBarBtn"
         android:id="@+id/mapDisplayfragment"
-        tools:layout="@layout/fragment_map_display"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 
     <Button
-    android:layout_width="32dp"
-    android:layout_height="32dp"
-    android:id="@+id/SideBarBtn"
+        android:id="@+id/SideBarBtn"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignParentTop="true"
-    android:layout_alignParentStart="true"
-        android:background="@android:drawable/ic_menu_sort_by_size" />
+        android:background="@android:drawable/ic_menu_sort_by_size"/>
 
     <fragment
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:name="com.unknown.navevent.ui.BeaconInfo"
         android:id="@+id/frag"
-        tools:layout="@layout/fragment_beacon_info"
-        android:layout_alignParentBottom="true"/>
+        android:name="com.unknown.navevent.ui.BeaconInfo"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_alignParentBottom="true"
+        tools:layout="@layout/fragment_beacon_info"/>
 
     <fragment
+        android:id="@+id/SideBarFrag"
+        android:name="com.unknown.navevent.ui.SideBar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:name="com.unknown.navevent.ui.SideBar"
-        android:id="@+id/SideBarFrag"
-        tools:layout="@layout/fragment_side_bar"
-        android:layout_weight="1"
-        android:layout_marginRight="32dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginEnd="32dp"
+        tools:layout="@layout/fragment_side_bar"/>
 
 </RelativeLayout>

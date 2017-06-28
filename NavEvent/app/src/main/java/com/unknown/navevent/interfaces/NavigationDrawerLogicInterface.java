@@ -25,6 +25,6 @@ public interface NavigationDrawerLogicInterface
 	void findAllOrdinaryBeacons(String name);
 
 	//Search for all beacons which contain \p name in their name and/or information. Will respond in NavigationDrawerUI.searchResults().
-	void searchFor(String name);
+	void searchFor(String query);
 
 }

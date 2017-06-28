@@ -16,9 +16,6 @@ public interface MapSelectActivityUI
 	//Map-download finished. \p name is the map-name.
 	void downloadFinished(MapData map);
 
-	//Is called when a beacon and a corresponding map could be found.
-	void foundLocalMap(MapData map);
-
 	//Will be called, when no beacon and no local map was found.
 	void switchToMainActivity();
 

@@ -13,36 +13,25 @@ import android.widget.Toast;
 import com.unknown.navevent.R;
 import com.unknown.navevent.bLogic.events.BeaconServiceEvent;
 import com.unknown.navevent.bLogic.events.BeaconUpdateEvent;
+import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.MapUpdateEvent;
 import com.unknown.navevent.bLogic.events.ServiceInterfaceEvent;
-import com.unknown.navevent.bLogic.events.MapServiceEvent;
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
 import com.unknown.navevent.bLogic.services.BeaconIR;
 import com.unknown.navevent.bLogic.services.BeaconService;
-import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.bLogic.services.MapIR;
 import com.unknown.navevent.bLogic.services.MapService;
-import com.unknown.navevent.interfaces.BeaconData;
 
-import org.altbeacon.beacon.Beacon;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 //Enables interaction with the BeaconService & MapService (including startup, etc.)
-public class ServiceInterface {
+class ServiceInterface {
 	private static final String TAG = "ServiceInterface";
-
-	/////////////////////////////////////////////////////////
-	// Settings
-	/////////////////////////////////////////////////////////
-
-	public static boolean autoDownloadMaps = true;//Map will be downloaded automatically, if nearby corresponding beacon found.
-
 
 	/////////////////////////////////////////////////////////
 	// Singleton stuff
@@ -51,9 +40,12 @@ public class ServiceInterface {
 	private static ServiceInterface mSingleton = new ServiceInterface();
 	private int instanceCount;
 
-	public static ServiceInterface getInstance() {
+	static ServiceInterface getInstance() {
 		return mSingleton;
 	}
+
+	//Private constructor to prohibit external instancing.
+	private ServiceInterface() {}
 
 	/////////////////////////////////////////////////////////
 	// Data & constants
@@ -69,7 +61,9 @@ public class ServiceInterface {
 	private static final int NO_CORRESPONDING_BEACON_DELAY_TIME = 5000;//milliseconds
 
 
-	//Beacon data
+	//Beacon data. Mostly package-private. Will be used from other background classes.
+
+	//State of the beacon listening
 	private enum BeaconAvailabilityState {
 		starting,//Start searching for beacons
 		found,//One or more beacons found
@@ -77,11 +71,13 @@ public class ServiceInterface {
 	}
 
 	private BeaconAvailabilityState beaconAvailabilityState = BeaconAvailabilityState.starting;//Currents state of beacon receiving
-	List<BeaconIR> currentBeacons = new ArrayList<>();//Beacons in region
+	private List<BeaconIR> currentBeacons = new ArrayList<>();//Beacons in region
 	int nearestBeaconID;//ID of nearest beacon
 	private int nearestBeaconMajorID = 0;//MajorID of nearest beacon. To find map on server.
 
-	//Map data
+	//Map data. Mostly package-private. Will be used from other background classes.
+
+	//State of the map
 	enum MapAvailabilityState {
 		notLoaded,//No map is loaded. currentMap == null
 		loading,//Map is loading, but currentMap == null
@@ -93,8 +89,8 @@ public class ServiceInterface {
 	List<MapIR> availableLocalMaps = null;//Already downloaded maps
 	MapIR lastDownloadedMap = null;
 	List<MapIR> foundOnlineMaps = new ArrayList<>();//Maps which were found after online search.
-	MapIR availableNearbyMap = null;//Map which was chosen by nearby beacons.
-	boolean nearbyMapChosen = false;//If nearbyMap was chosen. Stop further attempts to select a nearby map.
+	private MapIR availableNearbyMap = null;//Map which was chosen by nearby beacons.
+	private boolean nearbyMapChosen = false;//If nearbyMap was chosen. Stop further attempts to select a nearby map.
 	List<Integer> markableBeacons = null;//List of beacons which should be marked (e. g. from search query)
 
 	Context mContext = null;
@@ -106,7 +102,7 @@ public class ServiceInterface {
 	/////////////////////////////////////////////////////////
 
 	public void onCreate(Context context) {
-		//Register for broadcast on bluetooth-events
+		//Register for broadcasts on bluetooth-events
 		if (btReceiverContext != null) {
 			btReceiverContext.unregisterReceiver(btReceive);
 			btReceiverContext = null;
@@ -114,6 +110,7 @@ public class ServiceInterface {
 		context.registerReceiver(btReceive, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
 		btReceiverContext = context;
 
+		//Instance counting to initialize only once
 		instanceCount++;
 		if (instanceCount == 1) {
 			EventBus.getDefault().register(this);
@@ -121,6 +118,7 @@ public class ServiceInterface {
 		mContext = context;
 
 
+		//Start services if needed
 		beaconServiceBindCount++;
 		if (beaconServiceBindCount == 1)
 			mContext.startService(new Intent(mContext, BeaconService.class));
@@ -128,7 +126,7 @@ public class ServiceInterface {
 		if (mapServiceBindCount == 1) mContext.startService(new Intent(mContext, MapService.class));
 
 
-		{//Debug-map todo del
+		{//Debug-map. Uncomment this to get a debug-map at the local storage.
 			/*currentMap = new MapIR();
 
 			currentMap.name = "debug map 1";
@@ -169,20 +167,23 @@ public class ServiceInterface {
 	}
 
 	public void onDestroy() {
+		//Stop services if last instance gets closed
 		beaconServiceBindCount--;
 		if (beaconServiceBindCount == 0)
-			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
+			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_STOP_SELF));
 		mapServiceBindCount--;
 		if (mapServiceBindCount == 0) {
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_STOP_SELF));//todo: check if interrupts other activities
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_STOP_SELF));
 			mContext.stopService(new Intent(mContext, MapService.class));
 		}
 
+		//Unregister the instance from EventBus if needed
 		instanceCount--;
 		if (instanceCount == 0) {
 			EventBus.getDefault().unregister(this);
 		}
 
+		//Unregister the bluetooth event-receiver
 		if (btReceiverContext != null) {
 			btReceiverContext.unregisterReceiver(btReceive);
 			btReceiverContext = null;
@@ -196,79 +197,79 @@ public class ServiceInterface {
 
 	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(ServiceInterfaceEvent event) {
-		if (event.message == ServiceInterfaceEvent.EVENT_BEACON_SERVICE_STARTED) {
+		if (event.message == ServiceInterfaceEvent.Type.EVENT_BEACON_SERVICE_STARTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BEACON_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_START_LISTENING));
-		} else if (event.message == ServiceInterfaceEvent.EVENT_MAP_SERVICE_STARTED) {
+			//Start listening when the service was started
+			EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_START_LISTENING));
+		} else if (event.message == ServiceInterfaceEvent.Type.EVENT_MAP_SERVICE_STARTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_SERVICE_STARTED");
 
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
+			//Updated the local maps when service was started
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_GET_ALL_LOCAL_MAPS));
 
 		}
 	}
 
 	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(MapUpdateEvent event) {
-		if (event.message == MapUpdateEvent.EVENT_MAP_LOADED) {
+		if (event.message == MapUpdateEvent.Type.EVENT_MAP_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_LOADED");
 
 			//Update current map
 			if (!event.maps.isEmpty()) {
 				if (mapAvailabilityState == MapAvailabilityState.loaded && currentMap != event.maps.get(0))//Current map was unloaded
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_CURRENT_MAP_UNLOADED));
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_CURRENT_MAP_UNLOADED));
 
 				currentMap = event.maps.get(0);
 				mapAvailabilityState = MapAvailabilityState.loaded;
 
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NEW_MAP_LOADED));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_NEW_MAP_LOADED));
 			} else {//Map was unloaded
 				currentMap = null;
 				mapAvailabilityState = MapAvailabilityState.notLoaded;
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_LOCAL_MAPS_AVAILABLE));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_NO_LOCAL_MAPS_AVAILABLE));
 			}
-		} else if (event.message == MapUpdateEvent.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
+		} else if (event.message == MapUpdateEvent.Type.EVENT_AVAIL_OFFLINE_MAPS_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_AVAIL_OFFLINE_MAPS_LOADED (" + event.maps.size() + ")");
 			availableLocalMaps = event.maps;
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_AVAIL_LOCAL_MAPS_UPDATED));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_AVAIL_LOCAL_MAPS_UPDATED));
 
 			//Check if beacon corresponds to new map
 			findCorrespondingMap();
-		} else if (event.message == MapUpdateEvent.EVENT_FOUND_ONLINE_MAPS) {
+		} else if (event.message == MapUpdateEvent.Type.EVENT_FOUND_ONLINE_MAPS) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAPS");
 			foundOnlineMaps = event.maps;
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_FOUND_ONLINE_MAPS));
-		} else if (event.message == MapUpdateEvent.EVENT_FOUND_ONLINE_MAP_BY_ID) {
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_FOUND_ONLINE_MAPS));
+		} else if (event.message == MapUpdateEvent.Type.EVENT_FOUND_ONLINE_MAP_BY_ID) {
 			Log.i(TAG, "onMessageEvent: EVENT_FOUND_ONLINE_MAP_BY_ID");
 			if (event.maps != null && event.maps.size() > 0 && (availableNearbyMap == null || availableNearbyMap.getID() != event.maps.get(0).getID())) {
+				//A new map was found from a nearby beacon => auto download the map.
 				availableNearbyMap = event.maps.get(0);
 				nearbyMapChosen = false;
 				mapAvailabilityState = MapAvailabilityState.loading;
-				if (autoDownloadMaps) {
-					EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, event.maps.get(0).getID()));
-				} else {
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_FOUND_CORRESPONDING_MAP));
-				}
+				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_DOWNLOAD_MAP, event.maps.get(0).getID()));
 			}
-		} else if (event.message == MapUpdateEvent.EVENT_MAP_DOWNLOADED) {
+		} else if (event.message == MapUpdateEvent.Type.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 			if (event.maps.size() > 0) {
+				//Map was downloaded => load the map from disc.
 				lastDownloadedMap = event.maps.get(0);
-				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_GET_ALL_LOCAL_MAPS));
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOADED));
+				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_GET_ALL_LOCAL_MAPS));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_MAP_DOWNLOADED));
 				if (currentMap == null)
 					mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 			}
-		} else if (event.message == MapUpdateEvent.EVENT_MAP_DOWNLOAD_FAILED) {
+		} else if (event.message == MapUpdateEvent.Type.EVENT_MAP_DOWNLOAD_FAILED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOAD_FAILED");
-			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MAP_DOWNLOAD_FAILED, event.additionalData));
+			EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_MAP_DOWNLOAD_FAILED, event.additionalData));
 			if (currentMap == null) mapAvailabilityState = MapAvailabilityState.notLoaded;//Reset
 		}
 	}
 
 	@Subscribe(threadMode = ThreadMode.POSTING)
 	public void onMessageEvent(BeaconUpdateEvent event) {
-		if (event.message == BeaconUpdateEvent.EVENT_BEACON_UPDATE) {
+		if (event.message == BeaconUpdateEvent.Type.EVENT_BEACON_UPDATE) {
 			//Log.i("ServiceInterface", "onMessageEvent: EVENT_BEACON_UPDATE");
 
 			if (mapAvailabilityState == MapAvailabilityState.notLoaded)//If first beacon call => set timed delay for no corresponding map -event
@@ -276,9 +277,9 @@ public class ServiceInterface {
 
 			if (event.beacons != null && event.beacons.size() > 0) {
 				currentBeacons = event.beacons;
-				int nearestBeaconIndex = 0;
-				nearestBeaconMajorID = currentBeacons.get(0).majorID;
-				double nearestDistance = currentBeacons.get(0).distance;
+				int nearestBeaconIndex = -1;//Not existing index
+				nearestBeaconMajorID = -1;
+				double nearestDistance = 100000000;//To big nr
 				for (BeaconIR beacon : currentBeacons) {
 					if ((mapAvailabilityState != MapAvailabilityState.loaded || beacon.majorID == currentMap.getMajorID()) && nearestDistance > beacon.distance) {
 						//Set nearest beacon (beacon which matches to current map OR to any map, if no map loaded)
@@ -294,13 +295,13 @@ public class ServiceInterface {
 				findCorrespondingMap();
 
 				//Update ui
-				if (mapAvailabilityState == MapAvailabilityState.loaded) {
-					//Find id of minorID
+				if (mapAvailabilityState == MapAvailabilityState.loaded && nearestBeaconIndex >= 0) {
+					//Find id from minorID
 					for (int i = 0; i < currentMap.getBeaconsIR().size(); i++) {
 						if (currentMap.getBeaconsIR().valueAt(i).minorID == currentBeacons.get(nearestBeaconIndex).minorID) {
 							//Found id
 							nearestBeaconID = currentMap.getBeaconsIR().valueAt(i).id;
-							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_BEACON_UPDATE));
+							EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_BEACON_UPDATE));
 							break;
 						}
 					}
@@ -334,7 +335,7 @@ public class ServiceInterface {
 					for (MapIR map : availableLocalMaps) {
 						if (beacon.majorID == map.getMajorID()) { //Found a beacon corresponding to a local map.
 							mTimedDelayHandler.removeMessages(HANDLER_NO_CORRESPONDING_BEACON_DELAY);//Stop delay
-							EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, map.getID()));
+							EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_LOAD_MAP_LOCAL, map.getID()));
 							mapAvailabilityState = MapAvailabilityState.loading;
 							foundMap = true;
 						}
@@ -342,7 +343,7 @@ public class ServiceInterface {
 				}
 			}
 			if (!foundMap && !nearbyMapChosen) {//No map found => (auto) download map of nearest beacon
-				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_FIND_ONLINE_MAP_BY_ID, nearestBeaconMajorID));
+				EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_FIND_ONLINE_MAP_BY_ID, nearestBeaconMajorID));
 				nearbyMapChosen = true;
 			}
 		}
@@ -366,11 +367,11 @@ public class ServiceInterface {
 						Toast.makeText(mContext, R.string.bluetoothTurnedOffWarning, Toast.LENGTH_LONG).show();
 						break;
 					case BluetoothAdapter.STATE_TURNING_OFF:
-						EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_STOP_LISTENING));
+						EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_STOP_LISTENING));
 						break;
 					case BluetoothAdapter.STATE_ON:
 						Log.i("BTooth-change-BR", "onReceive: BLUETOOTH_ACTIVATED");
-						EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_START_LISTENING));
+						EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_START_LISTENING));
 						break;
 					case BluetoothAdapter.STATE_TURNING_ON:
 						break;
@@ -386,11 +387,11 @@ public class ServiceInterface {
 		public void handleMessage(Message msg) {
 			if (msg.what == HANDLER_NO_BEACON_DELAY) {//no beacons-signals were received
 				mTimedDelayHandler.removeMessages(HANDLER_NO_BEACON_DELAY);//Stop delay for "no beacon found"
-				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_BEACON_FOUND));
+				EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_NO_BEACON_FOUND));
 			} else if (msg.what == HANDLER_NO_CORRESPONDING_BEACON_DELAY) {//no beacons-signals were received after delay (for a corresponding local map)
 				if (mapAvailabilityState == MapAvailabilityState.notLoaded) {//No corresponding beacons to map found
 					mTimedDelayHandler.removeMessages(HANDLER_NO_CORRESPONDING_BEACON_DELAY);//Stop delay for "no beacon found"
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_NO_CORRESPONDING_MAPS_AVAILABLE));
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_NO_CORRESPONDING_MAPS_AVAILABLE));
 				}
 			}
 		}

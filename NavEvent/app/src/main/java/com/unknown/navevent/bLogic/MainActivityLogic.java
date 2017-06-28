@@ -63,11 +63,13 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 
 	@Override
 	public void retryBeaconConnection() {
-		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.EVENT_START_LISTENING));
+		EventBus.getDefault().post(new BeaconServiceEvent(BeaconServiceEvent.Type.EVENT_START_LISTENING));
 	}
 
 	@Override
 	public void getMap(int id) {
+
+		//Check if this map is locally available.
 		boolean contains = false;
 		if (serviceInterface.availableLocalMaps != null) {
 			for (MapIR map : serviceInterface.availableLocalMaps) {
@@ -79,10 +81,10 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 		}
 
 		if (contains) {//load offline
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_LOAD_MAP_LOCAL, id));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_LOAD_MAP_LOCAL, id));
 			serviceInterface.mapAvailabilityState = ServiceInterface.MapAvailabilityState.loading;
 		} else {//download map
-			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.EVENT_DOWNLOAD_MAP, id));
+			EventBus.getDefault().post(new MapServiceEvent(MapServiceEvent.Type.EVENT_DOWNLOAD_MAP, id));
 		}
 	}
 
@@ -93,56 +95,52 @@ public class MainActivityLogic implements MainActivityLogicInterface {
 
 	@Subscribe(threadMode = ThreadMode.MAIN)
 	public void onMessageEvent(ServiceToActivityEvent event) {
-		if (event.message == ServiceToActivityEvent.EVENT_BEACON_LISTENER_STARTED) {
+		if (event.message == ServiceToActivityEvent.Type.EVENT_BEACON_LISTENER_STARTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BEACON_LISTENER_STARTED");
 			mResponder.initCompleted();
-		} else if (event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_DEACTIVATED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_BLUETOOTH_DEACTIVATED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLUETOOTH_DEACTIVATED");
 
 			mResponder.bluetoothDeactivated();
-		} else if (event.message == ServiceToActivityEvent.EVENT_BLUETOOTH_NOT_SUPPORTED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_BLUETOOTH_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLUETOOTH_NOT_SUPPORTED");
 
 			mResponder.notSupported(event.additionalInfo);
-		} else if (event.message == ServiceToActivityEvent.EVENT_BLE_NOT_SUPPORTED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_BLE_NOT_SUPPORTED) {
 			Log.i(TAG, "onMessageEvent: EVENT_BLE_NOT_SUPPORTED");
 
 			mResponder.notSupported("");
-		} else if (event.message == ServiceToActivityEvent.EVENT_ASK_PERMISSION) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_ASK_PERMISSION) {
 			Log.i(TAG, "onMessageEvent: EVENT_ASK_PERMISSION");
 
 			mResponder.askForPermissions();
-		} else if (event.message == ServiceToActivityEvent.EVENT_NEW_MAP_LOADED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NEW_MAP_LOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_NEW_MAP_LOADED");
 
 
 			mResponder.updateMap(serviceInterface.currentMap);
-		} else if (event.message == ServiceToActivityEvent.EVENT_CURRENT_MAP_UNLOADED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_CURRENT_MAP_UNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_CURRENT_MAP_UNLOADED");
 
 			mResponder.switchToMapSelectActivity();
-		} else if (event.message == ServiceToActivityEvent.EVENT_NO_LOCAL_MAPS_AVAILABLE) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NO_LOCAL_MAPS_AVAILABLE) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_LOCAL_MAPS_AVAILABLE");
 
 			mResponder.switchToMapSelectActivity();
-		} else if (event.message == ServiceToActivityEvent.EVENT_MAP_DOWNLOADED) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_MAP_DOWNLOADED) {
 			Log.i(TAG, "onMessageEvent: EVENT_MAP_DOWNLOADED");
 
 			Toast.makeText(serviceInterface.mContext, "Map '" + serviceInterface.lastDownloadedMap.getName() + "' downloaded.", Toast.LENGTH_SHORT).show();
-		} else if (event.message == ServiceToActivityEvent.EVENT_FOUND_CORRESPONDING_MAP) {
-			Log.i(TAG, "onMessageEvent: EVENT_FOUND_CORRESPONDING_MAP");
-			mResponder.foundLocalMap(serviceInterface.availableNearbyMap);
-		} else if (event.message == ServiceToActivityEvent.EVENT_BEACON_UPDATE) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_BEACON_UPDATE) {
 			//Log.i(TAG, "onMessageEvent: EVENT_BEACON_UPDATE");
 			mResponder.updateBeaconPosition(serviceInterface.nearestBeaconID);
-		} else if (event.message == ServiceToActivityEvent.EVENT_NO_BEACON_FOUND) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NO_BEACON_FOUND) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_BEACON_FOUND");
 			mResponder.updateBeaconPosition(0);
-			Toast.makeText(serviceInterface.mContext, "NO_BEACON", Toast.LENGTH_SHORT).show();
-		} else if (event.message == ServiceToActivityEvent.EVENT_NO_CORRESPONDING_MAPS_AVAILABLE) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_NO_CORRESPONDING_MAPS_AVAILABLE) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_CORRESPONDING_MAPS_AVAILABLE");
 			mResponder.switchToMapSelectActivity();
-		} else if (event.message == ServiceToActivityEvent.EVENT_MARK_BEACONS) {
+		} else if (event.message == ServiceToActivityEvent.Type.EVENT_MARK_BEACONS) {
 			Log.i(TAG, "onMessageEvent: EVENT_NO_CORRESPONDING_MAPS_AVAILABLE");
 			mResponder.markBeacons(serviceInterface.markableBeacons);
 		}

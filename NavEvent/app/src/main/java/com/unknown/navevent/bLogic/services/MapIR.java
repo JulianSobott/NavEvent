@@ -43,6 +43,11 @@ public class MapIR implements MapData {
 	}
 
 	@Override
+	public String getDescription() {
+		return description;
+	}
+
+	@Override
 	public int getID() {
 		return id;
 	}

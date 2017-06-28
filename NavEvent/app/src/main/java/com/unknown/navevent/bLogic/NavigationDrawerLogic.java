@@ -1,18 +1,14 @@
 package com.unknown.navevent.bLogic;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
+import android.util.SparseArray;
 
 import com.unknown.navevent.bLogic.events.ServiceToActivityEvent;
-import com.unknown.navevent.interfaces.AdminAreaUI;
+import com.unknown.navevent.bLogic.services.MapBeaconIR;
 import com.unknown.navevent.interfaces.BeaconData;
 import com.unknown.navevent.interfaces.NavigationDrawerLogicInterface;
 import com.unknown.navevent.interfaces.NavigationDrawerUI;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -39,14 +35,12 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 
 	@Override
 	public void onCreate() {
-		EventBus.getDefault().register(this);
-
 
 	}
 
 	@Override
 	public void onDestroy() {
-		EventBus.getDefault().unregister(this);
+
 	}
 
 
@@ -57,7 +51,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	@Override
 	public List<String> getSpecialBeacons() {
 		List<String> retList = new ArrayList<>();
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {//Only return the list if the map was loaded
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
 			retList.addAll(beacons.keySet());
 		}
@@ -67,7 +61,7 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	@Override
 	public List<String> getOrdinaryBeacons() {
 		List<String> retList = new ArrayList<>();
-		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
+		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {//Only return the list if the map was loaded
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
 			retList.addAll(beacons.keySet());
 		}
@@ -79,10 +73,11 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getSpecialPlaces();
 
+			//Select all beacons by name
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
 					serviceInterface.markableBeacons = beacon.getValue();
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MARK_BEACONS));
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_MARK_BEACONS));
 					break;
 				}
 			}
@@ -94,10 +89,11 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
 			Map<String, List<Integer>> beacons = serviceInterface.currentMap.getOrdinaryPlaces();
 
+			//Select all beacons by name
 			for( Map.Entry<String, List<Integer>> beacon : beacons.entrySet() ) {
 				if( beacon.getKey().equals(name) ) { //Found beacon-type by name
 					serviceInterface.markableBeacons = beacon.getValue();
-					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.EVENT_MARK_BEACONS));
+					EventBus.getDefault().post(new ServiceToActivityEvent(ServiceToActivityEvent.Type.EVENT_MARK_BEACONS));
 					break;
 				}
 			}
@@ -105,28 +101,22 @@ public class NavigationDrawerLogic implements NavigationDrawerLogicInterface {
 	}
 
 	@Override
-	public void searchFor(String name) {
+	public void searchFor(String query) {
 		if( serviceInterface.mapAvailabilityState == ServiceInterface.MapAvailabilityState.loaded ) {
-			List<BeaconData> beacons = serviceInterface.currentMap.getBeacons();
+			SparseArray<MapBeaconIR> beacons = serviceInterface.currentMap.getBeaconsIR();
 			List<BeaconData> retBeacons = new LinkedList<>();
+			String queryString = query.toLowerCase();//Use only lower case
 
-			for( BeaconData beacon : beacons ) {
-				if( beacon.getName().contains(name) ) { //Found beacon by name
-					retBeacons.add(beacon);
+			for( int i = 0 ; i < beacons.size() ; i++ ) {
+				String name = beacons.valueAt(i).name.toLowerCase();//Use only lower case
+				String description = beacons.valueAt(i).description.toLowerCase();
+
+				if( name.contains(queryString) || description.contains(queryString) ) {//Searched string is in name or in description of the beacon.
+					retBeacons.add(beacons.valueAt(i));
 				}
 			}
-			if( !retBeacons.isEmpty() ) {
-				mResponder.searchResults(retBeacons);
-			}
+
+			mResponder.searchResults(retBeacons);
 		}
-	}
-
-
-	/////////////////////////////////////////////////////////
-	// Event handling
-	/////////////////////////////////////////////////////////
-
-	@Subscribe(threadMode = ThreadMode.MAIN)
-	public void onMessageEvent(ServiceToActivityEvent event) {
 	}
 }
