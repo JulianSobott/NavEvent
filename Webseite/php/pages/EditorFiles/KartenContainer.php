@@ -11,39 +11,40 @@ if (isset($_FILES['uploaddatei']))
 {
     if (is_uploaded_file($_FILES['uploaddatei']['tmp_name'])) {
       $erlaubteEndungen = array('png', 'jpg', 'jpeg', 'gif');
-      $filepath = 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'; //'F:\Programmieren\XAMPP\htdocs\NavEvent\uploads/'; Laptop 'D:\Programme\XAMPP\htdocs\NavEvent\uploads/'
+      $filepath = '../../uploads/';
       $endung = strtolower(pathinfo($_FILES['uploaddatei']['name'],PATHINFO_EXTENSION));
       $bildinfo = pathinfo($_FILES['uploaddatei']['name']);
       if(in_Array($endung, $erlaubteEndungen)){
         $image = $_FILES['uploaddatei']['tmp_name'];
-        $default_imageName = "bild"; //TODO Name anpassen
+        $default_imageName = "bild";
         $data = addslashes(file_get_contents($image));
         $meta = getimagesize($image);
-        //$mime = $meta['mime'];
         $mime = $endung;
         $updated_at = time();
-        $mapName = "default"; //TODO anpassen
-
+        $mapName = "default";
         $path = $filepath.$default_imageName.'.'.$endung;
         $id = 1;
         $imageName = $default_imageName.'_'.$id;
-        $major_id = 1;//TODO major_implementieren
+        $major_id = 0;
         $fk_account_id = $accountId;
-        $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES('$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
+        //echo $fk_account_id."--";
+        //echo $_SESSION['accountId']."--";
+        //echo $_GET['user'];
+        $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES(
+          '$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
         $res = mysqli_query($con, $statement);
         $id = mysqli_insert_id($con);
         $imageName = $default_imageName.'_'.$id;
         $sql = "UPDATE maps SET img_file = '$imageName' WHERE id = '$id'";
         mysqli_query($con, $sql);
         $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
-        echo $path;
-        move_uploaded_file($image, $path); //TODO Ordner name anpassen
-        header ("Location: http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=$id");
+        move_uploaded_file($image, $path);
+        //header ("Location: KartenEditor.php?status=edit&id=$id");
       }else{
-        $error['datei']="Keine passende Datei ausgewählt";
+        $error['datei']="No suitable file selected";
       }
     }else {
-      $error['datei']="Keine passende Datei ausgewählt";
+      $error['datei']="No suitable file selected";
     }
 }
 
@@ -56,11 +57,11 @@ if (isset($_FILES['uploaddatei']))
 
     <div class="bildUpload" style="<?php if(isset($_GET['status']))echo"display: none"?>">
 
-      <form name="uploadformular" enctype="multipart/form-data" action="http://localhost/NavEvent/php/pages/Karteneditor.php " method="post" >
+      <form name="uploadformular" enctype="multipart/form-data" action="KartenEditor.php " method="post" >
         <input type="file" name="uploaddatei" size="60" maxlength="255"
         class="<?php if(isset($error['datei']))echo "errorClass"; ?>" value="<?php if(isset($_FILES['uploaddatei'])) echo $_FILES['uploaddatei']?>" >
         <?php if(isset($error['datei']))echo "<div class='error'>".$error['datei']."</div>"; ?>
-        <input type="Submit" name="submit" value="Karte erstellen" class="btnUpload">
+        <input type="Submit" name="submit" value="Create map" class="btnUpload">
       </form>
 
       <div class="spinner spinner1"></div>
@@ -82,7 +83,7 @@ if (isset($_FILES['uploaddatei']))
         $map_id = $result['id'];
         $_SESSION['map_id'] = $map_id;
 
-        echo '<img id="bild" alt="'.$map_id.'" src="http://localhost/NavEvent/uploads/'.$img.'.'.$mime.'"/>';
+        echo '<img id="bild" alt="'.$map_id.'" src="../../uploads/'.$img.'.'.$mime.'"/>';
       }
 
       $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";

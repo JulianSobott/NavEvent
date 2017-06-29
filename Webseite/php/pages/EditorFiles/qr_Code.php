@@ -26,13 +26,12 @@
         window.location='../../../index.php?action=profil';
       });
       $('.btnEditMap').click(function() {
-        window.location='http://localhost/NavEvent/php/pages/Karteneditor.php?status=edit&id=<?php echo $_GET["map_id"];?>';
+        window.location='../KartenEditor.php?status=edit&id=<?php echo $_GET["map_id"];?>';
       });
       var url = window.location.href;
       var code = url;
-      code = code.replace("http://localhost/NavEvent/php/pages/EditorFiles/qr_Code.php?map_id=", "");
+      code = code.replace("http://navevent.ddns.net/php/pages/EditorFiles/qr_Code.php?map_id=", "");
 
-      console.log(code);
       var qrcode = new QRCode(document.getElementById("qrcode"), {
       text: code,
       colorDark : "#000000",

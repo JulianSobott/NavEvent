@@ -13,16 +13,13 @@
     width: 100%
 
     #bildContainer
-      height: 500px
       position: relative
       width: 100%
-      box-sizing: border-box
 
       img
         position: relative
         width: 100%
         height: auto
-
 
     .bildUpload
       form
@@ -37,6 +34,8 @@
           color: white !important
           &:hover
             background: lighten(#000000, 50)
+        input[type='file']
+          width: 100%
         .errorClass
           border: 2px solid #f44
 
@@ -134,6 +133,7 @@
   width: 10px
   height: 10px
   border-radius: 50%
+  margin: 2.5px
   background: #00f
   border: 2px solid black
   z-index: 5
