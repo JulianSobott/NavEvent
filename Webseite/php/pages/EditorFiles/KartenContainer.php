@@ -27,9 +27,6 @@ if (isset($_FILES['uploaddatei']))
         $imageName = $default_imageName.'_'.$id;
         $major_id = 0;
         $fk_account_id = $accountId;
-        //echo $fk_account_id."--";
-        //echo $_SESSION['accountId']."--";
-        //echo $_GET['user'];
         $statement = "INSERT INTO maps (name, major_id, img_file, mime, updated_at, fk_account_id) VALUES(
           '$mapName', '$major_id', '$imageName', '$mime', '$updated_at', '$fk_account_id')";
         $res = mysqli_query($con, $statement);
@@ -39,12 +36,12 @@ if (isset($_FILES['uploaddatei']))
         mysqli_query($con, $sql);
         $path = $filepath.$default_imageName.'_'.$id.'.'.$endung;
         move_uploaded_file($image, $path);
-        //header ("Location: KartenEditor.php?status=edit&id=$id");
+        header ("Location: KartenEditor.php?status=edit&id=$id");
       }else{
-        $error['datei']="No suitable file selected";
+        $error['datei']="No suitable file selected2";
       }
     }else {
-      $error['datei']="No suitable file selected";
+      $error['datei']="No suitable file selected1";
     }
 }
 
@@ -58,7 +55,7 @@ if (isset($_FILES['uploaddatei']))
     <div class="bildUpload" style="<?php if(isset($_GET['status']))echo"display: none"?>">
 
       <form name="uploadformular" enctype="multipart/form-data" action="KartenEditor.php " method="post" >
-        <input type="file" name="uploaddatei" size="60" maxlength="255"
+        <input type="file" name="uploaddatei" size="60000000000" maxlength="25500000000"
         class="<?php if(isset($error['datei']))echo "errorClass"; ?>" value="<?php if(isset($_FILES['uploaddatei'])) echo $_FILES['uploaddatei']?>" >
         <?php if(isset($error['datei']))echo "<div class='error'>".$error['datei']."</div>"; ?>
         <input type="Submit" name="submit" value="Create map" class="btnUpload">

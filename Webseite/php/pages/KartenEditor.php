@@ -1,28 +1,7 @@
 ﻿<?php
-//session_start();
+session_start();
 require '../includes/DatenbankConnect.inc.php';
 
-/*
-include 'DatenbankConnect.inc.php';
-if (isset($_GET['beaconId'])) {
-  $beaconId = $_GET['beaconId'];
-  $sql = mysql_query("SELECT * FROM `beacons` WHERE `beaconId` = '".$beaconId."'");
-  $data = mysql_fetch_array($sql);
-  echo $data['name']." ".$data['beaconId'].'<br />';
-}
-
-$actualBeacon = 1;
-if (isset($_POST['beaconId']))
-{
-  echo "Done";
-  $actualBeacon = $_POST['beaconId'];
-  echo $actualBeacon;
-}
-echo "Heloo1".'<br />';
-$sql = mysql_query("SELECT * FROM `karte01` WHERE `beaconId` = $actualBeacon ");
-$data = mysql_fetch_array($sql);
-echo $data['name']." ".$data['beaconId'].'<br />';
-*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
