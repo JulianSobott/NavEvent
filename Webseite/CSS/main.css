@@ -2,7 +2,7 @@
   height: 100%;
   position: relative; }
   .body .toggleSidebar {
-    font-size: 3em;
+    font-size: 3em !important;
     position: absolute;
     left: 1%;
     margin-top: 0;
@@ -44,10 +44,11 @@
     background: #cbcccc;
     min-height: 100%;
     height: auto;
-    overflow: scroll;
+    overflow: none;
     z-index: 1; }
     .body .content h2 {
-      margin-left: 50px; }
+      margin-left: 50px;
+      margin-top: 0 !important; }
     .body .content .btnMap {
       width: 16rem;
       height: 16rem;
@@ -57,8 +58,7 @@
       text-align: center;
       padding: 0;
       margin-left: 2rem;
-      margin-bottom: 2em;
-      filter: contrast(80%) grayscale(70%); }
+      margin-bottom: 2em; }
       .body .content .btnMap:hover > img {
         filter: brightness(40%) grayscale(70%); }
       .body .content .btnMap:hover > .option_field {
@@ -105,10 +105,12 @@
         filter: contrast(100%); }
     .body .content .btnNeueKarteHinzufuegen {
       padding: 1%;
-      font-size: 1.5em; }
+      font-size: 1.5em;
+      filter: grayscale(40%); }
       .body .content .btnNeueKarteHinzufuegen:hover {
         cursor: default;
-        filter: contrast(100%); }
+        border-radius: 10px 20px;
+        filter: grayscale(0%); }
       .body .content .btnNeueKarteHinzufuegen .add {
         display: inline-block;
         font-size: 3em; }
@@ -134,6 +136,20 @@
 .footer {
   margin-top: 0 !important; }
 
+@media only screen and (max-width: 480px) {
+  .seitenmenue {
+    width: 90% !important; }
+
+  #toggleSidebar {
+    display: none; }
+    #toggleSidebar:checked + .body .toggleSidebar {
+      left: 80%; }
+
+  @keyframes openMenu {
+    0% {
+      margin-left: 0; }
+    100% {
+      margin-left: 90%; } } }
 html, body {
   padding: 0;
   margin: 0; }

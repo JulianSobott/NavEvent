@@ -10,7 +10,6 @@ body, html {
       font-size: 3em; }
   body .landing, html .landing {
     height: 99vh;
-    background: #0fe3bd;
     background-image: url(https://unsplash.imgix.net/photo-1414490929659-9a12b7e31907);
     background-size: cover;
     background-position: center;

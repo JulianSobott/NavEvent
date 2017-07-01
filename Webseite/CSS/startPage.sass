@@ -3,56 +3,46 @@ body, html
   height: 100%
 
 .startInfo
+  position: relative
   padding-top: 2rem
   background: rgba(#808080, 0.75)
-  height: 50%
+  //background-image: url("../Bilder/DSC_0029.JPG")
+  background-size: cover
+  //height: 90vh
   min-height: 450px
+
   .row
-    height: 100%
+    .bildershow
+      display: none
+
     .col-md-4
-      height: 100%
-      .logo
+      //height: 100%
+      filter: grayscale(0)
+      .logo_start
         width: auto
-        height: 90%
+        height: 100%
         display: block
 
     .col-md-8
-      height: 100%
-      .bildershow
+      //height: 100%
+      align-items: center
+      padding-top: 10%
+      display: inline-block
+
+      .btn
+        font-size: 2em
+        box-shadow: 0 0 2px 1px #07C2F4
+
+    blockquote
+      p
+        //position: absolute
+        //top: 50vh
         display: block
-        position: relative
-        //overflow: visible
-        float: left
-        margin: 1% 0 1% 5%
-        width: 90%
-        height: 100%
-        //background-size: cover
-        perspective: 1000px
-
-        .karte
-          max-width: 100%
-          height: auto
-          position: absolute
-          transform-origin: top center
-
-          &.animate-in
-            display: block !important
-            animation: animate-in 2000ms cubic-bezier(.17,.53,.29,.9) forwards
-            @keyframes animate-in
-              0%
-                opacity: 0
-              100%
-                opacity: 1
-
-          &.animate-out
-            display: block !important
-            animation: animate-out 2000ms cubic-bezier(.17,.53,.9,.9) forwards
-            @keyframes animate-out
-              0%
-                opacity: 1
-              100%
-                opacity: 0
-
+        left: 20%
+        font-size: 3em
+        color: #07C2F4
+        text-shadow: 4px 4px 1px darken(#07C2F4, 20)
+        font-weight: bold
 .content
   //padding: 10%
   padding-bottom: 10%
@@ -62,6 +52,11 @@ body, html
     &:first-child
       border-bottom: 2px groove rgba(#0D00B9, 0.79)
 
+    .bild
+      float: left
+      width: 50%
+      height: auto
+      margin: 0 5% 5% 0
 
 .btn
   margin-left: 6rem
@@ -72,29 +67,26 @@ body, html
 .btn
   font-size: 1.5em
 .startInfo
-  height: 90%
+  //height: 60vh
   .row
     max-height: 40%
     .col-md-4
       height: 100% !important
-      img
-        width: auto
-        height: 90%
-        display: block
-    .col-md-8
-      height: 100%
-      .bildershow
-        display: block
-        //position: relative
-        overflow: visible
-        float: left
-        margin: 1% 0 1% 5%
-        width: 90%
-        height: 100%
-        background-size: cover
-        perspective: 1000px
+      .logo_start
+        height: 20vh
 
 @media only screen and (max-width: 480px)
+  .startInfo
+    height: 100vh
+  .logo_start
+    width: 15% !important
+    height: auto !important
+    position: absolute
+    left: 50%
+    top: 1%
+  .h2
+    font-size: 2em !important
+    text-align: center
   .btn
     width: 100% !important
     margin-left: 0

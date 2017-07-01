@@ -7,7 +7,7 @@ if (isset($_POST['anmelden']))
   {
     $password = $_POST['passwordLI'];
   }else{
-    $error['passwordLI'] = "Bitte Passwort eingeben";
+    $error['passwordLI'] = "Please insert your password";
   }
   $username = $_POST['username'];
   $sql = "SELECT * FROM accounts WHERE nutzername = '$username'";
@@ -22,25 +22,14 @@ if (isset($_POST['anmelden']))
       $_SESSION['accountId'] = $result['id'];
       $accountId = $result['id'];
       $_SESSION['nutzername'] = $result['nutzername'];
-      if(isset($_POST['angemeldetBleiben'])){
-        $identifier = randomString();
-        $securitytoken = $identifier;
-        $securitytokenCrypted = sha1($securitytoken);
-        $userId = $result['id'];
-
-        if($insert = mysqli_query($con, "INSERT INTO securitytokens (user_id, identifier, securitytoken) VALUES ('$userId', '$identifier', '$securitytokenCrypted')")){
-          setcookie("identifier",$identifier,time()+(3600*24*365)); //1 Jahr Gültigkeit
-          setcookie("securitytoken",$securitytoken,time()+(3600*24*365));
-        }
-      }
       session_write_close();
       header("Location: index.php?action=profil&accountId=$accountId");
       exit();
     }else{
-      $error['passwordLI'] = "Falsches Passwort";
+      $error['passwordLI'] = "Wrong Password";
     }
   }else {
-    $error['username'] = "Benutzername nicht vorhanden";
+    $error['username'] = "Username doesn´t exist";
   }
 }
 
@@ -50,17 +39,16 @@ if (isset($_POST['anmelden']))
 <div class="loginContainer">
   <h3 class="hLogin">Login</h3>
   <form class="login" action="" method="post">
-    <label for="username">Benutzername
+    <label for="username">Username
       <input type="text" name="username" class="username <?php if(isset($error['username']))echo " errorClass"; ?>"
       value="<?php
       if(isset($_POST['username'])) echo $_POST['username'];?>" >
       <?php if(isset($error['username']))echo "<div class='error'>".$error['username']."</div>"; ?>
     </label>
-    <label for="password">Passwort
+    <label for="password">Password
       <input type="password" name="passwordLI" class="password <?php if(isset($error['passwordLI']))echo " errorClass"; ?>" value="" autocomplete="off">
       <?php if(isset($error['passwordLI']))echo "<div class='error'>".$error['passwordLI']."</div>"; ?>
     </label>
-    <label for="angemeldetBleiben">Amgemeldet bleiben?<input type="checkbox" name="angemeldetBleiben" value="1"></label>
-    <input type="submit" name="anmelden" class="btnAnmelden" value="Anmelden" autocomplete="off">
+    <input type="submit" name="anmelden" class="btnAnmelden" value="Login" autocomplete="off">
   </form>
 </div>

@@ -3,49 +3,34 @@ body, html {
   height: 100%; }
 
 .startInfo {
+  position: relative;
   padding-top: 2rem;
   background: rgba(128, 128, 128, 0.75);
-  height: 50%;
+  background-size: cover;
   min-height: 450px; }
-  .startInfo .row {
-    height: 100%; }
-    .startInfo .row .col-md-4 {
-      height: 100%; }
-      .startInfo .row .col-md-4 .logo {
-        width: auto;
-        height: 90%;
-        display: block; }
-    .startInfo .row .col-md-8 {
-      height: 100%; }
-      .startInfo .row .col-md-8 .bildershow {
-        display: block;
-        position: relative;
-        float: left;
-        margin: 1% 0 1% 5%;
-        width: 90%;
-        height: 100%;
-        perspective: 1000px; }
-        .startInfo .row .col-md-8 .bildershow .karte {
-          max-width: 100%;
-          height: auto;
-          position: absolute;
-          transform-origin: top center; }
-          .startInfo .row .col-md-8 .bildershow .karte.animate-in {
-            display: block !important;
-            animation: animate-in 2000ms cubic-bezier(0.17, 0.53, 0.29, 0.9) forwards; }
-@keyframes animate-in {
-  0% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-          .startInfo .row .col-md-8 .bildershow .karte.animate-out {
-            display: block !important;
-            animation: animate-out 2000ms cubic-bezier(0.17, 0.53, 0.9, 0.9) forwards; }
-@keyframes animate-out {
-  0% {
-    opacity: 1; }
-  100% {
-    opacity: 0; } }
+  .startInfo .row .bildershow {
+    display: none; }
+  .startInfo .row .col-md-4 {
+    filter: grayscale(0); }
+    .startInfo .row .col-md-4 .logo_start {
+      width: auto;
+      height: 100%;
+      display: block; }
+  .startInfo .row .col-md-8 {
+    align-items: center;
+    padding-top: 10%;
+    display: inline-block; }
+    .startInfo .row .col-md-8 .btn {
+      font-size: 2em;
+      box-shadow: 0 0 2px 1px #07C2F4; }
+  .startInfo .row blockquote p {
+    display: block;
+    left: 20%;
+    font-size: 3em;
+    color: #07C2F4;
+    text-shadow: 4px 4px 1px #047391;
+    font-weight: bold; }
+
 .content {
   padding-bottom: 10%; }
   .content .row {
@@ -53,6 +38,11 @@ body, html {
     padding-bottom: 1rem; }
     .content .row:first-child {
       border-bottom: 2px groove rgba(13, 0, 185, 0.79); }
+    .content .row .bild {
+      float: left;
+      width: 50%;
+      height: auto;
+      margin: 0 5% 5% 0; }
 
 .btn {
   margin-left: 6rem;
@@ -63,29 +53,28 @@ body, html {
 .btn {
   font-size: 1.5em; }
 
-.startInfo {
-  height: 90%; }
-  .startInfo .row {
-    max-height: 40%; }
-    .startInfo .row .col-md-4 {
-      height: 100% !important; }
-      .startInfo .row .col-md-4 img {
-        width: auto;
-        height: 90%;
-        display: block; }
-    .startInfo .row .col-md-8 {
-      height: 100%; }
-      .startInfo .row .col-md-8 .bildershow {
-        display: block;
-        overflow: visible;
-        float: left;
-        margin: 1% 0 1% 5%;
-        width: 90%;
-        height: 100%;
-        background-size: cover;
-        perspective: 1000px; }
+.startInfo .row {
+  max-height: 40%; }
+  .startInfo .row .col-md-4 {
+    height: 100% !important; }
+    .startInfo .row .col-md-4 .logo_start {
+      height: 20vh; }
 
 @media only screen and (max-width: 480px) {
+  .startInfo {
+    height: 100vh; }
+
+  .logo_start {
+    width: 15% !important;
+    height: auto !important;
+    position: absolute;
+    left: 50%;
+    top: 1%; }
+
+  .h2 {
+    font-size: 2em !important;
+    text-align: center; }
+
   .btn {
     width: 100% !important;
     margin-left: 0;

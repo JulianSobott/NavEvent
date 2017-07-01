@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 //session_start();
 require '../includes/DatenbankConnect.inc.php';
 
@@ -25,10 +25,10 @@ echo $data['name']." ".$data['beaconId'].'<br />';
 */
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <link rel="stylesheet" href="../../CSS/bootstrap.min.css">
-    <link rel="stylesheet" href="../../CSS/karteneditor.css">
+    <link rel="stylesheet" href="../../CSS/kartenEditor.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -50,14 +50,15 @@ echo $data['name']." ".$data['beaconId'].'<br />';
       <div class="publishMap" <?php if(!isset($_GET['status'])) echo 'style = "display: none;"' ?>>
         <button type="button" name="publishMap" class="btnPublish"><i class="material-icons miPublish">publish</i></button>
         <div class="textPublishMap">
-          &nbspKarte hochladen und veröffentlichen&nbsp
+          &nbspUpload and publish map&nbsp
         </div>
       </div>
       <div class="map_name">
+        <div class="close">✖</div>
         <div class="fKartenKonfiguration" id="fKartenKonfiguration">
-          <label for="kartenName">Name der Karte: </label>
-          <input type="text" id="tf_map_name" class="kartenName" name="kartenName" value="" placeholder="Beispiel Karte">
-          <input type="button" id="btnWeiter" name="submit" value="Weiter">
+          <label for="kartenName">Name of the map: </label>
+          <input type="text" id="tf_map_name" class="kartenName" name="kartenName" value="" placeholder="Example map">
+          <input type="button" id="btnWeiter" name="submit" value="Continue">
         </div>
       </div>
       <div class="mask"></div>
@@ -65,6 +66,7 @@ echo $data['name']." ".$data['beaconId'].'<br />';
   </body>
   <script src="../../JS/JsKarteBearbeiten.js"></script>
   <script src="../../JS/kartenEditor.js"></script>
+  <script src="../../JS/editor_sidebar.js"></script>
   <script src="../../JS/qrcode.min.js"></script>
 
 </html>

@@ -11,62 +11,34 @@ if (!isset($_GET['action'])){
 require 'php/includes/DatenbankConnect.inc.php';
  ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>NavEvent</title>
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="NavEvent is an App which helps you to find your way at events">
+    <meta name="keywords" content="NavEvent, Navigation, indoor, Event, events">
+    <title>NavEvent - App for Event Navigation</title>
+    <link rel="icon" href="Bilder/NavEventLogo.jpeg">
     <link rel="stylesheet" href="CSS/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="CSS/main.css">-->
     <link rel="stylesheet" href="CSS/template.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="JS/jquery.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="JS/jquery.js"></script>
+    <script src="JS/jquery-ui.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   </head>
   <body>
     <div class="container_index">
 
       <?php
-      if($_GET['action'] != "index" && isset($_GET['action'])) include 'php/includes/header.php';
-
-      /*if(!isset($_SESSION['accountId']) && isset($_COOKIE['identifier']) && isset($_COOKIE['securitytoken'])){
-        $identifier = $_COOKIE['identifier'];
-        echo $identifier." ";
-        $securitytoken = $_COOKIE['securitytoken'];
-        echo $securitytoken;
-
-
-
-        $statement = "SELECT * FROM securitytokens WHERE identifier ='$identifier'";
-        $res = mysqli_query($con, $statement);
-        $result = mysqli_fetch_assoc($res);
-        echo "</br>".sha1($securitytoken);
-        echo "</br>".$result['securitytoken'];
-
-        if(sha1($securitytoken) !== $result['securitytoken']){
-          echo('Ein vermutlich gestohlener Security Token wurde identifiziert');
-        }else{
-          $neuer_securitytoken = randomString();
-          $neuer_securitytokenCrypted = sha1($neuer_securitytoken);
-          $statement = "UPDATE securitytokens SET securitytoken = ".$neuer_securitytokenCrypted." WHERE identifier =".$identifier;
-          setcookie("identifier", $identifier, time()+(3600*24*365));
-          setcookie("securitytoken", $neuer_securitytoken, time()+(3600*24*365));
-
-          $_SESSION['accountId'] = $result['user_id'];
-          $accountId = $result['user_id'];
-          $_SESSION['loggedIn'] = true;
-          echo $_SESSION['accountId'];
-          echo "string";
-          $statement = "SELECT * FROM accounts WHERE id =".$accountId;
-          $res = mysqli_query($con, $statement);
-          $result = mysqli_fetch_assoc($res);
-          $_SESSION['nutzername'] = $result['nutzername'];
-        }
-      }*/
+      /*if($_GET['action'] != "index" && isset($_GET['action']))*/ include 'php/includes/header.php';
 
       if(!isset($_SESSION['loggedIn']))
       {
@@ -76,15 +48,15 @@ require 'php/includes/DatenbankConnect.inc.php';
       ?>
       <div class="content_index">
         <?php
-            if($_GET['action'] == "index") include 'php/pages/index2.php';
+            if($_GET['action'] == "index") include 'php/pages/start.php';
             if($_GET['action'] == "guide") include 'php/pages/guide.php';
             if($_GET['action'] == "editor") include 'php/pages/karteEinfuegen.php';
-            if(!$_SESSION['loggedIn'] && $_GET['action']=="register") include 'php/pages/subPages/registrieren.php'; //Design fertig
-            if($_GET['action']=="about") include 'php/pages/subPages/about.php';
-            if(!$_SESSION['loggedIn'] && $_GET['action'] == "login") include 'php/pages/subPages/anmelden.php'; //Design fertig
-            if($_GET['action']=="impressum") include 'php/pages/subPages/impressum.php';
-            if($_GET['action']=="kontakt") include 'php/pages/subPages/kontakt.php';
-            if($_SESSION['loggedIn'] && $_GET['action']=='profil') include 'php/pages/subPages/profil.php'; // TODO: profil Karte erstellen
+            if(!$_SESSION['loggedIn'] && $_GET['action']=="register") include 'php/pages/SubPages/registrieren.php'; //Design fertig
+            if($_GET['action']=="about") include 'php/pages/SubPages/about.php';
+            if(!$_SESSION['loggedIn'] && $_GET['action'] == "login") include 'php/pages/SubPages/anmelden.php'; //Design fertig
+            if($_GET['action']=="impressum") include 'php/pages/SubPages/impressum.php';
+            if($_GET['action']=="contact") include 'php/pages/SubPages/kontakt.php';
+            if($_SESSION['loggedIn'] && $_GET['action']=='profil') include 'php/pages/SubPages/profil.php'; // TODO: profil Karte erstellen
          ?>
       </div>
 

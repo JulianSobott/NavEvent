@@ -45,10 +45,15 @@ html, body
             transform: rotateX(90deg)
             opacity: 0
           100%
-            transform: scaleX(0deg)
+            transform: rotateX(0deg)
             opacity: 1
 
-
+      .close
+        position: absolute
+        font-size: 2em
+        top: 3%
+        right: 3%
+        color: red
       .fKartenKonfiguration
         label
           font-size: 2em
@@ -70,12 +75,12 @@ html, body
 
           &:hover
             box-shadow: 0px 0px 0px 2px #A6AB86, 0px 0px 0px 4px #A19F8A
+
     .publishMap
-      position: absolute
+      position: fixed
       right: 8%
       bottom: 3%
       z-index: 1000
-
 
       .textPublishMap
         float: left
@@ -104,8 +109,7 @@ html, body
       button
         background: rgba(#FFFFFF, 0)
         z-index: 700
-        &:hover
-          background: rgba(#0EE22f, 33)
+        border: 0px solid red !important
         .miPublish
           font-size: 8em
           border: 1px solid #000
@@ -127,22 +131,84 @@ html, body
       width: 15%
       transform: translate(-100%)
       &.animate-in
+        -webkit-animation: seite-linksIn 200ms ease-in-out forwards
+        -moz-animation: seite-linksIn 200ms ease-in-out forwards
+        -ms-animation: seite-linksIn 200ms ease-in-out forwards
+        -o-animation: seite-linksIn 200ms ease-in-out forwards
         animation: seite-linksIn 200ms ease-in-out forwards
+
+        @-webkit-keyframes seite-linksIn
+          0%
+            transform: translate(-100%)
+          100%
+            transform: translate(0%)
+        @-moz-keyframes seite-linksIn
+          0%
+            transform: translate(-100%)
+          100%
+            transform: translate(0%)
+        @-ms-keyframes seite-linksIn
+          0%
+            transform: translate(-100%)
+          100%
+            transform: translate(0%)
+        @-o-keyframes seite-linksIn
+          0%
+            transform: translate(-100%)
+          100%
+            transform: translate(0%)
+
         @keyframes seite-linksIn
           0%
             transform: translate(-100%)
           100%
             transform: translate(0%)
 
+
     .seite-rechts
-      transform: translate(100%)
+      //transform: translate(100%)
+      right: 0
+      opacity: 0
       &.animate-in
+        -webkit-animation: seite-rechtsIn 200ms ease-in-out forwards
+        -moz-animation: seite-rechtsIn 200ms ease-in-out forwards
+        -ms-animation: seite-rechtsIn 200ms ease-in-out forwards
+        -o-animation: seite-rechtsIn 200ms ease-in-out forwards
         animation: seite-rechtsIn 200ms ease-in-out forwards
-        @keyframes seite-rechtsIn
+
+        @-webkit-keyframes seite-rechtsIn
           0%
             transform: translate(100%)
           100%
-            transform: translate(-100%)
+            transform: translate(0)
+            opacity: 1
+        @-moz-keyframes seite-rechtsIn
+          0%
+            transform: translate(100%)
+          100%
+            transform: translate(0)
+            opacity: 1
+        @-ms-keyframes seite-rechtsIn
+          0%
+            transform: translate(100%)
+          100%
+            transform: translate(0)
+            opacity: 1
+        @-o-keyframes seite-rechtsIn
+          0%
+            transform: translate(100%)
+          100%
+            transform: translate(0)
+            opacity: 1
+
+        @keyframes seite-seite-rechtsIn
+          0%
+            transform: translate(100%)
+            opacity: 0
+          100%
+            transform: translate(0%)
+            opacity: 1
+
       .mask_form
         position: absolute
         background: rgba(#B8B8B8, 0.9)
