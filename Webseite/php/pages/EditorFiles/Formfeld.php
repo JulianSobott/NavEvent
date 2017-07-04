@@ -33,21 +33,21 @@
         <i class="material-icons miDelete btnDelete">delete</i>
       </div>
       <div class="h3left">
-        <h3>Eigenschaften</h3>
+        <h3>Properties</h3>
       </div>
     </div>
     <form id="daten" action="datenbank.inc.php" method="post">
       <div class="name">
         <label for="tfName">Name: </label>
-        <input onchange="saveData(name, this.value) "id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value="">
+        <input onchange="saveData(this.name, this.value)" id="tfName" class="eingabe tfName" type="text" name="name" placeholder="z.B. Labor" value="">
       </div>
       <div class="besonders feld">
         <div class="specialPlace">
-          <label>Besonderer Ort:</label>
+          <label>Special place:</label>
           <fieldset>
-            <label for="rdbBesondersJa">Ja</label>
+            <label for="rdbBesondersJa">Yes</label>
             <input class="rdbBesondersJa" type="radio" name="rdbBesonders" value="Besonderer_Ort" <?php //if($data['besonders']==1) echo 'checked = "checked"'?>>
-            <label for="rdbBesondersNein">Nein</label>
+            <label for="rdbBesondersNein">No</label>
             <input class="rdbBesondersNein" checked="checked" onclick="saveData(this.name, this.value)" type="radio" name="rdbBesonders" value="kein_Besonderer_Ort" <?php //if($data['besonders']==2 || $data['besonders']==0) echo 'checked = "checked"'?>>
           </fieldset>
           <i class="material-icons dropDown">arrow_drop_down</i>
@@ -57,7 +57,7 @@
             <ul class="dropDownList">
               <li>
                 <input type="radio" id="spToilets" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace toilet" value="Toiletten">
-                <label for="spToilets">Toiletten</label>
+                <label for="spToilets">Toilets</label>
               </li>
               <li>
                 <input type="radio" id="spCafeteria" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace cafeteria" value="Cafeteria">
@@ -65,15 +65,15 @@
               </li>
               <li>
                 <input type="radio" id="spEmegencyExit" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace notausgang" value="Notausgang">
-                <label for="spEmegencyExit">Notausgang</label>
+                <label for="spEmegencyExit">Exit</label>
               </li>
               <li>
                 <input type="radio" id="spInfopoint" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace infopoint" value="Infopoint">
                 <label for="spInfopoint">Infopoint</label>
               </li>
               <li>
-                <input type="radio" id="spOther" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace sonstiges" value="sonstiges">
-                <input type="text" name="tfSpecialPlace" class="specialPlace tfSonstiges" placeholder="Sonstiges">
+                <input type="radio" id="spOther" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace sonstiges" value="Other">
+                <input type="text" name="tfSpecialPlace" class="specialPlace tfSonstiges" placeholder="Other">
               </li>
             </ul>
 
@@ -81,10 +81,10 @@
         </div>
       </div>
       <div class="form-group feld">
-        <label for="tfInfos">Informationen: </label>
+        <label for="tfInfos">Information: </label>
         <textarea id="tfDescription" class="form-control" onchange="saveData(this.name, this.value)" type="text" name="description" rows="5" value=""></textarea>
       </div>
-      <input class="submit" type="button" name="submit" value="Daten Speichern">
+      <input class="submit" type="button" name="submit" value="Save Data">
     </form>
   </div>
 

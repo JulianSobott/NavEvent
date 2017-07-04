@@ -8,14 +8,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand " href="http://localhost/NavEvent/index.php?action=index">NavEvent</a>
+      <a class="navbar-brand " href="../../index.php?action=index">NavEvent</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="http://localhost/NavEvent/php/pages/Karteneditor.php">Neues Bild</a></li>
-
+        <li><a href="../../index.php?action=profil">Profile<?php if(isset($_SESSION["nutzername"]))echo " from ".$_SESSION["nutzername"]?><span class="sr-only">(current)</span></a></li>
+        <li><a href="KartenEditor.php">New picture</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

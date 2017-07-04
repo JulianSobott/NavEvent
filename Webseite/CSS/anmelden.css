@@ -31,6 +31,7 @@
       display: block;
       padding: 1em;
       padding-bottom: 0.7em;
+      font-size: 1.3em;
       color: #545554; }
       .loginContainer .login label input {
         margin-top: 1%;
@@ -38,10 +39,7 @@
         margin-right: auto;
         display: block;
         width: 70%;
-        height: 1.5rem;
-        font-size: 1.5rem;
-        color: #111;
-        line-height: 1rem;
+        font-size: 1.2rem;
         border: 2px solid #545554;
         border-radius: 4px; }
       .loginContainer .login label .errorClass {
@@ -51,6 +49,7 @@
         color: #f44; }
     .loginContainer .login .btnAnmelden {
       font-size: 2rem;
+      margin-top: 10%;
       padding: 1%;
       background: rgba(89, 90, 94, 0.85); }
       .loginContainer .login .btnAnmelden:hover {

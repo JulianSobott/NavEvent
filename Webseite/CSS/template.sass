@@ -1,5 +1,5 @@
-@import "anmelden"
 @import "registrieren"
+@import "anmelden"
 @import "guide"
 @import "profil"
 @import "startPage"
@@ -23,6 +23,13 @@ html, body
 
     .footer
       position: absolute
-      bottom: 0 
+      bottom: 0
       width: 100%
       height: 50px
+
+@media only screen and (max-width: 765px)
+  .footer
+    height: 150px !important
+
+  .content_index
+    padding-bottom: 150px !important

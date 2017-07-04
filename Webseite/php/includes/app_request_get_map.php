@@ -20,7 +20,7 @@ if(isset($_POST['mapID']))
 			. $result['id'] . chr(0x0A)
 			. $result['major_id'] . chr(0x0A)
 			. $result['description'] . chr(0x0A)
-			. $result['img_file'] . '.' . $result['mime'] . chr(0x0A);
+			. $result['img_file'] . chr(0x0A);
 
 		//Select beacon data
 		$o_places = array();

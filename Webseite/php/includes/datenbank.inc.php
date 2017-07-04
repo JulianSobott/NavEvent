@@ -79,7 +79,8 @@ if($_POST['action'] === "delete"){
 if ($_POST['action'] === "map_name") {
   $map_name = $_POST['map_name'];
   $map_id = $_POST['map_id'];
-  $sql = "UPDATE maps SET name = '$map_name' WHERE id = '$map_id'";
+  $major_id = $map_id;
+  $sql = "UPDATE maps SET name = '$map_name', major_id='$major_id' WHERE id = '$map_id'";
   $res = mysqli_query($con, $sql);
 }
 
@@ -90,10 +91,11 @@ if($_POST['action'] === "updateSidebar" && isset($_POST['map_id'])){
       $sql = "SELECT * FROM beacons WHERE fk_map_id = '$map_id'";
       $res = mysqli_query($con, $sql);
       while($result = mysqli_fetch_assoc($res)){
+        $id = $result['minor_id'];
         $name = $result['name'];
         $description = $result['description'];
         ?>
-        <div class="beaconInfoContainer">
+        <div class="beaconInfoContainer beaconInfoContainer-<?php echo $id;?>">
           <div class="beaconInfo biName">
             <?php echo $name; ?>
           </div>
@@ -140,6 +142,8 @@ if ($_POST['action'] === "delete_map") {
   $map_id = $_POST['map_id'];
   $sql = "DELETE FROM maps WHERE id='$map_id'";
   $result = mysqli_query($con, $sql);
-  echo "ready";
+  $sql = "DELETE FROM beacons WHERE fk_map_id='$map_id'";
+  $result = mysqli_query($con, $sql);
+
 }
 ?>

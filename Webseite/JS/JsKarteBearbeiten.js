@@ -1,17 +1,21 @@
-var anzBeacons = ($('#bildContainer').children().length)-1;
-
+var anzBeacons = ($('#bildContainer').children().length)-1; //-1 Because the Container has always the img as child
 var freierOrt = true;
-$('#bildContainer').removeClass('beacon');
+
 $(document).ready( function(){
   updateSidebar();
   var container = document.querySelector('#bildContainer');
-
-  //Bild Container Grösse anpassen
-  var widthBild = $('#bild').css('width');
-  var heightBild = $('#bild').css('height');
+  //Default Settings for the BildContainer
+  widthBild = $('#bild').css('width');
+  heightBild = $('#bild').css('height');
   $('#bildContainer').css('width', widthBild);
   $('#bildContainer').css('height', heightBild);
-
+  //Adjust bildContainer and thereby the beacon position depending on the Window width
+  $( window ).resize(function() {
+    widthBild = $('.mitte').css('width');
+    heightBild = $('#bild').css('height');
+    $('#bildContainer').css('width', widthBild);
+    $('#bildContainer').css('height', heightBild);
+  });
   //Spinner bei Bild upload
   $('.btnUpload').click(function(){
     $('.spinner').addClass('animate');
@@ -21,34 +25,43 @@ $(document).ready( function(){
   if(anzBeacons != 0){
     $('.mask_form').remove();
   }
-  /*$('.beaconContainer').mouseEnter(function() {
+
+  //Beacon hovered
+  $(document).on('mouseenter', '.beaconContainer', function() {
+    id = this.id.split('-')[1];
+    show_biDescription(id);
+  })
+
+  $(document).on('mouseleave', '.beaconContainer', function() {
+    id = this.id.split('-')[1];
+    undo_show_biDescription(id);
+  })
+
+
+//-------Beacon clicked-------------
+  $('.kartenContainer').on('click', '.beaconContainer', function(e) {
+    $('.actualBeacon').removeClass('actualBeacon');
+    $(this).children().addClass('actualBeacon');
+    $('.seite-rechts').css('filter', 'contrast(100%)');
+    showData();
     freierOrt = false;
-    console.log(freierOrt);
   });
-  $('.beaconContainer').Mouseleave(function() {
-    freierOrt = false;
-    console.log(freierOrt);
-  });
-*/
+
   //Beacon auf Karte hinzufügen
-  container.addEventListener("click", function (e) {
-    //alert("Clicked");
+  $('.kartenContainer').on('click', function(e) {
     $('.mask_form').remove();
     $('.beaconContainer').click(function() {
       freierOrt = false;
-      console.log("not free");
     });
     if (freierOrt) {
       var x = e.clientX - container.getBoundingClientRect().left;
       x = Math.round(x);
-      x = x - 5 ; //TODO an beacon größe anpassen
+      x = x - 8;
       x = x *(100/$('#bild').width());
-      //alert(x);
       var y = e.clientY - container.getBoundingClientRect().top;
       y = Math.round(y);
-      y = y - 5; //TODO an beacon größe anpassen
+      y = y - 8;
       y = y *(100/$('#bild').height());
-      //alert(y);
       anzBeacons++;
       beaconHinzufuegen(x, y);
       addDefaultBeacon(x, y);
@@ -56,17 +69,11 @@ $(document).ready( function(){
     }
     freierOrt = true;
     updateSidebar();
+    $(drag);
+    $(drop);
   });
 
-  //-------Beacon clicked-------------
-  container.addEventListener("click", function (e) {
-    $('.beaconContainer').click(function() {
-      $('.actualBeacon').removeClass('actualBeacon');
-      $(this).children().addClass('actualBeacon');
-      showData();
-      freierOrt = false;
-    });
-  });
+
   //----------Beacon Bearbeiten----------
   $('.dropDown').click(function() {
     if ($('.listSpecialPlaces').hasClass('open')) {
@@ -93,8 +100,7 @@ $(document).ready( function(){
 
 
 
-//Drag n´Drop beaconBearbeiten
-
+//Drag n´Drop Beacon
 $(drag);
 $(drop);
 function drag() {
@@ -102,8 +108,6 @@ function drag() {
     cursor: "move",
     revert: "invalid",
     opacity: 0.7,
-    snap: "#bildContainer",
-    snapMode: "inner"
   });
 }
 function drop() {
@@ -114,14 +118,12 @@ function drop() {
   });
 }
 function positioning(event, ui) {
-  position = $('.ui-draggable-dragging').position();
-  beacon = $('.ui-draggable-dragging').attr('id').split('-')[1];
-  console.log(beacon);
+  position = $('.ui-draggable-dragging').position(); //Element which is currently dragging
+  beacon = $('.ui-draggable-dragging').attr('id').split('-')[1]; //beacon id number
   x = position.left;
   x = x *(100/$('#bild').width()); //From px to %
   y = position.top;
   y = y *(100/$('#bild').height()); //From px to %
-  console.log(x + " - " + y);
   ui.draggable.animate({
     opacity: 1,
     top: y+"%",
@@ -207,7 +209,6 @@ function saveData(field, value) {
   var id = $('.actualBeacon').parent().attr('id').split('-')[1];
   var map_id = $('#bild').attr('alt');
   var position = $('.actualBeacon').parent().attr('style');
-  console.log(position);
 
   if(field == "rdbSpecialPlace"){
     field = "fk_special";
@@ -246,7 +247,8 @@ function saveData(field, value) {
   });
   updateSidebar();
 }
-function updateBeaconPosition(beacon, x, y) {
+
+function updateBeaconPosition(beacon, x, y) { //Updates Beacon Position in DB if its changed through Drag and Drop
   var id = beacon;
   var map_id = $('#bild').attr('alt');
   $.ajax({
@@ -261,9 +263,8 @@ function updateBeaconPosition(beacon, x, y) {
     }
   });
 }
-function showData() {
+function showData() { //Function for the right Form to show the Values for the actual Beacon
   var id = $('.actualBeacon').parent().attr('id').split('-')[1];
-  console.log(id);
   var map_id = $('#bild').attr('alt');
   $.ajax({
     type: "POST",
@@ -274,7 +275,8 @@ function showData() {
       'action': "show"
     }
   }).success(function(data) {
-    var data_obj = JSON.parse(data);
+    var data_obj = JSON.parse(data); //TODO Sometimes get this SyntaxError: JSON.parse: unexpected non-whitespace character after JSON data at line 1 column 153 of the JSON data
+//-------Sets the values of all fields according to the Values from the DB-----
     $('#tfName').val(data_obj['name']);
     $('#tfDescription').val(data_obj['description']);
     if (data_obj['fk_special'] != "0" || data_obj['fk_ordinary'] != "0" ) {
@@ -284,19 +286,15 @@ function showData() {
       $('.rdbBesondersNein').prop("checked", true);
       collapsePlaces();
     }
-    console.log(data_obj);
     $('.progress-bar').removeClass('active');
     $('.progress').css('filter', 'brightness(60%)');
-    console.log("succesfull");
   }).fail(function() {
     $('.progress-bar').addClass('progress-bar-danger')
   });
 }
 
-function updateSidebar() {
+function updateSidebar() { //GET the new Values for the left sidebar from the DB
   var map_id = $('#bild').attr('alt');
-  //$('.seitenmenue').css('background', 'blue');
-  console.log("updateSidebar");
   $.ajax({
     type: "POST",
     url: "../includes/datenbank.inc.php",
@@ -311,7 +309,7 @@ function updateSidebar() {
   });
 }
 
-function collapsePlaces() {
+function collapsePlaces() { //Function for the right Form to collapse the places list
   $('.rdbBesondersNein').prop("checked", true);
   if ($('.listSpecialPlaces').hasClass('open')) {
     $('.listSpecialPlaces').addClass('closeMenu');
@@ -323,12 +321,28 @@ function collapsePlaces() {
   }
 }
 
-function openPlaces() {
+function openPlaces() { //Function for the right Form to open the places list
   $('.rdbBesondersJa').prop("checked", true);
   $('.listSpecialPlaces').css('display', 'block');
   $('.listSpecialPlaces').addClass('open');
   $('.listSpecialPlaces').removeClass('closeMenu');
   rotateArrow();
 }
-//x = x *(100/$('#bild').width());
-//$('.beacon-'+ anzBeacons).css('margin-top', y+'px');
+
+function show_biDescription(id) { //Highlights the beaconInfoContainer Which fits to the hovered Beacon
+  $('.beaconInfoContainer-' + id).addClass('show');
+  $('.beaconInfoContainer-' + id).removeClass('undo_show');
+  var top =  -parseInt($('.seitenmenue').children('div:nth-child(1)').css('height')); //Prevevent, that the first element is scrolled over
+  for (var i = 1; i < id; i++) {  //Get the height of all Elements above the shown Element
+    height = parseInt($('.seitenmenue').children('div:nth-child('+i+')').css('height'));
+    top += height;
+  }
+  $('.seitenmenue').stop().animate({
+  scrollTop: top
+  }, 800);
+}
+
+function undo_show_biDescription(id) {  //Undo the Highlighting, added funtion before
+  $('.beaconInfoContainer-' + id).removeClass('show');
+  $('.beaconInfoContainer-' + id).addClass('undo_show');
+}

@@ -24,20 +24,20 @@
         if($_SESSION['loggedIn'])
         {
           ?>
-          <li><a href="http://localhost/NavEvent/index.php?action=profil">Profil von <?php if(isset($_SESSION["nutzername"]))echo $_SESSION["nutzername"]?><span class="sr-only">(current)</span></a></li>
-          <li><a href="http://localhost/NavEvent/php/includes/logout.inc.php?action=logout">Logout</a></li>
+          <li><a href="index.php?action=profil">Profile from <?php if(isset($_SESSION["nutzername"]))echo $_SESSION["nutzername"]?><span class="sr-only">(current)</span></a></li>
+          <li><a href="php/includes/logout.inc.php?action=logout">Logout</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mehr <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="http://localhost/NavEvent/php/pages/Karteneditor.php?user=<?php if(isset($_SESSION["nutzername"]))echo $_SESSION["accountId"]?>" target="_blank">Neue Karte erstellen</a></li>
+              <li><a href="php/pages/KartenEditor.php?user=<?php if(isset($_SESSION["nutzername"]))echo $_SESSION["accountId"]?>" target="_blank">Create new map</a></li>
               <li><a href="http://omfgdogs.com/" target="_blank">Crazy Dogs</a></li>
             </ul>
           </li>
           <?php
         }else{
           ?>
-          <li><a href="http://localhost/NavEvent/index.php?action=login">Anmelden<span class="sr-only">(current)</span></a></li>
-          <li><a href="http://localhost/NavEvent/index.php?action=register">Registrieren</a></li>
+          <li><a href="index.php?action=login">Login<span class="sr-only">(current)</span></a></li>
+          <li><a href="index.php?action=register">Register</a></li>
           <?php
         }?>
       </ul>
