@@ -38,6 +38,7 @@ require 'php/includes/DatenbankConnect.inc.php';
     <div class="container_index">
 
       <?php
+      //include 'php\includes\app_request_get_map.php';
       /*if($_GET['action'] != "index" && isset($_GET['action']))*/ include 'php/includes/header.php';
 
       if(!isset($_SESSION['loggedIn']))

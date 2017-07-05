@@ -2,26 +2,6 @@
   <div class="mask_form">
     Click on the Map to add a Beacon
   </div>
-  <!--
-  <form class="beaconBearbeiten" action="" method="post">
-    <div class="form-group">
-      <label for="beaconName">Name: </label>
-      <input type="text" name="form-control" value="" placeholder="z.B. Labor">
-    </div>
-    <div class="form-group">
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" name="optionsRadio" id="besondersJa" value="Ja">
-        </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="radio" name="optionsRadio" id="besondersNein" value="Nein">
-        </label>
-      </div>
-    </div>
-
-  </form>-->
   <div class="beaconBearbeiten">
     <div class="progress">
       <div class="progress-bar progress-bar-striped <?php if(isset($_POST['action'])) echo 'progress-bar-danger';?>" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
@@ -55,25 +35,23 @@
         <div class="listSpecialPlaces">
           <fieldset class="dropDownList dlFieldset">
             <ul class="dropDownList">
+              <?php
+              $sql = "SELECT name FROM ordinary_places";
+              $res = mysqli_query($con, $sql);
+              $numFields = 0;
+              while ($result = mysqli_fetch_assoc($res)) {
+                $numFields++;
+                ?>
+                <li>
+                  <input type="radio" id="sp<?php echo $result['name'];?>" onclick="saveData(this.name, this.value, <?php echo $numFields ?>)" name="rdbSpecialPlace" class="specialPlace <?php echo $result['name'];?>" value="<?php echo $result['name'];?>">
+                  <label for="sp<?php echo $result['name'];?>"><?php echo $result['name'];?></label>
+                </li>
+                <?php
+              }
+               ?>
               <li>
-                <input type="radio" id="spToilets" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace toilet" value="Toiletten">
-                <label for="spToilets">Toilets</label>
-              </li>
-              <li>
-                <input type="radio" id="spCafeteria" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace cafeteria" value="Cafeteria">
-                <label for="spCafeteria">Cafeteria</label>
-              </li>
-              <li>
-                <input type="radio" id="spEmegencyExit" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace notausgang" value="Notausgang">
-                <label for="spEmegencyExit">Exit</label>
-              </li>
-              <li>
-                <input type="radio" id="spInfopoint" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace infopoint" value="Infopoint">
-                <label for="spInfopoint">Infopoint</label>
-              </li>
-              <li>
-                <input type="radio" id="spOther" onclick="saveData(this.name, this.value)" name="rdbSpecialPlace" class="specialPlace sonstiges" value="Other">
-                <input type="text" name="tfSpecialPlace" class="specialPlace tfSonstiges" placeholder="Other">
+                <input type="radio" id="spOther" onclick="saveData(this.name, this.value, 0)" name="rdbSpecialPlace" class="specialPlace sonstiges" value="Other">
+                <input type="text" onchange="saveData('rdbSpecialPlace', 'Other', 0); document.getElementById('spOther').checked = true;" name="tfOrdinaryPlace" class="ordinaryPlace tfSonstiges" placeholder="Other">
               </li>
             </ul>
 

@@ -52,17 +52,19 @@ if ($_POST['action'] === "update") {
     $minor_id = $_POST['minor_id'];
     $field = $_POST['field'];
     $value = $_POST['value'];
-    //If position is needed
-    /*
-    $position = $_POST['position'];
-    $position = str_replace("left: ", "", $position);
-    $position = str_replace("top: ", "/", $position);
-    $position = str_replace("%;", "", $position);
-    $position = explode("/", $position);
-    $position_left = trim($position[0]);
-    $position_top = trim($position[1]);
-    */
+    echo $field;
+    if ($field == "fk_special") {
+      $sql = "INSERT INTO special_places VALUES(NULL, '$value')";
+      $res = mysqli_query($con, $sql);
+      $sql = "SELECT id FROM special_places ORDER BY id DESC LIMIT 1" ;
+      $res = mysqli_query($con, $sql);
+      while ($result = mysqli_fetch_assoc($res)) {
+        $value = $result['id'];
+      }
+      echo $value;
+    }
     $sql = "UPDATE beacons SET ".$field." = '$value' WHERE minor_id = '$minor_id' AND fk_map_id = '$map_id'";
+    echo $sql;
     $result = mysqli_query($con, $sql);
 
   }
