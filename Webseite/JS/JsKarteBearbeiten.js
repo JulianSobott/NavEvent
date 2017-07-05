@@ -29,7 +29,7 @@ $(document).ready( function(){
   //Beacon hovered
   $(document).on('mouseenter', '.beaconContainer', function() {
     id = this.id.split('-')[1];
-    show_biDescription(id);
+    show_biDescription(id, "map");
   })
 
   $(document).on('mouseleave', '.beaconContainer', function() {
@@ -203,25 +203,24 @@ function rotateArrow() {
   $('.dropDown').toggleClass('rotateArrow');
 }
 
-function saveData(field, value) {
+function saveData(field, value, number) {
   $('.progress-bar').addClass('active');
   $('.progress').css('filter', 'brightness(100%)');
   var id = $('.actualBeacon').parent().attr('id').split('-')[1];
   var map_id = $('#bild').attr('alt');
   var position = $('.actualBeacon').parent().attr('style');
-
+  //console.log(field+" - ", value);
   if(field == "rdbSpecialPlace"){
-    field = "fk_special";
-    if(value == "Toiletten")
-      value = 1;
-    else if(value == "Cafeteria")
-      value = 2;
-    else if(value == "Notausgang")
-      value = 3;
-    else if(value == "Infopoint")
-      value = 4;
-    else
-      value = 5;
+    if (number != 0) {
+      field = "fk_ordinary";
+      value = number;
+    }else {
+      field = "fk_special";
+      value = $('.tfSonstiges').val();
+      if (value == "") {
+        value = "empty";
+      }
+    }
   }
   if(field == "rdbBesonders" && value =="kein_Besonderer_Ort"){
     field = "fk_special";
@@ -239,7 +238,8 @@ function saveData(field, value) {
       'position': position,
       'action': "update"
     }
-  }).done(function() {
+  }).done(function(data) {
+    console.log(data);
     $('.progress-bar').removeClass('active');
     $('.progress').css('filter', 'brightness(60%)');
   }).fail(function() {
@@ -329,17 +329,23 @@ function openPlaces() { //Function for the right Form to open the places list
   rotateArrow();
 }
 
-function show_biDescription(id) { //Highlights the beaconInfoContainer Which fits to the hovered Beacon
+
+//This function prevents scrolling when hover the info Container
+function show_biDescription(id, from) { //Highlights the beaconInfoContainer Which fits to the hovered Beacon
   $('.beaconInfoContainer-' + id).addClass('show');
   $('.beaconInfoContainer-' + id).removeClass('undo_show');
-  var top =  -parseInt($('.seitenmenue').children('div:nth-child(1)').css('height')); //Prevevent, that the first element is scrolled over
-  for (var i = 1; i < id; i++) {  //Get the height of all Elements above the shown Element
-    height = parseInt($('.seitenmenue').children('div:nth-child('+i+')').css('height'));
-    top += height;
+  if(from == "map"){
+    var top =  -parseInt($('.seitenmenue').children('div:nth-child(1)').css('height')); //Prevevent, that the first element is scrolled over
+    console.log(top);
+    for (var i = 3; i < id; i++) {  //Get the height of all Elements above the shown Element
+      height = parseInt($('.seitenmenue').children('div:nth-child('+i+')').css('height'));
+      top += height;
+    }
+    console.log(top);
+    $('.seitenmenue').stop().animate({
+    scrollTop: top
+    }, 800);
   }
-  $('.seitenmenue').stop().animate({
-  scrollTop: top
-  }, 800);
 }
 
 function undo_show_biDescription(id) {  //Undo the Highlighting, added funtion before
